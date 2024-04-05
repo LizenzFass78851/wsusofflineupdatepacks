@@ -1,8 +1,6 @@
 # wsusoffline-release
 This repository contains wsusoffline package (Windows Update Pack) for supported Windows and Office versions
 
-#### currently not functional because wsus offline has problems creating isos over a linux system
-
 See the [releases](https://github.com/LizenzFass78851/wsusoffline-release/releases) to download the releases
 
 ## Latest Update Packs
