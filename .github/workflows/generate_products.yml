@@ -70,7 +70,7 @@ jobs:
           rm $isofile
    
       - name: Publish release ISO
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: "crowbarmaster/GH-Automatic-Releases@v1.6.0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ env.GIT_BRANCH }}-${{ matrix.target }}"
@@ -140,7 +140,7 @@ jobs:
           rm $isofile
    
       - name: Publish release ISO
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: "crowbarmaster/GH-Automatic-Releases@v1.6.0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ env.GIT_BRANCH }}-${{ matrix.target }}"
