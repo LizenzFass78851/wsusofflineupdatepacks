@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:           
       GIT_BRANCH: latest
-    if: github.repository == 'lizenzfass78851/wsusoffline-release'
+    if: github.repository == 'lizenzfass78851/wsusofflineupdatepacks'
 
     steps:
 
@@ -90,7 +90,7 @@ jobs:
     env:           
       GIT_BRANCH: esr
     needs: build_latest
-    if: always() && github.repository == 'lizenzfass78851/wsusoffline-release'
+    if: always() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks'
 
 
     steps:
