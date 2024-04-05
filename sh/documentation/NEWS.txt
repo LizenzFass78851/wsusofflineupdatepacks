@@ -1,0 +1,2196 @@
+NEWS for the Linux download scripts, version 2.6
+
+   Release date: 2021-10-18
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.6 (b40)
+
+   New features
+
+    * Support for Windows Server 2022
+
+   Internal changes
+
+    * Updates for Windows 10 are now stored based on the build they are
+      released for (Thanks to "aker" and "hbuhrmester")
+
+      The Linux download scripts use a different approach than the Windows
+      script DownloadUpdates.cmd, and most changes could be restricted
+      to three new functions:
+
+      1. The function prepare_w100_downloads is run once for both
+         Windows 10, 32-bit and 64-bit. It parses the settings file
+         windows-10-versions.ini and creates four lists of enabled and
+         disabled versions.
+
+      2. The function unsort_win_100_downloads is run before each
+         download run. It moves all Windows 10 downloads back into the
+         base directories ../client/w100/glb and ../client/w100-x64/glb.
+
+      3. The function sort_w100_downloads is run after each download
+         run. It separates versioned Windows 10 downloads into
+         subdirectories, which are named after the build number.
+
+      There are small changes to the functions calculate_static_updates
+      and calculate_dynamic_updates, to use the lists created by
+      prepare_w100_downloads. The output of these functions stays
+      the same.
+
+      The remaining download functions, e.g. download_static_files,
+      download_multiple_files, cleanup_client_directory,
+      create_integrity_database and verify_embedded_hashes, are
+      unchanged.
+
+    * Simplified the creation of the selection dialogs
+
+    * Renamed function verify_embedded_checksums to verify_embedded_hashes
+
+---------------------------------------------------------------------------
+
+NEWS for the Linux download scripts, version 2.5
+
+   Release date: 2021-08-02
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.6 (b16)
+
+   Internal changes
+
+    * Implemented revised mechanism of calculating superseded updates
+      (Thanks to "hbuhrmester" and "aker")
+    * Cleaned up Microsoft Edge (Chromium) download code
+    * Cleaned up Windows 10 version-specific downloads
+
+---------------------------------------------------------------------------
+
+NEWS for the Linux download scripts, version 2.4 (beta-3)
+
+   Release date: 2021-05-29
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.5 (b78)
+
+   Internal changes
+
+    * Refactoring of Windows 10 downloads
+
+      Windows 10 selections now use the build number, rather than the
+      version number. For example, the file ExcludeList-w100-1507.txt
+      was replaced with ExcludeList-w100-10240.txt.
+
+    * The script create-iso-image.bash can handle filter lists with DOS
+      line endings
+
+      The version control system git may unexpectedly change all line
+      endings of plain text files from UNIX to DOS with a hidden file
+      .gitattributes.
+
+   Removed Features
+
+    * Support removed for Windows 10, version 1803
+
+---------------------------------------------------------------------------
+
+NEWS for the Linux download scripts, version 2.4 (beta-2)
+
+   Release date: 2021-05-18
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.5 (b69)
+
+   This is the second beta version of the Linux download scripts,
+   version 2.4, to keep up with the changes in WSUS Offline Update,
+   Community Edition 12.5 (b69).
+
+   New features
+
+    * Download of Microsoft Edge (Chromium)
+
+      The installation files for Microsoft Edge (Chromium) are now
+      downloaded.
+
+      This requires the additional tools jq, base64 and one of hexdump,
+      od or xxd.
+
+      - The command jq is used to parse JSON files. It is installed with
+        the package jq.
+
+      - base64 is part of the GNU core utilities (coreutils), which
+        should already be installed in common Linux distributions. The
+        FreeBSD base64 should work as well.
+
+      - hexdump is a BSD utility, which is widely available in Linux. In
+        Debian systems, it is installed with the packages bsdmainutils
+        or bsdextrautils. The bsdmainutils are automatically installed
+        in Debian 10 Buster.
+
+      - od is also part of the GNU core utilities and serves as a fallback
+        for Linux, if hexdump is not available. The BSD od is not fully
+        compatible, because it doesn't have the option -w to set the
+        output width. (Line feeds could also be removed with tr).
+
+      - xxd is installed with the package xxd on Debian, but it may not
+        be available elsewhere.
+
+      Usually, you only need to install jq.
+
+      If these tools are not found, then the download of Microsoft Edge
+      (Chromium) will be disabled, but other downloads should proceed
+      as before.
+
+      The new script currently produces a lot of debugging output. This
+      is a bit messy, but could be useful to find existing bugs. After
+      some more testing, the debugging output will be disabled.
+
+   Internal changes
+
+    * Windows 8.1 April and November 2014 Updates will now be excluded
+      correctly from the calculation of superseded updates
+
+
+---------------------------------------------------------------------------
+
+NEWS for the Linux download scripts, version 2.4 (beta-1)
+
+   Release date: 2021-05-11
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.5 (b66)
+
+   This is a first beta version of the Linux download scripts, version
+   2.4, to keep up with the changes in WSUS Offline Update, Community
+   Edition 12.5 (b66).
+
+   This version changes the way, how superseded updates and dynamic
+   updates for both Windows and Office are calculated: All dynamic updates
+   are now extracted by the ProductId, separately for each Windows and
+   Office version. Therefore, the download directory ../client/ofc is no
+   longer used and may be deleted safely. The list of superseded updates
+   is more complete, so that fewer updates for Windows Server 2012 and
+   Windows 8.1 / Server 2012 R2 are downloaded.
+
+
+   Bugfixes
+
+    * The Security-only Safety Guard did not work with GitLab
+
+      If security-only downloads are selected, then the full update
+      rollups must be excluded from both download and installation. This
+      requires a manual configuration, because incremental security-only
+      updates and cumulative update rollups cannot be distinguished
+      automatically.
+
+      The function seconly_safety_guard tries to make sure, that
+      several configuration files in the directories client/static and
+      client/exclude have been updated after the last official patch day;
+      otherwise the download will be postponed.
+
+      Previously, the file modification date of these files would be
+      compared to the current date. This worked well with Trac/svn. It
+      does not work anymore with GitLab, because GitLab does not set the
+      Last-Modified header for files, which are extracted from the version
+      control system. Therefore, newly downloaded files will always have
+      the file modification date set to the current date and time.
+
+      The Security-only Safety Guard now searches literally for the
+      expected month name in the configuration files.
+
+
+   New features
+
+    * Added two scripts for development
+
+      The new script reset-wsusoffline.bash deletes all automatically
+      created files: timestamps, hashdeep files, cached files, superseded
+      updates and the ETag database for GitLab. It keeps the manually
+      created file preferences.bash, to preserve custom settings.
+
+      The file syntax-check.bash does a quick syntax check of all scripts,
+      using both bash and shellcheck.
+
+      Both scripts are meant for development.
+
+
+   Changed features
+
+    * New method for the calculation of dynamic updates
+
+      Dynamic updates for both Windows and Office are extracted
+      by the ProductId, separately for each product. Dynamic Office
+      updates are now downloaded to the directories ../client/o2k13 and
+      ../client/o2k16. The directory ../client/ofc is no longer used
+      and may be deleted safely.
+
+    * New method for the calculation of superseded updates
+
+      The calculation of superseded updates was changed in two ways:
+
+      aker introduced a patch to recognize updates, which are
+      only superseded in certain contexts. This may reduce
+      the number of "exceptions", which are maintained
+      in the files ExcludeList-superseded-exclude.txt and
+      ExcludeList-superseded-exclude-seconly.txt.
+
+      The list of superseded updates is also more complete, because
+      the restriction to two file paths was removed from the file
+      extract-update-cab-exe-ids-and-locations.xsl. This means, that
+      more superseded updates will be recognized and fewer updates
+      for Windows Server 2012 and Windows 8.1 / Server 2012 R2 will
+      be downloaded. This is basically the Windows 10 patch, that I
+      suggested about a year ago:
+
+      - Windows 10 64 bit download folder
+        https://forums.wsusoffline.net/viewtopic.php?p=30568#p30568
+
+    * Static download files for .NET Frameworks are simplified
+
+      The files:
+
+         StaticDownloadLinks-dotnet-x86-deu.txt
+         StaticDownloadLinks-dotnet-x64-deu.txt
+
+      are combined to:
+
+         StaticDownloadLinks-dotnet-deu.txt
+
+    * Hashdeep files are calculated with the bare mode option
+
+      The hashdeep relative path mode option -l was replaced with the
+      bare mode option -b. This removes all path information from the
+      filenames of the hashed files. The calculation of the integrity
+      database can be much simplified:
+
+      - The directory changes with pushd/popd are not necessary anymore.
+      - Since the bare mode removes all directory information, there is
+        no distinction between a Windows path and Linux path.
+      - The counting of the input files was removed. This was mostly done
+        for the dotnet directory, because single *.exe files were used
+        as input. If these were missing, then the input would be empty,
+        and hashdeep might try to read from standard input instead. The
+        script could hang at this point. After the removal of the dotnet
+        subdirectories, all directories are scanned recursively, and
+        this prevents the possible bug.
+
+      Hashdeep files created with the relative path mode must be deleted
+      once, because they would cause all updates to be reported as
+      "moved".
+
+      The file hashes-wddefs.txt was replaced with two separate files
+      for the subdirectories x86-glb and x64-glb.
+
+    * Improved support for service packs
+
+      The option -includesp is supported by the scripts
+      copy-to-target.bash, create-iso-image.bash and
+      download-updates.bash. Service packs are read from the files:
+
+         ../exclude/custom/ExcludeList-SPs.txt
+         ../client/static/StaticUpdateIds-w63-upd1.txt
+         ../client/static/StaticUpdateIds-w63-upd2.txt
+
+      This way, users can provide their own service packs with a custom
+      ExcludeList-SPs.txt.
+
+      The support for the option -includesp also means, that some
+      downloads may be missing, if this option is NOT used. However, the
+      option was named -includesp rather than -excludesp for consistency
+      with the other optional downloads.
+
+
+   Internal changes
+
+    * The file ../client/exclude/ExcludeList.txt can be updated from
+      GitLab
+
+    * The files StaticUpdateIds-w63-upd1.txt and
+      StaticUpdateIds-w63-upd2.txt are used for the calculation of the
+      ExcludeList-Linux-superseded-seconly.txt
+
+
+   Removed features
+
+    * Removed the "revised" method for calculating superseded updates,
+      if security-only updates are selected
+
+      One of Microsoft's original goals for cumulative monthly update
+      rollups was to include former updates:
+
+      "Over time, Windows will also proactively add patches to the
+      Monthly Rollup that have been released in the past. Our goal is
+      eventually to include all of the patches we have shipped in the
+      past since the last baseline, so that the Monthly Rollup becomes
+      fully cumulative and you need only to install the latest single
+      rollup to be up to date."
+
+      -- https://techcommunity.microsoft.com/t5/windows-blog-archive/further-simplifying-servicing-models-for-windows-7-and-windows-8/ba-p/166772
+
+      This refers to the cumulative monthly update rollups only, not
+      to the incremental security-only updates. Therefore, sometimes
+      updates will superseded by the monthly update rollups, but not by
+      the security-only updates. These updates would be added to the file
+      ExcludeList-superseded-exclude-seconly.txt. However, this is only
+      done, if these updates are found to be missing during installation.
+
+      The revised method for calculating superseded updates tried to
+      recognize this situation automatically:
+
+      1. The file HideList-seconly.txt contains a list of all known
+         update rollups. The kb numbers are traced back to the FileIds,
+         and then to the parent bundle records.
+
+      2. The RevisionIds of the parent bundle records are removed from
+         the list of superseding updates: If update rollups are excluded
+         from download, then they cannot possibly supersede other updates.
+
+      3. The list of superseded updates is then calculated as before.
+         The file ExcludeList-Linux-superseded-seconly-revised.txt will
+         be similar to the file ExcludeList-Linux-superseded-seconly.txt,
+         but with an additional correction for the update rollups from
+         the file HideList-seconly.txt.
+
+      This method actually worked – in two cases it could predict
+      missing updates, BEFORE they were reported as missing:
+
+       - Some update issues
+         https://forums.wsusoffline.net/viewtopic.php?f=4&t=7085
+
+         Here, two updates were reported as missing. The update,
+         which could be recovered by the revised method, was
+         "windows6.1-kb2631813-x64".
+
+         windows6.1-kb2631813 is still listed in the file
+         ExcludeList-superseded-exclude.txt of the ESR-version.
+
+         https://gitlab.com/wsusoffline/wsusoffline/-/blob/esr-11.9/exclude/ExcludeList-superseded-exclude.txt
+
+       - kb3003743
+         https://forums.wsusoffline.net/viewtopic.php?f=2&t=8697
+
+      But, as soon as all missing updates are added
+      to the files ExcludeList-superseded-exclude.txt or
+      ExcludeList-superseded-exclude-seconly.txt, this method would not
+      make any difference anymore.
+
+      The revised method was introduced in the Linux download scripts,
+      version 1.11 (2019-04-04). It is removed now, because I don't know,
+      how it fits into the new implementation of calculating superseded
+      updates, or if it is still useful at all.
+
+      - https://forums.wsusoffline.net/viewtopic.php?f=9&t=9093
+
+
+   TODO
+
+    * Download of Microsoft Edge (Chromium)
+
+
+---------------------------------------------------------------------------
+
+NEWS for the Linux download scripts, Community Edition 2.3
+
+   Release date: 2021-01-19
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.4
+
+   The Linux download scripts, version 2.3 try to keep up with WSUS
+   Offline Update, Community Edition 12.4. These scripts are not
+   compatible with the upcoming WSUS Offline Update, Community Edition
+   12.5, because of major changes in the calculation of dynamic updates.
+
+   Important: The option -includesp was added back. If this option is
+   not used, then several large updates for Windows 8.1 / Server 2012 R2
+   may be omitted. The option -includesp is pre-selected in the script
+   update-generator.bash. If you use the script download-updates.bash
+   directly, e.g. in cron jobs, then you should add the option there.
+
+
+   New Features
+
+    * Added support for Windows 10, version 20H2
+
+      All Windows 10 versions are enabled by default. They can be
+      disabled with a series of version-specific exclude lists in the
+      directory wsusoffline/exclude:
+
+         ExcludeList-w100-1507.txt
+         ExcludeList-w100-1607.txt
+         ExcludeList-w100-1803.txt
+         ExcludeList-w100-1809.txt
+
+         ExcludeList-w100-1903.txt
+         ExcludeList-w100-1909.txt
+         ExcludeList-w100-1903_1909.txt
+
+         ExcludeList-w100-2004.txt
+         ExcludeList-w100-20H2.txt
+         ExcludeList-w100-2004_20H2.txt
+
+      Adding the support for version 20H2 means, that you can now disable
+      this version.
+
+
+    * Optional "fast mode" for the calculation of the integrity database
+
+      WSUS Offline Update uses three hash function to create the
+      integrity database: MD5, SHA-1 and SHA-256. This always looked
+      over-engineered, and it is unnecessarily slow on old machines. An
+      optional "fast mode" was introduced, which only calculates the
+      SHA-1 hash. This option can be enabled in the file preferences.bash.
+
+      The resulting hashdeep files will be compatible with previous
+      versions of the Linux scripts and with the Windows scripts, because
+      hashdeep recognizes the file format automatically. You don't need
+      to delete any existing files in the directory ../client/md, because
+      the hashdeep files will be deleted and recreated automatically on
+      each download run.
+
+      Note: The Windows script DownloadUpdates.cmd can use the same
+      fast mode with a small patch. This is only needed, if you like
+      to compare the results on Windows and Linux with the script
+      compare-integrity-database.bash:
+
+      1. Change the hashdeep option "-c md5,sha1,sha256" to "-c sha1"
+         everywhere.
+
+      2. Find the line:
+
+         for /F "usebackq tokens=3,5 delims=," %%i in ("%TEMP%\sha1-%1-%2.txt") do (
+
+         and change it to:
+
+         for /F "usebackq tokens=2,3 delims=," %%i in ("%TEMP%\sha1-%1-%2.txt") do (
+
+         The hashdeep files are used for a quick integrity check:
+         The expected SHA-1 hash is embedded into the filename of most
+         security updates. It is compared to the calculated SHA-1 hash
+         in the hashdeep file. If they don't match, then the downloaded
+         file will be deleted.
+
+         For this comparison, the script extracts fields 3 and 5 of the
+         comma-separated hashdeep files in its default mode. It extracts
+         fields 2 and 3 in the fast mode.
+
+         Default field order of the hashdeep files:
+
+            Field 1 = File size
+            Field 2 = MD5 hash
+            Field 3 = SHA-1 hash as calculated by hashdeep
+            Field 4 = SHA-256 hash
+            Field 5 = Relative pathname with embedded SHA-1 hash
+
+         Field order in the fast mode:
+
+            Field 1 = File size
+            Field 2 = SHA-1 hash as calculated by hashdeep
+            Field 3 = Relative pathname with embedded SHA-1 hash
+
+         Warning: The patch for the Windows script DownloadUpdates.cmd
+         was tested and should work so far, but if you mess this up,
+         all existing downloads will be deleted due to "mismatching
+         SHA-1 hashes".
+
+
+    * The option -includesp was added back
+
+      The option -includesp was added back to the master development
+      branch, with a limited scope: If this option is not used, then
+      updates for Windows 8.1 / Server 2012 R2 from two files will
+      be omitted:
+
+         ../client/static/StaticUpdateIds-w63-upd1.txt
+         ../client/static/StaticUpdateIds-w63-upd2.txt
+
+      The option -includesp will be pre-selected in the Linux script
+      update-generator.bash. You should add it manually, if you use the
+      script download-updates.bash directly, e.g. in cron jobs.
+
+      Notes: The corresponding option in the Windows script
+      DownloadUpdates.cmd is /excludesp, but it was translated to
+      -includesp for consistency with the other optional downloads.
+
+      The Windows application UpdateGenerator.exe does not expose the
+      option excludesp in its user interface. To use this option, you
+      need to add it manually to the settings file UpdateGenerator.ini:
+
+         [Options]
+         excludesp=Enabled
+
+
+   Changed Features
+
+    * Default languages are removed on the fly
+
+      By default, WSUS Offline Update downloads updates for the languages
+      English and German.
+
+      In the Windows version, the default languages can be
+      removed with the scripts RemoveGermanLanguageSupport.cmd and
+      RemoveEnglishLanguageSupport.cmd (the latter is only in the
+      ESR-version). More languages can be added with the script
+      AddCustomLanguageSupport.cmd.
+
+      The new Linux download scripts always tried to do that in a more
+      consistent way:
+
+      - First, the default languages are removed from several global
+        files in the directory wsusoffline/static.
+
+      - All languages, which are selected on the command-line, are then
+        added back from the localized files in the same directory.
+
+      In previous versions, the removal of default languages would
+      modify the global input files on disk. Now the default languages
+      are removed on the fly, without changing the input files at all.
+
+      This functionality is implemented as a new function
+      filter_default_languages in the file ./libraries/dos-files.bash. The
+      script ./download-updates-tasks/30-remove-default-languages.bash
+      is obsolete and will be removed.
+
+
+    * hashdeep messages are duplicated with tee
+
+      The functions create_integrity_database and
+      verify_integrity_database now use "tee" to duplicate messages from
+      hashdeep and to write them to the logfile and the screen. This is
+      possible, because the logfile is referenced with absolute paths
+      since version 1.11 of the Linux download scripts.
+
+      Previously, a workaround was needed, because relative paths to
+      the logfile would become invalid, if the working directory was
+      changed with pushd/popd.
+
+
+    * Network timeouts are increased
+
+      The values for timeout and waitretry are increased for both wget
+      and aria2.
+
+
+    * Sysinternals utilities are downloaded to the directory ../bin
+
+      The archives AutoLogon.zip, Sigcheck.zip and Streams.zip are
+      downloaded to the directory ../bin, as in the Windows script
+      DownloadUpdates.cmd.
+
+
+    * Five more obsolete configuration files are removed
+
+      The following configuration files are no longer needed in the
+      master version and will be removed:
+
+         ../static/StaticDownloadLink-mkisofs.txt
+         ../static/StaticDownloadLinks-mkisofs.txt
+         ../client/static/StaticUpdateIds-ie10-w61.txt
+         ../client/static/StaticUpdateIds-ie11-w61.txt
+         ../client/static/StaticUpdateIds-dotnet35.txt
+
+
+    * Renamed the functions filter_cr and todos_line_endings
+
+      The functions filter_cr and todos_line_endings are both meant
+      to change line endings from and to DOS. They are now named more
+      appropriately:
+
+         filter_cr           ->  dos_to_unix
+         todos_line_endings  ->  unix_to_dos
+
+
+    * The download directories dotnet/x86-glb and dotnet/x64-glb are no
+      longer used
+
+      The download directories ../client/dotnet/x86-glb and
+      ../client/dotnet/x64-glb for dynamic .NET Framework updates are no
+      longer used. Dynamic updates for .NET Frameworks are now downloaded
+      to the respective Windows directories, e.g. ../client/w62-x64/glb.
+
+      The following files will be removed automatically:
+
+         ../xslt/ExtractDownloadLinks-dotnet-x86-glb.xsl
+         ../xslt/ExtractDownloadLinks-dotnet-x64-glb.xsl
+         ../client/md/hashes-dotnet-x86-glb.txt
+         ../client/md/hashes-dotnet-x64-glb.txt
+
+      You may delete the following directories manually, but only in
+      WSUS Offline Update 12.3 and higher (master development branch):
+
+         ../client/dotnet/x86-glb
+         ../client/dotnet/x64-glb
+
+      Do not delete the parent directory ../client/dotnet, because it
+      is still needed for the static .NET Framework installation files.
+
+      Reference:
+
+      Removed download of legacy .NET Framework updates
+      https://gitlab.com/wsusoffline/wsusoffline/-/commit/fad83dfb542a6e74aae287755857a27de80d0c60
+
+
+   Removed features
+
+    * Removed support for Office 2010
+
+      This removes the following files:
+
+         ../static/StaticDownloadLinks-o2k10-*.txt
+         ../client/static/StaticUpdateIds-o2k10.txt
+
+
+    * Removed support for Windows 10 version 1709
+
+      The following files will be removed:
+
+         ../exclude/ExcludeList-w100-1709.txt
+         ../client/static/StaticUpdateIds-w100-16299.txt
+         ../client/static/StaticUpdateIds-w100-16299-x64.txt
+         ../client/static/StaticUpdateIds-w100-16299-x86.txt
+         ../client/static/StaticUpdateIds-wupre-w100-16299.txt
+         ../client/static/StaticUpdateIds-servicing-w100-16299.txt
+         ../client/static/StaticUpdateIds-w100-16299-dotnet.txt
+         ../client/static/StaticUpdateIds-w100-16299-dotnet4-528049.txt
+
+
+NEWS for Version 2.2 Community Edition (2.2-CE)
+
+   Release date: 2020-08-09
+   Development branch: master
+   Supported versions: WSUS Offline Update, Community Edition 12.2
+
+   Changed Features
+
+    * Revised wsusoffline self-update
+
+      The implementation of the wsusoffline self-update was revised to
+      match that of the Community Editions esr-11.9.4 and 12.2.
+
+      The files SelfUpdateVersion-this.txt and
+      SelfUpdateVersion-recent.txt contain a version number and the
+      installation type, which can be beta or release.
+
+      The comparison of the installed version and the latest available
+      release distinguishes three different cases:
+
+      1. The version numbers and installation types are the same. There
+         is no update available.
+
+         This implies, that the files SelfUpdateVersion-this.txt and
+         SelfUpdateVersion-recent.txt are the same. A quick version
+         check may use diff to compare these files.
+
+      2. A newer release is available. This usually means, that a
+         new release with a higher version number is available. If the
+         version numbers are the same, then a release can replace a beta
+         (development) version.
+
+      3. The installed version is newer than the latest available release.
+         This may happen, if a beta (development) version is installed.
+
+         In this case, you are responsible for updating your installation
+         yourself. The self-update of WSUS Offline Update always
+         installs the latest available release. The update of static
+         download definitions (sdd) also refers to the latest available
+         release. To skip all self-updates, you could change the option
+         check_for_self_updates to "disabled" in the preferences file.
+
+      The filenames of the archive and the hashes file are extracted
+      from the file StaticDownloadLink-recent.txt.
+
+      Since the self-update of the Linux download scripts was removed,
+      several variable and function names could be simplified:
+
+         wou_installed_version      ->  installed_version
+         wou_available_version      ->  available_version
+         wou_available_archive      ->  archive_filename
+         wou_available_hashes       ->  hashes_filename
+         wou_timestamp_file         ->  wsusoffline_timestamp
+         get_wou_installed_version  ->  get_installed_version
+         get_wou_available_version  ->  get_available_version
+
+
+    * Removal of obsolete files
+
+      The following batch files are no longer needed:
+
+         ../cmd/ActivateAllLanguageServicePacks.cmd
+         ../cmd/ActivateFiveLanguageServicePacks.cmd
+         ../cmd/RemoveEnglishLanguageSupport.cmd
+
+      The following configuration files are removed from their previous
+      locations. They are now downloaded to the directory ../static/sdd:
+
+         ../static/StaticDownloadFiles-modified.txt
+         ../exclude/ExcludeDownloadFiles-modified.txt
+         ../client/static/StaticUpdateFiles-modified.txt
+
+
+    * Windows 10 updates
+
+      Windows 10 version-specific exclude lists are now applied to both
+      static and dynamic updates.
+
+      In WSUS Offline Update 12.0, the versions 1903 and 1909 were linked:
+      If version 1903 was selected, then version 1909 was automatically
+      selected as well.
+
+      In the Community Edition 12.2, the versions 1903 and 1909 are not
+      directly linked anymore; they can be enabled/disabled separately. If
+      both 1903 and 1909 are disabled, then a combined exclude list
+      ExcludeList-w100-1903_1909.txt will be applied.
+
+
+    * Office updates
+
+      An additional exclude list ExcludeList-ofc-lng.txt is used for
+      the calculation of dynamic office updates.
+
+
+    * .NET Frameworks
+
+      Support for .NET Framework 3.5 (dotnetfx35) was removed.
+
+
+    * Small changes to comments, labels and menus
+
+      These are meant to make the master version and the esr-19.1 branch
+      better comparable.
+
+
+    * Bash 4.2 is now required
+
+      The handling of pipes in the bash often requires workarounds. The
+      download scripts now use the bash option "lastpipe", to scan the
+      wget output and set global variables. This option was introduced
+      in bash 4.2, as in Debian 7 Wheezy.
+
+      The file documentation/compatibility.txt was changed accordingly.
+
+
+NEWS for Version 2.1 Community Edition (2.1-CE)
+
+   Release date: 2020-07-21
+   Intended compatibility: WSUS Offline Update, Community Edition 12.0
+
+   Changed Features
+
+    * Querying the Etag instead of timestamping for GitLab (II)
+
+      The approach for the script was revised. It now uses the file
+      ../static/SelfUpdateVersion-static.txt as an ETag database.
+
+   Removed features
+
+    * Self-update of the Linux download scripts
+
+      The optional self-update of the Linux download scripts was
+      introduced in the first beta-versions, which were not yet integrated
+      in WSUS Offline Update, but it is considered obsolete by now.
+
+
+NEWS for Version 2.0 Community Edition (2.0-CE)
+
+   Release date: 2020-07-12
+   Intended compatibility: WSUS Offline Update, Community Edition 12.0
+
+   This is a port of the Linux download scripts, version 2.0 to WSUS
+   Offline Update, Community Edition 12.0.
+
+   New Features
+
+    * Support for the Community Edition of WSUS Offline Updates
+
+      The Linux download scripts now support the Community Edition of
+      WSUS Offline Updates:
+
+      https://gitlab.com/wsusoffline/wsusoffline
+
+      The initial version 2.0 CE was tested with WSUS Offline Update,
+      Community Edition 12.0:
+
+      https://gitlab.com/wsusoffline/wsusoffline/-/releases/12.0_CommunityEdition
+
+      Updates for the configuration files and for the self update of
+      WSUS Offline Update are now pulled from the directory "Static
+      Definition Updates" on GitLab:
+
+      https://gitlab.com/wsusoffline/wsusoffline-sdd
+
+    * Querying the Etag instead of timestamping for GitLab
+
+      Unfortunately, GitLab does not return the Last-modified header. This
+      could be a problem with GitLab itself or with the Cloudflare
+      content delivery network.
+
+      https://gitlab.com/gitlab-org/gitlab/-/issues/18642
+      https://gitlab.com/gitlab-org/gitlab/-/issues/23823
+
+      Therefore, the usual timestamping with wget or aria2 does not
+      work. It only results in the same files being downloaded every time.
+
+      The Etag as a unique identifier can be queried instead. Download
+      utilities like wget can send a single GET request with the
+      conditional header "If-None-Match: <Etag>" to check for changed
+      files. The server can then respond with "200 OK", if the file has
+      been modified, or with "304 Not Modified", if the file is the same.
+
+      https://en.wikipedia.org/wiki/HTTP_ETag
+
+      This is the the same approach, which is used for timestamping:
+      Both use a single GET request with a conditional header and rely
+      on the server to return the correct result.
+
+      There are four conditional headers, which can be used this way
+      (but only one per request):
+
+      If-Unmodified-Since: <date>  Check for unchanged files
+      If-Modified-Since: <date>    Check for modified files
+      If-Match: <Etag>             Check for unchanged files
+      If-None-Match: <Etag>        Check for modified files
+
+      https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
+
+      The approach for the script is:
+
+      - On the first download, the complete server response is saved
+        to disk.
+
+      - On the next download run, the Etag is extracted and a new
+        custom header "If-None-Match: <Etag>" is constructed and sent to
+        the server.
+
+      - So far, this was only tested with wget, not with aria2 or other
+        download utilities.
+
+    * Support for Windows 10, version 2004
+
+      Support for Windows 10, version 2004, was added to the Window 10
+      selection dialog. This only makes a difference, if the corresponding
+      exclude list file is added, e.g.:
+
+      https://gitlab.com/wsusoffline/wsusoffline/-/raw/master/exclude/ExcludeList-w100-2004.txt
+
+      Then you can deselect this version. Without configuration, the
+      default will be to include all Windows 10 versions.
+
+
+NEWS for Version 2.0
+
+   Release date: 2020-03-25
+   Intended compatibility: WSUS Offline Update 12.0
+
+   New features
+
+    * Support for Windows 10 versions
+
+      If one of the updates w100, w100-x64, all, all-x86, all-x64,
+      all-win, all-win-x86 or all-win-x64 is selected, then a fine
+      selection of Windows 10 versions is displayed.
+
+      This requires the external command "dialog".
+
+
+   Removed features
+
+    * Support for Windows Server 2008 and Windows 7 / Server 2008 R2
+
+      The new branch WSUS Offline Update 11.9.x ESR and the Linux download
+      scripts 1.19.x ESR still support these versions.
+
+    * Support for Windows 7 Defender and Microsoft Security Essentials
+
+      The usage of the directories client/wddefs and client/msse is
+      basically reversed: Formerly, the directory wddefs was used to
+      download Windows Defender definition updates for the original
+      Defender of Windows Vista and 7. It is now used for the built-in
+      Defender of Windows 8, 8.1 and 10.
+
+      The directory client/msse is not used anymore and will be deleted.
+
+      The options -includemsse and -includewddefs8 are not used
+      anymore. Use -includewddefs instead.
+
+    * Support for Service Packs
+
+      The option -includesp is not used anymore. The file
+      ExcludeList-SPs.txt will be deleted.
+
+    * Support for .NET Framework 4.6 installers
+
+      The English installer for .NET Framework 4.6 was removed in WSUS
+      Offline Update 12.0. This is the only full installer; the other
+      installers are only language packs for custom languages.
+
+      But the download links for these language packs
+      are still present in the static download files
+      StaticDownloadLinks-dotnet-*.txt. Therefore, the file
+      NDP46-KB3045557-x86-x64-AllOS-DEU.exe and similar localized files
+      are not immediately deleted, but kept as "valid static files".
+
+      You can
+      - delete this file manually
+      - copy the file preferences-template.bash to preferences.bash and
+        set the option:  keep_valid_static_files="disabled"
+      - ignore the file for now – it will eventually be deleted,
+        when the files StaticDownloadLinks-dotnet-*.txt are cleaned up
+
+      https://forums.wsusoffline.net/viewtopic.php?f=2&t=10173
+
+
+   Internal changes
+
+    * Removed obsolete Windows and Office versions
+
+      The Linux download scripts supported some old Windows and Office
+      versions, to create the first ESR version 1.1. This included Windows
+      XP, Windows Server 2003, Office 2003 and 2007. Since these versions
+      are long obsolete, they are removed now.
+
+
+NEWS for Version 1.19
+
+   Release date: 2020-03-11
+   Intended compatibility: WSUS Offline Update 11.9
+
+   Bug fixes
+
+    * Virus definition files, certificates and certificate revocation
+      lists were not downloaded
+
+      Some Microsoft servers now check the user-agent of the download
+      utility.
+
+
+   Internal changes
+
+    * The domain wsusoffline.net now uses https everywhere
+
+      All occurrences of "http://download.wsusoffline.net",
+      "http://forums.wsusoffline.net" and "http://trac.wsusoffline.net"
+      were changed to https.
+
+      The download links are used for the self-update of WSUS Offline
+      Update and for the update of the configuration files. Forum and
+      Trac links are only used in comments and the documentation.
+
+    * Cleaned up the calculation of dynamic Office updates
+
+      Version 1.17 introduced a new method for the calculation of
+      dynamic Office updates. The old method was kept as a fallback,
+      because there was a small chance, that the WSUS offline scan file
+      wsusscn2.cab would change back to its former format. This didn't
+      happen, and the old implementation was now removed.
+
+      The private file ./xslt/extract-office-revision-and-update-ids.xsl
+      for the Linux scripts is no longer needed, because it was moved
+      to wsusoffline/xslt.
+
+    * Cleaned up the calculation of dynamic Windows 10 updates
+
+      Superseded Windows 10 updates were not deleted, because their
+      paths on the server changed, and the calculation of superseded
+      updates did not respect the new paths.
+
+      Version 1.18 suggested a new XSLT transformation file
+      extract-file-ids-and-locations.xsl, which did not check the paths on
+      the server at all. This fixed the calculation of superseded Windows
+      10 updates, but it also affected other Windows versions, e.g. some
+      files were also deleted from other download directories. This
+      could actually be correct, but it was unexpected at this point.
+
+      WSUS Offline Update now uses a modified file
+      extract-update-cab-exe-ids-and-locations.xsl, which respects the
+      new file paths of Windows 10 updates on the server. This doesn't
+      cause unexpected side effects with other Windows versions. The
+      Windows and Linux scripts don't need any changes, because the
+      filename of the XSLT did not change.
+
+      So, most of the changes in version 1.18 can now be rolled back,
+      and the private file ./xslt/extract-file-ids-and-locations.xsl is
+      no longer needed. The private directory ./xslt can also be deleted
+      for now.
+
+    * Renamed some temporary files
+
+      The files DynamicDownloadLinksPruned-${name}-${arch}-${lang}.txt
+      and DynamicDownloadLinksPruned-ofc-${lang}.txt were renamed
+      to CurrentDynamicLinks-${name}-${arch}-${lang}.txt and
+      CurrentDynamicLinks-ofc-${lang}.txt.
+
+      This describes the purpose of these files better: First a list of
+      all dynamic updates is created, then the superseded updates are
+      removed. The difference is a list of current dynamic links.
+
+    * Moved and reimplemented some code
+
+      The creation of backup files and the integrity check of the
+      file wsusscn2.cab and the four virus definition files was
+      moved from the function download_single_file to the function
+      download_single_file_failsafe. This removes some duplicate code.
+
+      The check for new versions of the file wsusscn2.cab and the WSUS
+      Offline Update configuration files was rewritten without the need
+      of temporary timestamp files.
+
+
+NEWS for Version 1.18
+
+   Release date: 2020-02-02
+   Intended compatibility: WSUS Offline Update 11.8.3
+
+   Bug fixes
+
+    * Superseded cumulative updates for Windows 10 were not deleted
+
+      The problem were changed paths on the Microsoft servers and how
+      they affected the determination of superseded updates.
+
+      For example, the cumulative updates for Windows 10, version 1803
+      from November 2019 are:
+
+       - http://dl.delivery.mp.microsoft.com/filestreamingservice/files/a6e9748c-8477-4e76-9ecf-4325e098eb97/public/windows10.0-kb4525237-x86_06910ee652e79e78a43824cae0fb8f28ae65c1d6.cab
+
+       - http://dl.delivery.mp.microsoft.com/filestreamingservice/files/70920fed-6167-4221-8808-d5a44c490740/public/windows10.0-kb4525237-x64_991cc8facc32fb11023372e65eb958ce22bc465d.cab
+
+      The last step in the determination of superseded updates is the
+      connection of File Ids and Locations (URLs). These fields are
+      extracted from the file package.xml with two XSLT transformation
+      files, either ExtractUpdateCabExeIdsAndLocations.xsl or the derived
+      extract-update-cab-exe-ids-and-locations.xsl.
+
+      Both XSLT files apply a series of tests, including:
+
+         contains(@Url, '/update/software/secu/')
+
+      This is the usual path for security updates on Microsoft servers,
+      but, as shown above, Windows 10 updates now use a different
+      path. This means, that the URLs are missing in the extracted
+      file UpdateCabExeIdsAndLocations.txt and, as a consequence, in
+      the ExcludeList-superseded.txt.
+
+      The patch for Windows 10 updates features a new XSLT transformation
+      file extract-file-ids-and-locations.xsl, which is based on
+      extract-update-cab-exe-ids-and-locations.xsl, but does not apply
+      any restrictions on the results.
+
+      In the file download-updates-tasks/50-superseded-updates.bash,
+      the following changes were made:
+
+       - The file extract-update-cab-exe-ids-and-locations.xsl was
+         replaced with extract-file-ids-and-locations.xsl.
+
+         The script searches two places for this file: the private
+         directory ./xslt of the Linux scripts and the directory
+         wsusoffline/xslt, where other XSLT files can be found. (The
+         Linux scripts, as they are distributed today, cannot place
+         files into the latter directory, though.)
+
+       - The file UpdateCabExeIdsAndLocations.txt was replaced with
+         file-ids-and-locations.txt.
+
+         The new file is not restricted to .cab and .exe files anymore.
+
+         Furthermore, the file file-ids-and-locations.txt needs to be
+         distinguished from UpdateCabExeIdsAndLocations.txt, which is
+         still used for the determination of dynamic Office updates. (I
+         assume, that the determination of Office updates was the reason,
+         why these restrictions were included in the first place.)
+
+       - The files ExcludeListLocations-superseded-all.txt
+         and ExcludeListLocations-superseded-all-revised.txt
+         were renamed to ExcludeList-superseded-all.txt and
+         ExcludeList-superseded-all-revised.txt.
+
+         This is not related to the patch for Windows 10 updates, but
+         a simple refactoring to shorten the filenames.
+
+
+      The patch for Windows 10 updates was previously discussed in the
+      forum topic:
+
+       - Windows 10 64 bit download folder
+         https://forums.wsusoffline.net/viewtopic.php?f=3&t=9955
+
+       - Patch for the Windows script
+         https://forums.wsusoffline.net/viewtopic.php?f=3&t=9955&start=10#p30568
+
+       - Patch for the Linux scripts
+         https://forums.wsusoffline.net/viewtopic.php?f=3&t=9955&start=20#p30625
+
+   Notes
+
+      If you manually copy this version of the Linux scripts over
+      an existing installation, you should also delete these files
+      (if existing):
+
+         ../exclude/ExcludeList-Linux-superseded.txt
+         ../exclude/ExcludeList-Linux-superseded-seconly.txt
+         ../exclude/ExcludeList-Linux-superseded-seconly-revised.txt
+
+      An automatic update of WSUS Offline Update or the Linux download
+      scripts will delete these files automatically.
+
+
+NEWS for Version 1.17
+
+   Release date: 2020-01-10
+   Intended compatibility: WSUS Offline Update 11.8.3
+
+   Bug fixes
+
+    * New method for the calculation of dynamic Office updates
+
+      The existing method for the calculation of Office updates required,
+      that the update records in the file package.xml had to be sorted
+      in descending order by the RevisionIds.
+
+      This was changed in the WSUS offline scan file wsusscn2.cab from
+      December 2019. The result was, that lots of unrelated files were
+      downloaded to the directories client/ofc/glb, client/ofc/deu and
+      client/ofc/enu.
+
+      The new method does not depend on the correct sort
+      order of the file package.xml. It is based on the
+      example script extract-office-locations-v2.bash,
+      which was suggested in the forum article
+      https://forums.wsusoffline.net/viewtopic.php?f=3&t=9954&start=10#p30279
+
+      It is not much tested, though, because I don't have any version
+      of Microsoft Office.
+
+      The previous version can be re-enabled again by changing line 47
+      of the file download-updates-tasks/60-main-updates.bash from:
+
+         new_method_for_dynamic_office_updates="enabled"
+
+      to:
+
+         new_method_for_dynamic_office_updates="disabled"
+
+
+NEWS for Version 1.16
+
+   Release date: 2020-01-08
+   Intended compatibility: WSUS Offline Update 11.8.3
+
+   Bug fixes
+
+    * The download of wsusscn2.cab indicated success, when the integrity
+      check failed
+
+      The integrity of the WSUS offline scan file wsusscn2.cab can be
+      tested with cabextract -t. If this test fails, the script would
+      still create a file timestamp-wsus-all-glb.txt. This will postpone
+      the next download/validation of this task for one day.
+
+      Timestamp files should only be created to indicate successful
+      download runs. Then they prevent the repeated evaluation of the
+      same task in successive download runs. The next evaluation of the
+      WSUS Offline Update configuration files will be postponed for one
+      day (21 hours).
+
+      In case of the WSUS offline scan file wsusscn2.cab, a failed
+      download should be retried as soon as possible. Therefore, no
+      timestamp files should be created for failed download tasks.
+
+    * Static download files in the ../static/custom directory were skipped
+
+      The calculation of static download links ignored custom files
+      ../static/custom/StaticDownloadLinks-*.txt, if the original files
+      in the ../static directory were all empty.
+
+    * Corrected the spelling of files and directories
+
+      The file 71-make-shapshot.bash was renamed to 71-make-snapshot.bash.
+
+      The noun "licence" is valid British English, but the directory was
+      renamed to "license" for consistency with the usage of American
+      English in other places.
+
+   User visible changes
+
+    * Revised messages for the update of configuration files
+
+      The messages for the update of the configuration files for WSUS
+      Offline Update were revised, to better indicate the different steps.
+
+   Internal changes
+
+    * Better compatibility with FreeBSD 12.1, thanks to TheFlipside
+
+      FreeBSD uses an up to date bash, but there are small differences
+      in the core utilities cp, date, mktemp, sed and unzip. Sometimes,
+      even the same options don't work the same in GNU/Linux and FreeBSD,
+      e.g. sed -i and unzip -u. This has been partially tested with a
+      virtual machine from https://www.freebsd.org/where.html .
+
+      Known differences were fixed, but these virtual machines are
+      too small and too slow to really run the whole download script,
+      so there may be more to be found.
+
+      This was first reported in:
+
+      - modern FreeBSD support
+        https://forums.wsusoffline.net/viewtopic.php?f=9&t=9910
+
+   Documentation
+
+    * New file "Differences_between_GNU-Linux_and_FreeBSD.txt"
+
+      This file describes the found differences between the GNU/Linux
+      and FreeBSD utilities cp, date, mktemp, sed and unzip. It also
+      discusses possible solutions and workarounds.
+
+    * Updated installations guides
+
+      The files Installation_Guide.txt and Installationsanleitung.txt
+      were updated to include hints for FreeBSD 12.1.
+
+
+NEWS for Version 1.15
+
+   Release date: 2019-07-30
+   Intended compatibility: WSUS Offline Update 11.8b (r1064)
+
+   New features
+
+    * Automatic update of Sysinternals Utilities
+
+      The archives for the Sysinternals utilities Autologon, Sigcheck and
+      Streams are downloaded to the directory wsusoffline/cache. They
+      are extracted to the directories wsusoffline/bin and
+      wsusoffline/client/bin, when new versions become available.
+
+      This was added in WSUS Offline Update version 11.7.3.
+
+    * The Linux scripts now use sigcheck64.exe on 64-bit hardware
+
+      This was reported by slycordinator:
+      https://forums.wsusoffline.net/viewtopic.php?f=9&t=6180&start=50#p28801
+
+      Note however, that running Sigcheck in wine is still flawed: It
+      creates too many false results. For example, Sigcheck will report
+      a file as "Signed", even if the file has been slightly altered
+      by appending a space or changing some bytes with a hexadecimal
+      editor. So it seems, that Sigcheck in wine cannot really verify
+      digital file signatures. This is most probably a problem with the
+      wine library CRYPT32.dll.
+
+    * Support for Windows Server 2019
+
+      Windows Server 2019 was supported by the selection w100-x64 for
+      some time. This is now indicated by changing the labels from
+      "Windows 10 / Server 2016" to "Windows 10 / Server 2016/2019".
+
+      This was added in WSUS Offline Update version 11.7.3.
+
+    * Support for Internet Explorer 11 on Windows Server 2012
+
+      The installers for Internet Explorer 11 on Windows Server 2012
+      are handled similar to the .NET Frameworks: The English installers
+      are always downloaded and installed. Other languages are supported
+      with language packs.
+
+      This was introduced in WSUS Offline Update version 11.8b,
+      changeset 1064:
+
+      https://trac.wsusoffline.net/trac.fcgi/changeset/1064
+
+
+NEWS for Version 1.14
+
+   Release date: 2019-06-07
+   Intended compatibility: WSUS Offline Update 11.7.2+ (r1052)
+
+   New features
+
+    * Support for Trusted Root Certificates and Certificate revocation
+      lists
+
+      The support for *.crt and *.crl files was added. Some of these
+      files happen to have filenames with spaces. The Linux download
+      scripts handle such filenames well, because all variables are
+      properly quoted, but in the function cleanup_client_directory,
+      filenames must be percent-encoded for comparison with the input
+      file StaticDownloadLinks-win-glb.txt.
+
+      These certificate files were introduced in WSUS Offline Update
+      11.7.2+ (r1052):
+
+      https://trac.wsusoffline.net/trac.fcgi/changeset/1052
+
+      The option to skip win/glb downloads in the preferences file
+      was removed, to make sure that the certificate files will
+      be downloaded. If you don't need Silverlight, you could add
+      "Silverlight" to the file exclude/custom/ExcludeListForce-all.txt
+      instead.
+
+   Internal changes
+
+    * Reordered the positional parameters for the function
+      cleanup_client_directory
+
+      Optional parameters should be listed last, to allow them to be
+      replaced with standard parameters.
+
+    * Modified the function log_debug_message to better handle multiple
+      positional parameters
+
+      The first parameter is considered the debug message. Additional
+      parameter are printed on separate lines. This can be used to
+      print indexed arrays, without concatenating all elements to a
+      single string.
+
+   Documentation
+
+    * Updated files Installation_Guide.txt and Installationsanleitung.txt
+
+      mkisofs/genisoimage are added as recommended packages.
+
+
+NEWS for Version 1.13
+
+   Release date: 2019-05-14
+   Intended compatibility: WSUS Offline Update 11.7
+
+   New features
+
+   New script create-iso-image.bash
+
+      The new script create-iso-image.bash creates ISO images of the
+      client directory.
+
+      This script requires either mkisofs from the cdrtools or
+      genisoimage from the cdrkit.
+
+        * The cdrtools are the original tools, but they use a
+          Solaris-style license, which restricts the distribution of
+          binary files. Linux distributions like Gentoo, which provide
+          only source files and let the user recompile everything, still
+          provide the cdrtools.
+
+          https://en.wikipedia.org/wiki/Cdrtools
+
+        * Most other distributions like Debian and Fedora provide the
+          fork cdrkit.
+
+          https://en.wikipedia.org/wiki/Cdrkit
+
+      The usage is:
+
+      ./create-iso-image.bash <update> [<option> ...]
+
+      The first parameter is the profile name. It can be one of:
+
+      all           All Windows and Office updates, 32-bit and 64-bit
+      all-x86       All Windows and Office updates, 32-bit
+      all-win-x64   All Windows updates, 64-bit
+      all-ofc       All Office updates, 32-bit and 64-bit
+      wxp           Windows XP, 32-bit                   (ESR version only)
+      w2k3          Windows Server 2003, 32-bit          (ESR version only)
+      w2k3-x64      Windows XP / Server 2003, 64-bit     (ESR version only)
+      w60           Windows Vista / Server 2008, 32-bit
+      w60-x64       Windows Vista / Server 2008, 64-bit
+      w61           Windows 7, 32-bit
+      w61-x64       Windows 7 / Server 2008 R2, 64-bit
+      w62           Windows 8, 32-bit                    (ESR version only)
+      w62-x64       Windows 8 / Server 2012, 64-bit
+      w63           Windows 8.1, 32-bit
+      w63-x64       Windows 8.1 / Server 2012 R2, 64-bit
+      w100          Windows 10, 32-bit               (current version only)
+      w100-x64      Windows 10 / Server 2016, 64-bit (current version only)
+
+      The options of the script are:
+
+      -includesp         Include service packs
+      -includecpp        Include Visual C++ Runtime Libraries
+      -includedotnet     Include .NET Frameworks
+      -includewddefs     Include Windows Defender virus definitions for
+                         the built-in Defender of Windows Vista and 7.
+      -includemsse       Include Microsoft Security Essentials. The
+                         virus definitions are also used for the built-in
+                         Defender of Windows 8, 8.1 and 10.
+      -output-path <dir> Output directory for the ISO image file
+      -create-hashes     Create a hashes file of the ISO image file
+
+      The script create-iso-image.bash is meant to support both the
+      current and the ESR version of WSUS Offline Update, but some
+      updates are only available in the current version and vice versa.
+
+      The distinction is the presence of the filter files
+      ExcludeListISO-*.txt and the download directories: Windows XP is
+      not supported by the current version, because neither the filter
+      file ExcludeListISO-wxp.txt nor the download directory client/wxp
+      can be found. The profile all, which only removes three unneeded
+      files, can be used with the ESR version, though.
+
+      There are basically three modes of operation:
+
+       1. The profile all creates one ISO image of the whole client
+          directory. It is left to the user to restrict the resulting
+          ISO image to a reasonable size.
+
+       2. The profiles all-x86 and all-win-x64 create two cross-product
+          ISO images, one per architecture. Originally, these ISO images
+          were meant to fit on DVD-5 media with a size of 4.7 GB.
+
+       3. The profiles all-ofc, w60, w60-x64, w61, w61-x64, w62-x64,
+          w63, w63-x64, w100 and w100-x64 create one ISO image per
+          product. Originally, these ISO images were meant to fit on
+          CD-ROM media with a size of 700 MB.
+
+       4. The distinction per language is not used anymore, because all
+          Windows versions since Vista use global/multilingual updates,
+          and all Office updates are just lumped together anyway.
+
+      Of course, the size restrictions to 700 MB or 4.7 GB don’t work
+      anymore. It may explain, though, why large installers are
+      sometimes excluded from the created ISO images.
+
+      The Linux script create-iso-image.bash uses its own filter files
+      in the sh/exclude directory. These files are based on the files in
+      the WSUS Offline Update directory wsusoffline/exclude, but the
+      syntax has been reviewed: Many shell patterns seem to be unneeded.
+      The syntax for paths seems to be slightly different, although
+      basically the same tools are used: mkisofs.exe on Windows, and
+      mkisofs or genisoimage on Linux.
+
+      The file About_the_ExcludeListISO-files.txt in the directory
+      sh/exclude explains the translation of the ExcludeListISO-*.txt
+      files from Windows to Linux.
+
+      Users may create copies of the ExcludeListISO-*.txt files in the
+      directory sh/exclude/local. These local copies replace the
+      supplied files. This is slightly different from the handling of
+      custom files by WSUS Offline Update, but it is more the Linux way,
+      and it allows to both add and remove filters.
+
+      The created ISO images have filenames like
+      2019-04-14_wsusoffline-11.6.2_all.iso. These are composed of:
+
+       1. The build date from the file wsusoffline/client/builddate.txt,
+          which indicates the last run of the download script
+
+       2. The name wsusoffline
+
+       3. The WSUS Offline Update version
+
+       4. The used profile
+
+   New file catalog-creationdate.txt
+
+      The attribute CreationDate is extracted from the WSUS update
+      catalog file package.xml and saved to the file
+      wsusoffline/client/catalog-creationdate.txt.
+
+        * Forum: https://forums.wsusoffline.net/viewtopic.php?f=3&t=8997
+
+   Internal changes
+
+      Support for .NET Framework 4.8 was added.
+
+      The debug output for the download of virus definition files,
+      which was enabled in version 1.12, was removed again.
+
+      Revised function remove_obsolete_files
+
+   Documentation
+
+      New file exclude/About_the_ExcludeListISO-files.txt
+
+
+NEWS for version 1.12
+
+   Release date: 2019-04-10
+   Intended compatibility: WSUS Offline Update 11.6.1+ (r1032)
+
+   Internal changes
+
+   Indirect addressing of virus definition files with "LinkIDs"
+
+      The four virus definition files are now referenced with URLs,
+      with refer to LinkIDs first. The filename on the server can only
+      be retrieved after several redirections.
+
+      Several functions had to be adjusted to work with these LinkIDs:
+      calculate_static_downloads_wddefs8, download_single_file,
+      download_single_file_failsafe, and cleanup_client_directory.
+
+      Note: Some debug messages in these functions have been left
+      enabled, to see, if anything changes. They will be removed in the
+      next versions.
+
+        * Forum: https://forums.wsusoffline.net/viewtopic.php?f=6&t=9098
+        * Trac:  https://trac.wsusoffline.net/trac.fcgi/changeset/1032
+
+
+NEWS for version 1.11
+
+   Release date: 2019-04-04
+   Intended compatibility: WSUS Offline Update 11.6.1 and later
+
+   New features
+
+   The script update-generator.bash remembers the last used settings
+
+      The script update-generator.bash writes the current settings to a
+      settings file update-generator.ini, if the external utility
+      “dialog” is used. On the next run, the settings are reloaded and
+      the previously selected options are checked again.
+
+      Note, that this does not work with the internal command “select”
+      of the bash.
+
+   Revised method for calculating superseded updates
+
+      An optional, new method for the calculation of superseded updates
+      removes one possible cause for missing updates: It automatically
+      corrects the list of superseded updates for updates, which are
+      only superseded by full quality update rollups, but not by
+      security-only updates. This may prevent some rare problems with
+      missing updates.
+
+      The current implementation for calculating superseded updates in
+      both Windows and Linux is depicted in the forum article:
+
+        * https://forums.wsusoffline.net/viewtopic.php?f=5&t=5676
+
+      One problem with this implementation is, that superseded updates
+      may be missing, if the superseding updates are excluded from
+      download.
+
+      This is an old problem, which was observed a few times:
+
+      It was first found with Windows XP: The embedded Windows XP
+      POSReady was supported longer than the regular desktop versions.
+      Updates for the embedded version can supersede older updates for
+      the desktop versions. The newer updates for the embedded version
+      are not downloaded by WSUS Offline Update, because they cannot be
+      installed on the desktop versions. But the older updates for the
+      desktop versions are still treated as superseded and not
+      downloaded either. This was solved by adding the missing updates
+      to the file ExcludeList-superseded-exclude.txt.
+
+      When monthly quality update rollups and security-only updates were
+      first introduced, the quality update rollups superseded the
+      security-only updates. WSUS Offline Update needed two steps to
+      support security-only updates:
+
+        * The quality update rollups had to be excluded from download
+          and installation.
+
+        * The security-only updates had to be re-enabled for download.
+
+      At this point, I first suggested a new method, which could
+      reschedule superseded updates for download, if the superseding
+      updates are excluded from download. The problem with this method
+      was, that it needed an initial block list of excluded downloads to
+      start with, and this list didn't exist yet. So it was only a
+      partial solution.
+
+        * https://forums.wsusoffline.net/viewtopic.php?f=5&t=6141
+
+      The initial release of the Linux download scripts, version
+      1.0-beta-1, actually included an implementation of this new method
+      in the subdirectory available-tasks.
+
+      The differentiation of quality update rollups and security-only
+      updates was finally solved in WSUS Offline Update by creating new
+      configuration files in the client/static and client/exclude
+      directories.
+
+      In the meantime, Microsoft changed the way, how quality update
+      rollups and security-only updates depend on each other, after just
+      one month:
+
+        “UPDATED 12/5/2016: Starting in December 2016, monthly rollups
+        will not supersede security only updates. The November 2016
+        monthly rollup will also be updated to not supersede security
+        only updates.”
+
+        https://techcommunity.microsoft.com/t5/Windows-Blog-Archive/More-on-Windows-7-and-Windows-8-1-servicing-changes/ba-p/166783
+
+      A more subtle problem is, that the quality update rollups
+      sometimes seem to include older updates, while the security-only
+      updates only include new updates for the current month. Then these
+      older updates will be missing, if security-only updates are
+      selected. Again, this was solved by adding the missing updates to
+      a new configuration file
+      ExcludeList-superseded-exclude-seconly.txt.
+
+      The problems with the files ExcludeList-superseded-exclude.txt and
+      ExcludeList-superseded-exclude-seconly.txt is, that they can only
+      be updated, after some updates have been found missing.
+
+      When I retested the new method, it could detect two missing
+      updates, before they were reported as missing:
+
+        * https://forums.wsusoffline.net/viewtopic.php?f=4&t=7085
+        * https://forums.wsusoffline.net/viewtopic.php?f=2&t=8697
+
+      So, this method may still be useful, and the script
+      60-main-updates.bash now includes an optional implementation. It
+      uses the file HideList-seconly.txt as an initial block list, to
+      automatically correct the list of superseded updates for updates,
+      which are only superseded by the monthly quality update rollups,
+      but not by security-only updates.
+
+      To select the new file
+      ExcludeList-Linux-superseded-seconly-revised.txt for the
+      calculation of dynamic updates, both options prefer_seconly and
+      revised_method must be set to “enabled” in the preferences file.
+
+   New script open-support-pages.bash
+
+      This script opens the Microsoft support pages for a series of kb
+      numbers.
+
+      It tries a series of Linux “open handlers”, to open the URLs with
+      the preferred application of the desktop environment. Suitable
+      open handlers are:
+
+       Open handler      Package name        Desktop environment
+       gio open          libglib2.0-bin      GNOME 3.30 in Debian 10
+       gvfs-open         gvfs-bin            GNOME 3.22 in Debian 9
+       gnome-open        libgnome2-bin       GNOME 2
+       kde-open5         kde-cli-tools       KDE 5 (untested)
+       kde-open          kde-runtime         KDE 4 (untested)
+       exo-open          exo-utils           Xfce
+       xdg-open          xdg-utils           others
+
+       (The package names are for Debian and related distributions.)
+
+      In addition to these open handlers, sensible-browser, firefox-esr
+      and firefox are also tried, because this script only needs to
+      handle http or https URLs. The script /usr/bin/sensible-browser is
+      part of the update-alternatives system in Debian. It uses
+      gnome-www-browser, x-www-browser or www-browser, depending on the
+      context.
+
+      If none of the above can be found, then the script recommends the
+      installation of xdg-open as a general open handler, which is not
+      tied to a particular desktop environment.
+
+      Note: Neither gvfs-open nor Firefox can handle multiple URLs on
+      the command line. Calling xdg-open repeatedly usually means that
+      the application should be launched multiple times, but this will
+      fail with Firefox. To have Firefox open the URLs in multiple tabs,
+      it should be launched first, before running this script.
+
+   Bug fixes
+
+   Workaround for broken cabextract in Debian 10 Buster/testing
+
+      As of 2019-03-26, the package cabextract is still broken in Debian
+      10 Buster/testing, long after two relevant bug reports have been
+      marked as fixed and closed.
+
+        * libmspack0: Regression when extracting cabinets using -F
+          option fixed upstream, needs to be patched
+          https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=912687
+
+        * cabextract: -F option doesn't work correctly
+          https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=914263
+
+      But so far, the fixed packages only arrived in Debian
+      Sid/unstable. They are not yet available in Debian Buster/testing.
+
+      So I added some more tests and a workaround, which does not use
+      the cabextract option -F. Then the file wsusscn2.cab must be
+      completely unpacked, which may take slightly longer.
+
+        * Forum: https://forums.wsusoffline.net/viewtopic.php?f=9&t=8706
+
+   User visible changes
+
+   Better support for terminal colors
+
+      Version 1.4 of the Linux download scripts introduced text
+      formatting of the output, using bold text and terminal colors.
+      Such text formatting should only be used, if the output is written
+      to a terminal emulator window or to a virtual console. It should
+      not be used, if the output is redirected to a file or piped to
+      another application, for example if the script is running as a
+      cron job.
+
+      The library messages.bash uses two tests, to make sure that text
+      formatting can used safely:
+
+        * First, the script tests, if standard output and error output
+          are attached to a terminal, using the test -t of POSIX shells.
+
+        * Then all escape sequences are determined with the utility
+          tput, rather than hard-coding them. tput checks again, if text
+          formatting is safe to use.
+
+      But tput is overly restrictive in the use of terminal colors: It
+      only uses colors, if the environment variable TERM is set to
+      “xterm-256color”, “rxvt-256color” or “rxvt-unicode-256color”.
+      Otherwise, only bold text is used.
+
+      Many terminal emulators simply set TERM to “xterm”, and they don't
+      provide any means to change this environment variable. Still, all
+      tested terminal emulators support colors, including xterm itself.
+      Then it should be safe to change TERM from xterm or xterm-color to
+      xterm-256color, to get the expected results.
+
+      The same adjustments could be done with rxvt, but Debian already
+      provides different builds with different settings for rxvt. The
+      urxvt from the package rxvt-unicode-256color sets the environment
+      variable TERM to “rxvt-unicode-256color”, which is recognized as a
+      color-capable terminal by tput.
+
+      Notes:
+
+      There are other ways to set or change the environment variable
+      TERM. This may benefit other applications as well. For example,
+      some themes for the Midnight Commander also require 256 colors.
+
+      Within a shell, environment variables can be defined before the
+      script or application to run:
+
+      ~$ TERM=xterm-256color ./update-generator.bash
+
+      Some terminal emulators like the MATE Terminal allow to run a
+      custom command instead of the standard shell. This can be used to
+      set environment variables with:
+
+      /usr/bin/env TERM=xterm-256color bash
+
+      The environment variable TERM could also be set in files like
+      ~/.profile or ~/.bashrc, but this may give unexpected results:
+      Using TERM=xterm in the Linux console will mess up the output of
+      the external utility “dialog”, because the box drawing characters
+      are different.
+
+   Support for ExcludeListForce-all.txt
+
+      The custom file
+      wsusoffline/exclude/custom/ExcludeListForce-all.txt was already
+      applied to static and dynamic updates for Windows, Office and .NET
+      Frameworks. It is now applied to the .NET Framework installation
+      files as well.
+
+        * Forum: https://forums.wsusoffline.net/viewtopic.php?f=2&t=8901
+        * Trac: https://trac.wsusoffline.net/trac.fcgi/changeset/1015
+
+   Support for ExcludeList-superseded-exclude-seconly.txt
+
+      The custom file
+      wsusoffline/exclude/custom/ExcludeList-superseded-exclude-seconly.txt
+      will be used for the calculation of superseded updates, if
+      security-only updates are selected.
+
+        * Forum: https://forums.wsusoffline.net/viewtopic.php?f=2&t=8697
+        * Trac: https://trac.wsusoffline.net/trac.fcgi/changeset/1002
+
+   Virus definition files are tested with cabextract
+
+      The four virus definition files are basically self-extracting
+      cabinet files. They can be at least partially tested with
+      cabextract -t.
+
+   The scripts compare-integrity-database.bash and
+   compare-update-tables.bash are configured with command-line arguments
+
+      These scripts are used for development: They compare the
+      directories md and ofc on Windows and Linux. Previously, these
+      directories had to be edited directly in the scripts, but they are
+      now passed as command-line arguments.
+
+   Internal changes
+
+   Reordered the sections at the top of the scripts update-generator.bash
+   and download-updates.bash
+
+      The new order in these files is:
+
+       1. Shell options
+
+       2. Environment variables
+
+       3. Configuration: script version and release date
+
+       4. Global variables: script name and home directory, other
+          directories and log file
+
+       5. Preferences: default values for the settings in the optional
+          preferences file
+
+       6. Traps
+
+       7. Functions
+
+       8. Commands
+
+   The directories cache, log and timestamps are stored with absolute paths
+
+      The directories cache, log and timestamps used to be defined with
+      the relative paths ../cache, ../log and ../timestamps. This does
+      not work well with external utilities like hashdeep and curl,
+      which require constant changes to the current working directory
+      and thereby make relative references invalid.
+
+      After revealing the current working directory with readlink, these
+      directories are now stored with absolute paths.
+
+   The function seconly_safety_guard calculates the patch days for two
+   months
+
+      The function seconly_safety_guard tries to make sure, that some
+      configuration files in the directories client/exclude and
+      client/static have been updated after each patch day, before
+      downloading security-only updates. Without this configuration,
+      WSUS Offline Update would default to download and install the full
+      quality update rollups, or it might even download and install both
+      sets of updates.
+
+      The first implementation only calculated the patch day of the
+      current month, and compared the modification date of the
+      configuration files to this date.
+
+      Now the function calculates the official patch days for the last
+      two months, and selects the right one for comparison:
+
+        * The last patch day is the second Tuesday of the current month,
+          if today is on the same day or later.
+
+        * Otherwise, the last patch day is the second Tuesday of the
+          last month.
+
+      These calculations also use an integer value for the day of the
+      week, instead of comparing the weekday names literally.
+
+   The function log_message duplicates messages to the terminal and the log
+   file unchanged
+
+      The function log_message does not prefix the message with the
+      current date anymore. It is now used to duplicate the output of
+      hashdeep to the terminal and to the log file.
+
+   The function apply_exclude_lists now skips empty lines in input files
+
+      The function apply_exclude_lists now reads the input files
+      line-by-line. Empty lines are ignored. This should prevent errors
+      with files, which only consist of one empty line.
+
+   New function name_to_description and changed function
+   language_name_to_locale
+
+      The new function name_to_description checks, that the specified
+      update, language or option name exists in a table and returns the
+      description. This replaces some awkward constructs with grep.
+
+      The function language_name_to_locale was rewritten in the same way
+      to return the locale for a language name, e.g. deu → de, enu → en.
+
+   The file sh/exclude/ExcludeListUSB-w60.txt was simplified
+
+      The different filters vcredist* were replaced with a single filter
+      *_x64*.
+
+        * Forum: https://forums.wsusoffline.net/viewtopic.php?f=5&t=8258
+        * Trac: https://trac.wsusoffline.net/trac.fcgi/changeset/989
+
+   Added Cygwin to known systems and unzip to needed packages, thanks to
+   "slycordinator"
+
+      Cygwin is basically a Linux environment on Windows. All needed GNU
+      utilities and other packages should be available. trash-cli can be
+      installed from the Python repository with "pip install trash-cli".
+
+      unzip is needed for the self-update of the WSUS Offline Update
+      installation and to unpack the Sysinternals utilities Autologon and
+      Sigcheck. unzip is often installed with graphical archive managers
+      like Xarchiver, but it may be missing on a basic command-line
+      system.
+
+   Documentation
+
+      The new file compatibility.txt lists the distributions, on which
+      the Linux scripts were at least briefly tested, and the
+      corresponding Bash versions.
+
+      Some typos were corrected.
+
+      The E-Mail address was replaced.
+
+
+NEWS for Version 1.10
+
+  Release date: 2018-08-09
+  Intended compatibility: WSUS Offline Update 11.4 and later
+
+  Changes in this version
+
+  - Bug fix: USB filters for w61 and newer erroneously excluded ndp46-*
+    patches.
+
+    The private copies of the files ExcludeListUSB-*.txt
+    were patched according to Changeset 981:
+    https://trac.wsusoffline.net/trac.fcgi/changeset/981
+
+    Actually, in the files ExcludeListISO-*.txt, only
+    the lower-case filter *ndp46-* was removed, while the
+    upper-case filter *NDP46-* is kept. This excludes the two
+    installation files NDP46-KB3045557-x86-x64-AllOS-ENU.exe and
+    NDP46-KB3045557-x86-x64-AllOS-DEU.exe, but not the dynamic updates
+    for .NET Framework 4.6.
+
+    A possible reason for this distinction is to keep the size of ISO
+    images below 4.7 GB. Excluding large installers may be needed to
+    reach this goal.
+
+    This distinction is not used for the ExcludeListUSB-*.txt files,
+    because the filters for xcopy.exe are not case-sensitive, and copying
+    to an external USB device does not have the same limitations for
+    the overall file size as creating ISO images.
+
+  - The script 10-show-selection-dialogs-with-dialog.bash was made
+    more configurable, by moving the variable parts of the dialogs to
+    a configuration section.
+
+  - Small corrections to the installation guide.
+
+
+NEWS for Version 1.9
+
+  Release date: 2018-07-30
+  Intended compatibility: WSUS Offline Update 11.4 and later
+
+  Changes in this version
+
+  - The script update-generator.bash now uses the external utility
+    "dialog", to display nicely formatted dialogs in the terminal window.
+
+    All three dialogs for updates, languages and optional downloads
+    allow multiple selections. This allows to get all needed updates
+    with a single call of the download script download-updates.bash.
+
+    The existing script, which uses the internal command "select" of
+    the bash, is kept as a fallback, if dialog is not installed. This
+    command only allows single selections.
+
+    The new script 10-show-selection-dialogs-with-dialog.bash is based
+    on a mockup, which I once created for the now obsolete script
+    DownloadUpdates.sh:
+    https://forums.wsusoffline.net/viewtopic.php?f=9&t=4061
+
+
+NEWS for Version 1.8
+
+  Release date: 2018-07-27
+  Intended compatibility: WSUS Offline Update 11.4 and later
+
+  Changes in this version
+
+  - The documentation of the Linux download scripts is organized more
+    like the Linux documentation in the directory /usr/share/doc.
+
+    The file NEWS.txt replaces the former release_notes_[version].txt. It
+    contains detailed information about the last five versions in
+    reverse order.
+
+    The file changelog.txt replaces the former version-history.txt. It
+    contains a summary of the changes for all versions in reverse order.
+
+  - The file 70-synchronize-with-target.bash was replaced with a more
+    elaborate script copy-to-target.bash.
+
+    The usage is:
+
+    ./copy-to-target.bash <update> <destination-directory> [<option> ...]
+
+    The <update> can be one of:
+
+    all           All Windows and Office updates, 32-bit and 64-bit
+    all-x86       All Windows and Office updates, 32-bit
+    all-win-x64   All Windows updates, 64-bit
+    all-ofc       All Office updates, 32-bit and 64-bit
+    wxp           Windows XP, 32-bit                    (ESR version only)
+    w2k3          Windows Server 2003, 32-bit           (ESR version only)
+    w2k3-x64      Windows XP / Server 2003, 64-bit      (ESR version only)
+    w60           Windows Vista / Server 2008, 32-bit
+    w60-x64       Windows Vista / Server 2008, 64-bit
+    w61           Windows 7, 32-bit
+    w61-x64       Windows 7 / Server 2008 R2, 64-bit
+    w62           Windows 8, 32-bit                     (ESR version only)
+    w62-x64       Windows 8 / Server 2012, 64-bit
+    w63           Windows 8.1, 32-bit
+    w63-x64       Windows 8.1 / Server 2012 R2, 64-bit
+    w100          Windows 10, 32-bit                (current version only)
+    w100-x64      Windows 10 / Server 2016, 64-bit  (current version only)
+
+    The available options for the update parameter are determined by
+    the installed files wsusoffline/exclude/ExcludeListUSB-*.txt, which
+    are meant for the Windows script CopyToTarget.cmd. There is a strict
+    one-to-one relationship:
+
+    Update        Used exclude list
+    ------        -----------------
+    all           ExcludeListUSB-all.txt
+    all-x86       ExcludeListUSB-all-x86.txt
+    all-win-x64   ExcludeListUSB-all-x64.txt
+    all-ofc       ExcludeListUSB-ofc.txt
+    wxp-x86       ExcludeListUSB-wxp-x86.txt   (ESR version only)
+    w2k3          ExcludeListUSB-w2k3-x86.txt  (ESR version only)
+    w2k3-x64      ExcludeListUSB-w2k3-x64.txt  (ESR version only)
+    w60           ExcludeListUSB-w60-x86.txt
+    w60-x64       ExcludeListUSB-w60-x64.txt
+    w61           ExcludeListUSB-w61-x86.txt
+    w61-x64       ExcludeListUSB-w61-x64.txt
+    w62           ExcludeListUSB-w62-x86.txt   (ESR version only)
+    w62-x64       ExcludeListUSB-w62-x64.txt
+    w63           ExcludeListUSB-w63-x86.txt
+    w63-x64       ExcludeListUSB-w63-x64.txt
+    w100          ExcludeListUSB-w100-x86.txt  (current version only)
+    w100-x64      ExcludeListUSB-w100-x64.txt  (current version only)
+
+    The Windows script CopyToTarget.cmd uses xcopy.exe, and the exclude
+    lists had to be edited to work with rsync on Linux. Therefore,
+    the Linux script now uses its own set of these files. Some files
+    are also renamed to match the names of the command-line parameters.
+
+    The destination directory is the directory, to which files are copied
+    or hard-linked. It should be specified without a trailing slash,
+    because otherwise rsync may create an additional directory within
+    the destination directory.
+
+    The options are:
+
+    -includesp         Include service packs
+    -includecpp        Include Visual C++ Runtime Libraries
+    -includedotnet     Include .NET Frameworks
+    -includewddefs     Include Windows Defender virus definitions for
+                       the built-in Defender of Windows Vista and 7.
+    -includemsse       Include Microsoft Security Essentials. The virus
+                       definitions are also used for the built-in Defender
+                       of Windows 8, 8.1 and 10.
+    -cleanup           Tell rsync to delete obsolete files from included
+                       directories. This does not delete excluded files
+                       or directories.
+    -delete-excluded   Tell rsync to delete obsolete files from included
+                       directories and also all excluded files and
+                       directories. Use this option with caution,
+                       e.g. try it with the option -dryrun first.
+    -hardlink <dir>    Create hard links instead of copying files. The
+                       link directory should be specified with an
+                       absolute path, otherwise it will be relative to
+                       the destination directory. The link directory
+                       and the destination directory must be on the same
+                       file system.
+    -dryrun            Run rsync without copying or deleting
+                       anything. This is useful for testing.
+
+    The operation "per language" is not supported, because it is not
+    needed anymore. It was useful for Windows XP and Server 2003, because
+    these Windows versions had localized updates. But all Windows versions
+    since Vista have global/multilingual updates, and Office updates
+    are all lumped together, with most updates in the ofc/glb directory.
+
+    There are two known differences in the results between the Windows
+    script CopyToTarget.cmd and the new Linux script copy-to-target.bash
+    ( see https://forums.wsusoffline.net/viewtopic.php?f=5&t=8258 ):
+
+    1. The original file wsusoffline/exclude/ExcludeListUSB-w60-x86.txt
+       misses an entry for vcredist2017_x64.exe. This means, that this
+       file is not excluded by the Windows script, if the update "w60"
+       is selected.
+
+    2. The file wsusoffline/client/bin/IfAdmin.cpp is only
+       excluded by the Windows script CopyToTarget.cmd, if
+       the option /includedotnet is NOT used. Then the file
+       wsusoffline/exclude/ExcludeListISO-dotnet.txt is appended to the
+       filter file. With xcopy.exe, the line "cpp\" matches both the
+       directory "cpp" (as expected) and the source file "IfAdmin.cpp".
+
+       But the file IfAdmin.cpp is neither needed for download nor for
+       installation, and it should always be excluded. It is only included
+       in WSUS Offline Update, because the GPL demands, that the source
+       code of all utilities should be made available somewhere.
+
+  Internal changes
+
+  - The definition of the environment variables LINES and COLUMNS, and of
+    the terminal colors was moved from the scripts update-generator.bash
+    and download-updates.bash to the library messages.bash.
+
+    These variables are only used in the library messages.bash, and then
+    they should be defined there. The library messages.bash also provides
+    standard values for the global variables logfile and debug, to make
+    the library more self-contained and suitable for other scripts.
+
+  - Hashdeep errors while checking the integrity of existing files are
+    now reported as errors, not as warnings.
+
+    Before each download run, the integrity of existing files is verified
+    with hashdeep. As a forensic tool, hashdeep treats all changes to the
+    examined directory as errors, including the manual removal of files.
+
+    There are rarely real problems at this point, and the fix is
+    to delete the corresponding hashdeep files in the directory
+    wsusoffline/client/md. They will be rebuilt on the next download run.
+
+    But this is actually the normal progress: The hashdeep files will
+    be deleted and rebuilt after each download run anyway. Therefore,
+    hashdeep errors for the verification of existing files were only
+    reported as "warnings".
+
+    Hashdeep errors for existing files still increment an internal counter
+    for runtime errors, and for consistency they are now reported as
+    "errors".
+
+  - Corrected the copyright year of the files error-counter.bash and
+    rebuild-integrity-database.bash to "2018".
+
+    These files were added in 2018, but due to lazy copy-and-past the
+    copyright was set to 2016-2018.
+
+
+Release Notes for Version 1.7
+
+  Release date: 2018-05-25
+  Intended compatibility: WSUS Offline Update Version 11.3 and later
+
+  Changes in this version
+
+  - Bug fix: The script download-updates.bash may crash, if running in
+    bash version 4.3, for example as of Debian 8 Jessie, and only Office
+    Updates are selected.
+
+    While parsing the command-line parameters, the script
+    download-updates.bash creates four internal lists for the needed
+    updates, architectures, languages and included downloads.
+
+    The list of architectures will be empty, if only Office updates are
+    selected. This list determines the architectures of the included
+    downloads .NET Frameworks, Windows Defender and Microsoft Security
+    Essentials. These downloads should match the specified Windows
+    versions, not the Office versions.
+
+    There is an old bug in bash up to version 4.3: Empty arrays are
+    treated as "unset", even if the array variables are declared and
+    initialized. This bug is solved in bash 4.4, as of Debian 9 Stretch.
+
+    * bash: nounset treats empty array as unset, contrary to man. page
+      https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=529627
+
+    For the script this means, that the length of the array must be
+    checked, before it is read. This has already been done in most places,
+    but it had to be added to the function print_command_line_summary.
+
+    This solves the bug reports
+    https://forums.wsusoffline.net/viewtopic.php?f=9&t=8072 and
+    https://forums.wsusoffline.net/viewtopic.php?f=9&t=8090 .
+
+
+Release Notes for Version 1.6
+
+  Release date: 2018-05-04
+  Intended compatibility: WSUS Offline Update Version 11.3 and later
+
+  Changes in this version
+
+  - Added support for .NET Framework 4.7.2
+
+  - Bug fix: The function create_integrity_database did not create a
+    hashes file, if the hashed directory was a symbolic link.
+
+    To prevent the creation of empty hashdeep files, the function
+    create_integrity_database counts the number of files in the hashed
+    directory. This was done by using "find" and "wc", but find by
+    default does not follows symbolic links. The new implementation lets
+    the bash itself calculate the file count.

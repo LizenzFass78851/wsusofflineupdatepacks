@@ -1,0 +1,12 @@
+vcredist2005_x86.exe,/Q /r:n
+vcredist2005_x64.exe,/Q /r:n
+vcredist2008_x86.exe,/q /r:n
+vcredist2008_x64.exe,/q /r:n
+vcredist2010_x86.exe,/q /norestart
+vcredist2010_x64.exe,/q /norestart
+vcredist2012_x86.exe,/install /quiet /norestart
+vcredist2012_x64.exe,/install /quiet /norestart
+vcredist2013_x86.exe,/install /quiet /norestart
+vcredist2013_x64.exe,/install /quiet /norestart
+vcredist2015_x86.exe,/install /quiet /norestart
+vcredist2015_x64.exe,/install /quiet /norestart

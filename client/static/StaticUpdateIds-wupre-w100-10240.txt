@@ -1,0 +1,2 @@
+kb3173427,July 2016 Servicing stack update for Windows 10 Version 1507
+kb3172729,August 2016 Security update for Secure Boot for Windows 10 Version 1507

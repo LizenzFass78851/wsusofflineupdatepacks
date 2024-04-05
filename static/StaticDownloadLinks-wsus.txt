@@ -1,0 +1,1 @@
+http://download.windowsupdate.com/microsoftupdate/v6/wsusscan/wsusscn2.cab

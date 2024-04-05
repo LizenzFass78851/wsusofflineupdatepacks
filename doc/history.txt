@@ -1,0 +1,1861 @@
+................................................................................
+WSUS Offline Update - Community Edition - 12.6.1
+Author: Torsten Wittrock                      (mailto:twittrock@wsusoffline.net)
+Community Edition                             (https://gitlab.com/wsusoffline/)
+................................................................................
+
+Publications Version 3.0
+~~~~~~~~~~~~~~~~~~~~~~~~
+English article: "DIY Service Pack - Installing Windows updates without an internet connection" (http://www.heise-security.co.uk/articles/80682)
+German article: "Selfmade Service Pack - Windows-Updates ohne Internet-Verbindung installieren" (c't 23/06, S. 202ff; http://www.heise.de/kiosk/archiv/ct/06/23/202)
+
+Publications Version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~
+German article: "Patch-Konserven - Selbstgeschnürte Service Packs für Windows und Office" (c't 22/07, S. 212ff; http://www.heise.de/kiosk/archiv/ct/2007/22/212; http://www.heise.de/software/download/special/ct_offline_update/8_1)
+
+Publications Version 6.0
+~~~~~~~~~~~~~~~~~~~~~~~~
+German article: "Linux patcht Windows" (c't 12/09, S. 162; http://www.heise.de/kiosk/archiv/ct/2009/12/162)
+................................................................................
+
+Versions' history:
+--------------------------------------------------------------------------------
+Version 3.0 -- 25.10.06
+- Dynamic integration of new updates using wsusscan.cab
+- Dynamic installation of new updates using Windows Update Agent
+--------------------------------------------------------------------------------
+Version 3.01 -- 31.10.06
+- Fix: "%~dps0 problem" on Windows 2000 systems
+- Fix: msxml* patches' parameters
+- Fix: msxsl error handling
+--------------------------------------------------------------------------------
+Version 3.02 -- 23.11.06
+- Fix: Error code 1641 (ERROR_SUCCESS_REBOOT_INITIATED) lead to false error messages
+- Fix: Missing log file variable caused script failures in standalone runs
+- Fix: ie6download.exe hung if IE7 was installed
+- Fix: msxml* patches' parameters (2)
+- Fix: Relative paths in AutoIt-Scripts were not found using the "run as" functionality
+- Fix: Error handling of prerequisites' installations
+- Fix: Installation errors lead to aborts
+- Fix: %TEMP% paths containing special characters caused errors
+- Implementation of Internet Explorer version determination changed to registry query
+- ExtractUpdatesFromWSUSAndCreateISOImages.cmd understands /proxy parameter now
+- XSLT filters and ExtractUpdatesFromWSUS.vbs get updates for .NET and "Step-by-Step-Interactive-Training" now
+- Structural avoidance of endless reboot/recall loops
+- Download window title informs about progress
+- Script version and computer name will be logged
+--------------------------------------------------------------------------------
+Version 3.03 -- 16.02.07
+- Support for new catalog file wsusscn2.cab
+- Fix: Download required administrative privileges
+- Fix: Download did not start when startup entries for %ComSpec% contained "cd" directives
+- Fix: Update did not start when UpdateStarterGUI.exe was launched from paths containing special characters
+- Fix: Timeout for ie6download.exe increased
+- Fix: CleanupRecall.cmd only worked if WSUSUpdateAdmin was logged on
+--------------------------------------------------------------------------------
+Version 3.04 -- 22.03.07
+- INSTALLATION HINT: Please delete existing 'exclude-list-*.txt' files of previous versions in the directory 'exclude' (not 'client\exclude') before unpacking!
+- Mandatory installation of service pack 2 on Windows Server 2003 systems
+- Patches may explicitly excluded from download (already used for w2k3 sp1 in exclude-list-w2k3.txt)
+- Fix: State of service 'automatic updates' is checked before trying to list missing updates
+- Fix: Windows update agent version 5.8.0.2469 caused error 0x80247002 in ListMissingUpdateIds.vbs
+- Fix: WSUSUpdateAdmin autologon password could differ from password in user management if CreateUpdateAdminAndEnableAutoLogon.vbs was called twice
+--------------------------------------------------------------------------------
+Version 3.11 -- 05.05.07
+- Dutch language support added (Thanks to Lars van Jeurissen)
+- Spanish language support added (Thanks to Javier Marín)
+- French language support added (Thanks to Tim Endres)
+- Portuguese language support added (Thanks to Berit Jensen)
+- Brazilian language support added (Thanks to Stefan Jöhnke)
+- DownloadStarterGUI.exe saves settings now
+- UpdateStarterGUI.exe checks availability of Windows Script Host now
+- DoUpdate.cmd and UpdateStarterGUI.exe support /nobackup parameter now (installs updates without saving uninstallation info)
+- Dynamic determination of Windows Update Agent URLs using wuredist.cab
+- Implementation of administrators' group determination changed to support multiple languages (Thanks to Bert Schinkel-Momsen)
+- DVD ISO image creation options diversified to support multiple languages and platforms
+- CreateISOImage.cmd understands /outputpath parameter now
+- Fix: Version checks reviewed and corrected for statically defined installations (WUA, MSI, WSH and IE)
+- Fix: Check for command extensions' availability reviewed and corrected (Thanks to Stefan Westermann)
+--------------------------------------------------------------------------------
+Version 3.12 -- 01.06.07
+- INSTALLATION HINT: You may delete cmd\ie6download.* since it's not used any longer
+- Static exclude of updates integrated into most recent service packs (Thanks to "Martin0815" and Klaus Rund)
+- Direct download of IE6 installation components (Thanks to Nils Winkler alias "derniwi")
+- XSLT filters get updates for IE7 now
+- ISO creation filters corrected
+- Fix: Enhanced support for %TEMP% paths containing special characters (Thanks to J. Witschel alias "blind-fish")
+--------------------------------------------------------------------------------
+Version 3.2 -- 11.06.07
+- Optional installation of IE7 on Windows XP and Windows Server 2003 systems
+- Language support added for Italian, Russian, Polish, Greek, Czech, Danish, Norwegian, Swedish and Finnish
+- Fix: /nobackup switch did not apply to Windows Installer (MSI) installation
+- Fix: IE6 installation configuration files contained invalid entries for non-german systems
+--------------------------------------------------------------------------------
+Version 3.21 -- 11.07.07
+- Fix: Determination of user's privileges did not work for all languages (Thanks to Bernd Beckmann)
+- Fix: Windows activation state will be checked before attempting IE7 installation (Thanks to "Jens_1")
+--------------------------------------------------------------------------------
+Version 3.22 -- 13.08.07
+- Fix: Microsoft removed WindowsXP-Windows2000-Script56-KB917344-x86-<language>.exe files
+- Fix: ISO volume ids violated ISO9660 standard (Thanks to "Raketen angetriebene Granate")
+--------------------------------------------------------------------------------
+Version 4.0 -- 12.10.07
+- INSTALLATION HINT: Unpack to new structure - move existing update directories under client\ from old to new structure - ready!
+- Support added for Microsoft Windows Vista (Thanks to Bert Schinkel-Momsen)
+- Support added for Microsoft Office 2000, XP, 2003 and 2007
+- Updates which are not listed in wsusscn2.cab any longer will be removed automatically
+- Service Packs (statically defined updates) may be excluded from download
+- CopyToTarget.cmd added to ease USB device preparation
+- Generator and Installer GUIs will be displayed in German on German systems
+- Compiler options "GUICloseOnESC", "TrayAutoPause" and "TrayIconHide" set in AutoIt scripts (Thanks to Manfred Kurth)
+- UPX packing of compiled AutoIt scripts disabled to avoid false anti-virus software alerts
+- ISO and USB filters for Windows XP and Server 2003 exclude ie6.0sp1*.* and oe6.0sp1*.* files (Thanks to "eiffel")
+- Language specific ISO and USB filters will be generated at runtime
+- MD5 checksum of ZIP package will be published
+- Fix: WSUSUpdateAdmin account wouldn't be granted administrative privileges if installation was started by a domain administrator (Thanks to "g-org")
+- Fix: %SystemRoot%\system32\reg.exe will only be copied to client\bin if needed and compatible with Windows 2000 systems
+- Fix: Download under Windows Vista caused two UAC inquiries
+- Fix: Microsoft removed IE7 installation packages' URLs from wsusscn2.cab
+--------------------------------------------------------------------------------
+Version 4.1 -- 30.10.07
+- Service Pack exclusion option won't apply to other statically defined updates any longer (Thanks to Tobias Breitling)
+- UpdateGenerator.exe and DownloadUpdates.cmd support /nocleanup switch now
+- Vista update installation procedure supports .msu packages now
+- Language support added for Hungarian and Turkish
+- ISO and USB filters for Windows XP and Server 2003 refined (Thanks to "eiffel")
+- DoUpdate.cmd will check the computer's domain role before accepting /autoreboot switch
+- DoUpdate.cmd supports /excludestatics switch now
+- Fix (defect #1): Windows' utilities FIND and FINDSTR will be called using full paths to avoid conflicts with third party products (Thanks to "blind-fish")
+- Fix: On script break, the current download directory could be completely emptied during cleanup (Thanks to "tiptoptyp")
+- Fix: Office 2000 SR-1a full installation package (O2ksr1adl.exe) integrated instead of network installer (o2ksr1a.exe) (Thanks to "magmalive")
+- Fix (defect #8): Office only update media threw mistakable warnings (Thanks to "blind-fish")
+- Fix: DoUpdate.cmd /all switch did not apply to Office patches
+- Fix (defect #10): Version check of reg.exe for Windows 2000 target systems corrected (Thanks to "hbbh" and Arne Haeckel)
+- Fix (defect #12): Office XP Service Pack 3 was not properly detected (Thanks to Ralf Jung)
+- Fix: Download procedure missed KB942670 and KB942571 due to invalid URLs in catalog file invcif.exe
+--------------------------------------------------------------------------------
+Version 4.64 -- 06.12.07
+- Support added for x64 Operating Systems
+- UpdateInstaller.exe reads its defaults from UpdateInstaller.ini now
+- FAQs added
+- Download exclude list for Windows Server 2003 enhanced (Thanks to "eiffel")
+- WindowsXP-Windows2000-Script56-KB917344-x86-<language>.exe installation files reintegrated
+- Download and installation routines reviewed, simplified and improved
+- USAGE HINT: You must not call DownloadUpdates.cmd {o2k | oxp | o2k3} {glb} explicitly any longer - this will be implicitly done by DownloadUpdates.cmd now
+- Fix: Invalid startup sequence in DoUpdate.cmd (Relevant only for domain controllers)
+- Fix: IE6 setup file filelist.dat contained invalid entries if generated using 12h (AM/PM) time format (Thanks to "1369311007")
+- Fix (defect #13): Service 'automatic updates' (wuauserv) will be started automatically
+- Fix: Download procedure missed KB931906 for CAPICOM (Thanks to Werner Zuther)
+- Fix (defect #17): Office versions less than 8 (Office 97) lead to installation script aborts (Thanks to "jpe-km")
+- Fix: Download and installation procedures missed KB823718 (MS03-033) for MDAC under Windows 2000
+--------------------------------------------------------------------------------
+Version 4.7 -- 23.01.08
+- Office 2007 Service Pack 1 integrated
+- USAGE HINT: You must not call DownloadUpdates.cmd {o2k7 | o2k7-x64} {glb} any longer - use DownloadUpdates.cmd {o2k7 | o2k7-x64} {<language token>} instead
+- Language support added for Japanese, Korean, Chinese, Taiwanese, Arabic and Hebrew
+- Download process will be logged
+- Fix: Windows activation state won't be checked any longer before attempting IE7 installation (Thanks to Mark Willert)
+- Fix (defect #20): Generation windows may be displayed minimized (Thanks to "denk_mal")
+- Fix (defect #21): Download procedure missed KB943591 (Outlook 2003 Junk E-mail filter update) due to missing URLs in catalog file invcif.exe
+- Fix: Office installations with mixed versions were updated incompletely (Thanks to "funkygirl")
+- Fix: Office installation language was not determined correctly if differed from OS language (Thanks to "zurelli")
+- Fix: Under Windows Vista, the installation process did not start if UpdateInstaller.exe was launched from a network drive (Thanks to Mark Gerber)
+--------------------------------------------------------------------------------
+Version 4.71 -- 24.01.08
+- Fix: Variable reference typo in UpdateGenerator lead to runtime error on DVD creation (Thanks to "Supportler2008")
+--------------------------------------------------------------------------------
+Version 4.72 -- 14.02.08
+- UpdateGenerator and UpdateInstaller scripts will terminate if system's environment variable TEMP contains a trailing backslash
+- Static download definitions modified for Office 2003 (KB943591 removed, KB907417 added)
+- Fix: Download exclude entries were ignored for Office products (Thanks to "Holja")
+- Fix (defect #24): Invalid directory scan sequence caused installation failures under Windows Vista using DVD images (Thanks to "joehtg")
+--------------------------------------------------------------------------------
+Version 4.80 -- 09.05.08
+- Windows Vista Service Pack 1 integrated
+- Windows XP Service Pack 3 integrated
+- Office updates may optionally be omitted (enh. #26, thanks to "Wodar")
+- Static download definitions for IE7 installation packages removed for wxp since Microsoft added them to wsusscn2.cab
+- Enhanced download verbosity for statically defined updates
+- Fix: Installation failures using DVD images on mixed Office 2003/2007 systems
+- Fix: Obsolete patch file office2003-KB943985-FullFile-ENU.exe removed (Thanks to Hans-Dietmar Rudolph)
+--------------------------------------------------------------------------------
+Version 5.0 -- 15.09.08
+- Support added for Microsoft Windows Server 2008
+- Optional download and installation of .NET Framework 3.5 SP1 on Windows XP, Vista and Server 2003/2008 systems (enh. #37, thanks to "ncoker" and Rene Schimmer)
+- Optional installation of most recent DirectX End-User Runtimes (enh. #37, thanks to "ncoker" and Rene Schimmer)
+- Download of Operating Systems' updates may preferentially be redirected to a local WSUS server
+- Number of updates to download and to install will be displayed and logged (Thanks to Stefan Jöhnke and "-TomW-")
+- Integrity of updates may be verified on subsequent download runs
+- DVD ISO images will be split into x86- and x64-products since ISO file sizes exceeded 4.7 GB (max. capacity of DVD-5 media)
+- Windows Installer 4.5 integrated for Windows XP, Vista and Server 2003/2008 systems
+- CreateISOImage and CopyToTarget scripts understand /excludesp and /includedotnet parameters now
+- UpdateInstaller script will check Internet Explorer version now
+- Static download definitions for IE7 installation packages removed for w2k3 since Microsoft added them to wsusscn2.cab
+- Enhanced download logging and target system information
+- Office 2000 Italian Grammar Tools Update (Igt0901.exe, KB813715) excluded from installation by default
+- XSLT filters get updates for Office 2003 Proofing Tools now (Thanks to Klaus Fendt)
+- XSLT filters get updates for Windows Rights Management Services Client now
+- Fix: DIRCMD environment presets could cause update installation failures (Thanks to Michael Kallenbach)
+- Fix: Service Pack exclusion option did not apply to Windows Vista platforms (Thanks to Karsten Violka)
+- Fix: UpdateInstaller and DoUpdate scripts will check prerequisite Windows XP Service Pack 1a or 2 now
+- Fix: Office Update Inventory Tool catalog file invcif.exe might not be updated properly (Thanks to "Next-Gen")
+- Fix (defect #42): Static download definition added for Office Compatibility Pack Service Pack 1 (kb940289) (Thanks to "Gerby")
+- Fix: Download exclude list for Windows XP contained invalid entry for 315074 (Thanks to Chris Shipley)
+- Fix: Download exclude list for Windows XP updated since Microsoft modified http://support.microsoft.com/kb/946480 on June 18, 2008
+- Fix (defect #30): XSLT filters for Windows XP/Server 2003 x64 editions get updates for msxml6 now (Thanks to "murist")
+- Fix: Static download definitions added for Office updates kb951338, kb954326 and kb956077 due to invalid or missing URLs in patchdata.xml (invcif.exe)
+- Fix: Static download definition removed for obsolete patch file officexp-KB942670-FullFile-ENU.exe
+- Fix: Incorrect error handling for Run() and RunWait() function calls in UpdateGenerator and UpdateInstaller scripts
+--------------------------------------------------------------------------------
+Version 5.1 -- 22.02.09
+- Optional installation of Office Converter and Office 2007 Compatibility Packs
+- DirectX End-User Runtimes (November 2008) integrated
+- DownloadUpdates.cmd and CreateISOImage.cmd scripts won't perform exit calls any longer when returning error conditions (Thanks to "oneSTone o2o")
+- DoUpdate.cmd script will exit with errorlevel 1 now if recall is required and automatic reboot is disabled (Thanks to "nathanel23")
+- Static download definition for update for Root Certificates (rootsupd.exe/kb931125) added for Windows XP (Thanks to "Ferney01")
+- Static download definitions for IE7 installation packages removed for wxp/w2k3 x64 since Microsoft added them to wsusscn2.cab
+- .NET Framework 3.5 SP1 Family Update (kb958481, kb958483 and kb958484) will be installed after .NET Framework 3.5 SP1 installation (Thanks to "rs5")
+- Wget updated to version 1.11.4 (MinGW)
+- AutoIt script compiler updated to version 3.3.0.0
+- Redistribution of mkisofs.exe stopped due to licensing controversy
+- Fix (defect #48): Automatic clock adjustment for daylight savings time caused re-downloading of updates when switching back to standard time (Thanks to "joehtg")
+- Fix: Office installation language was not determined correctly again if differed from OS language (Thanks to "zurelli")
+- Fix: Office updates were re-downloaded if WSUS was configured (Thanks to "rs5")
+- Fix (defect #49): Invalid parameters for kb947742 (patch for .NET Framework 1.1 SP1) caused installation failures (Thanks to "joehtg")
+- Fix: Installation of Office 2000 Service Release 1a (O2KSR1aDL.EXE) lead to erroneous failure (Thanks to Christof Giesers)
+- Fix: Microsoft removed WindowsXP-Windows2000-Script56-KB917344-x86-hun.exe (Thanks to "toroimre" and Tamás Winkler)
+- Fix: Temporary installation directories for Office updates were possibly not removed (Thanks to "blind-fish" and "Schraps")
+- Fix: XSLT filters for Windows 2000 missed kb951698-v2 (Thanks to "miramax")
+- Fix: Notepad.exe was not found in %SystemRoot% under Windows Server 2008 (Thanks to Christof Giesers)
+- Fix: Download exclude list for Windows XP updated to avoid windowsxp-sp2* files
+- Fix: Static download definition added for Office 2007 patch kb950378 due to invalid or missing URLs in patchdata.xml (invcif.exe)
+- Fix: Static download definition removed for obsolete Office 2003 patch kb956077
+- Fix: Existing Office Update Inventory Tool catalog file invcif.exe won't any longer be deleted before downloading
+- Fix (defect #62): Errors on downloading statically defined updates won't lead to aborts any longer
+--------------------------------------------------------------------------------
+Version 5.2 -- 20.03.09
+- INSTALLATION HINT: If you like IE8 for Windows Vista/Server 2008 installation packages to be downloaded for languages other than ENU and DEU, you have to modify/enhance StaticDownloadLinks-w60-<architecture>-glb.txt files
+- Optional installation of IE8 on Windows XP, Vista and Server 2003/2008 (x86/x64) systems
+- Statically defined updates will only be installed if not already present
+- Installation of .NET Framework 3.5 SP1 moved to prerequisites block (same as WUA, MSI, WSH & IE)
+- XSLT filters get updates for IE8 now
+- ISO creation filters for Windows XP and Server 2003 exclude DirectX End-User Runtimes now
+- Fix (defect #29): Office version determination was incomplete on mixed/hybrid Office installations (Thanks to "ianox")
+- Fix: Office installation language was not determined correctly for Office 2000 and on Windows x64 systems (Thanks to "pc-nico" and Mark Gerber)
+- Fix: ISO images for Windows 2000 and Office Suites contained .NET Framework 3.5 SP1 installation package (Thanks to "gichtl")
+- Fix: Download source for mkisofs.exe changed since v. 2.01.01a57 uses incompatible filter format (Thanks to Mark Gerber)
+--------------------------------------------------------------------------------
+Version 6.0 -- 20.05.09
+- INSTALLATION HINT: In spite of the different directory name inside the archive, you still may unpack v. 6.0 into an existing structure, overwriting existing files
+- Download scripts for Linux added (Thanks to Tobias Breitling and Stefan Jöhnke)
+- USB stick option added to UpdateGenerator script (Thanks to Christian Riedel)
+- Service Packs 2 for Office 2007 and Office Compatibility Pack integrated
+- Optional installation of Windows PowerShell 1.0 on Windows XP, Server 2003 and Vista (x86/x64) systems
+- Microsoft Service Pack Uninstall Tool for the 2007 Microsoft Office Suite will be downloaded
+- DirectX End-User Runtimes updated (March 2009)
+- Fix: Internet Explorer 8 wasn't installed on automatic recall runs (Thanks to "NetZwerg")
+- Fix: Office 2000 Service Pack level was not properly detected (Thanks to Mark Gerber)
+- Fix: Office 2000 Service Release 1a (O2KSR1aDL.EXE) would not be installed (Thanks to Mark Gerber)
+- Fix: DownloadUpdates.cmd echoed and logged credentials for proxy access (Thanks to Jörg Watermann)
+- Fix: Displayed number of statically defined updates to be downloaded was incorrect (Thanks to "blind-fish")
+- Fix (defect #70): WSUS download errors caused re-downloading of existing updates (Thanks to "me")
+- Fix: Microsoft fixed broken URL for WindowsXP-Windows2000-Script56-KB917344-x86-hun.exe (Thanks to Rudolf Finszter)
+- Fix: Download exclude list for Windows 2000 updated to avoid windows2000-directx8* files
+- Fix: Sleep.vbs was not found on SafeRmDir.cmd calls in DownloadUpdates.cmd (Thanks to "siggibaer")
+--------------------------------------------------------------------------------
+Version 6.1 -- 30.07.09
+- INSTALLATION HINT: In spite of the different directory name inside the archive, you still may unpack v. 6.1 into an existing structure, overwriting existing files
+- Windows Vista / Server 2008 Service Pack 2 All Language Standalone integrated
+- Mandatory installation of IE7 on Windows XP and Windows Server 2003 (x86/x64) systems
+- UpdateInstaller script will now check if .NET Framework 3.5 SP1 installation package exists
+- Fix: Download exclude list for Windows XP updated since Microsoft modified the "List of fixes included in Windows XP SP3" (http://support.microsoft.com/kb/946480/en-us) on March 27, 2009 (Thanks to "SPiKE0815")
+- Fix: Download exclude lists for Operating Systems refined since windowsxp-kb956572-x86-enu* was missing (Thanks to "SMarki")
+- Fix: CopyToTarget.cmd did not create missing target directories and did not report all copying errors (Thanks to Christian Riedel)
+- Fix: Invalid installation sequence for .NET Framework 3.5 SP1 Family Update (kb958481, kb958483 and kb958484) (Thanks to "siggibaer")
+- Fix: Warning about 'automatic reboot' option removed for Windows Vista and Server 2008 target systems
+- Fix: Invalid conditional statements in DoUpdate.cmd corrected (Thanks to "b737x")
+- Fix (defect #75): Linux download script will now wait for <Enter> confirmation on any user input (Thanks to Stefan Jöhnke)
+- Fix (defect #76): Linux download script will now ask for all required user input before starting downloading (Thanks to Stefan Jöhnke)
+- Fix (defect #77): Linux download script will now call sub-script using /bin/bash <SubScript.sh> (Thanks to Stefan Jöhnke)
+- Fix (defect #78): Linux scripts contained invalid shebang (Thanks to "kl_eisbaer")
+- Fix: Further improvements for Linux scripts (Thanks to Walter Schiessberg and Stefan Jöhnke)
+--------------------------------------------------------------------------------
+Version 6.2 -- 23.10.09
+- Support added for Microsoft Windows 7 and Server 2008 R2
+- Office updates up to 10/2009 integrated by static definitions (Thanks to "Denniss")
+- UpdateGenerator script will now check for new versions of itself before starting download
+- Installation of IE7 remade optional
+- Automatic shutdown after updating option added (Thanks to "gw_1966")
+- UpdateGenerator and UpdateInstaller dialogs will now be scaled dependent on system's font size (dpi) setting (Thanks to Thomas Baisch)
+- CopyToTarget.cmd script will now show filenames while copying
+- ISO creation filters for Windows 2000 exclude patches for .NET and Windows Rights Management Services now
+- ISO creation filters for Windows XP and Server 2003 exclude patches for .NET 1.x and .NET 2 SP 0/1 now
+- Static download definitions for IE8 installation packages removed for wxp and w2k3 (x86 and x64) since Microsoft added them to wsusscn2.cab
+- DirectX End-User Runtimes updated to August 2009 (Thanks to "Gerby")
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to September 2009 (Thanks to "Denniss")
+- Fix: Linux scripts contained invalid Windows (<CR><LF>) instead of Unix (<LF>) line feeds (Thanks to Ronald Warsow, "Frank", "fatwou" and http://www.dos2unix.org/)
+- Fix: IE8 installation files were called with invalid /nobackup switch (Thanks to "dierk09bl")
+- Fix: Download exclude lists for Windows XP and Windows Server 2003 (x86/x64) updated to avoid *-js56-x86* files (Thanks to "takkoholiker")
+- Fix: DownloadUpdates.sh script didn't work under Slackware because of missing dos2unix tool (Thanks to Helmut Hullen)
+- Fix: DetermineSystemProperties.vbs script set invalid environment variable %PSH_INSTALLED_MAJOR% instead of %PSH_INSTALLED%
+- Fix: CopyToTarget.cmd script contained invalid usage instructions (Thanks to "rsleegers")
+- Fix: Download exclude list for Windows XP modified since Offline Update missed patch IE7-WindowsXP-KB938127-v2-x86-DEU.exe
+--------------------------------------------------------------------------------
+Version 6.3 -- 13.11.09
+- Support removed for Office 2000 since Microsoft discontinued support for it on July 14th, 2009 (see http://support.microsoft.com/lifecycle/?p1=2484)
+- Office updates up to 11/2009 integrated by static definitions
+- DoUpdate.cmd script will now fake SP1 on Windows XP SP0 target systems (Thanks to "Ralph")
+- CopyToTarget.cmd script will now only copy newer files (Thanks to "Georg")
+- Installation part won't any longer evaluate the "Office Update Inventory Tool Catalog" (invcif.exe) since Microsoft discontinued support for it on August 1st, 2009 (see http://office.microsoft.com/OfficeUpdate/catalog/inventory/InventoryCatalog.html)
+- Fix: UpdateGenerator and UpdateInstaller dialog scaling could lead to zero size dialog dimensions (Thanks to "MG8371")
+- Fix: DownloadUpdates.cmd will set FTP proxy for wget now (Thanks to "LauxAimoEwa")
+--------------------------------------------------------------------------------
+Version 6.4 -- 12.02.10
+- Office updates up to 02/2010 integrated by static definitions
+- Digital signatures of downloaded files will be verified if corresponding option is selected (Thanks to "friday123")
+- Installed updates' determination implementation changed in order to enhance performance and become independent of WUA
+- DoUpdate.cmd script will exit with errorlevel 3010 now if reboot/recall is required and automatic reboot is disabled (Thanks to "icnocop")
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to November 2009 (Thanks to "Gerby")
+- Office Compatibility Pack Service Pack 2 removed since Microsoft integrated it into FileFormatConverters.exe (Thanks to "Gerby" and "Denniss")
+- Office Converter and Compatibility Packs will now be downloaded also if Office 2007 ("o2k7") target is selected (Thanks to "Denniss")
+- UpdateGenerator script will now trigger download of .NET Framework components only for the first platform/target selected (Thanks to "Denniss")
+- Info-Zip's UnZip integrated because of persistent FTP download problems - FTP proxy for wget removed because it's not used any longer
+- AutoIt script compiler updated to version 3.3.4.0
+- DirectX End-User Runtimes updated to February 2010 (Thanks to Matthias Köhler)
+- DownloadUpdates.sh script encapsulates wget calls in doWget() function now for easier parameterization (Thanks to "Askan" and "maro")
+- Fix: Windows Vista ISO images and USB copies did not contain .NET Framework 3.5 SP1 Family Update files KB958483 and KB958484 (Thanks to "wsususer")
+- Fix: DoUpdate.cmd script attempted invalid automatic recalls under Windows Vista/7/2008(R2) and was unable to install SPs on Windows 2008 DCs (Thanks to "ksjon" and "DotNet")
+- Fix: CheckOUVersion.cmd script misleadingly reported outdated Offline Update version (Thanks to "software-ralf" and "boco")
+- Fix: ISO volume ids and installation log file name adjusted to fit to project's new name (Thanks to "LigH")
+- Fix: Removed o2k remainders in xslt directory
+- Fix: DownloadUpdates.sh script contained obsolete reference to ../static/StaticDownloadLink-ifadmin.txt (Thanks to "Medvedko")
+--------------------------------------------------------------------------------
+Version 6.5 -- 25.03.10
+- Office updates up to 03/2010 integrated by static definitions
+- Optional installation of Windows PowerShell 2.0 on Windows XP, Server 2003 and Vista (x86/x64) systems
+- Optional installation of most recent Windows Media Player on Windows 2000, XP and Server 2003 (x86/x64) systems
+- Optional installation of most recent Terminal Services Client (Remote Desktop Connection) on Windows XP, Server 2003 and Vista (x86/x64) systems
+- Optional client side hash verification of update installation packages
+- Custom additional configuration capabilities added to download and installation parts' static and exclude directories (Thanks to Eberhard Werle and "boco")
+- Custom initialization and finalization hook capabilities added to DownloadUpdates.cmd and DoUpdate.cmd scripts (Thanks to "petebob796")
+- UpdateGenerator script will now show log file on demand after downloading (Thanks to "Automatix")
+- UpdateInstaller script will now allow automatic reboot option even if started from a network share on Windows Vista, 7 and Server 2008 (R2) systems
+- DoUpdate.cmd script will now exit with errorlevel 3011 if recall after reboot is required and still exit with errorlevel 3010 if reboot only is required (Thanks to "othiman")
+- AutoIt script compiler updated to version 3.3.6.0
+- Static download definitions added for Microsoft Security Essentials for Windows XP (Thanks to "nicname")
+- Fix: Security Update for Microsoft Office 2003 File Converter Pack (KB974882) could have been missed (Thanks to "Denniss")
+- Fix: Security Update for Microsoft Office 2003 File Converter Pack (KB974882) was installed using invalid parameters (Thanks to "-Iwan-")
+- Fix: PowerPoint Updates KB973143 (oxp) and KB976881 (o2k3) replaced KB957781 (oxp) and KB957784 (o2k3), which will now be excluded (Thanks to "Denniss")
+- Fix: Download XSLT filters will now check for valid 'http://' prefixes in URLs (Thanks to "automatix")
+- Fix: DownloadUpdates.cmd script won't any longer delete wuredist.cab in order to work around Microsoft's versioning problems (Thanks to "automatix", "boco" and "harry")
+- Fix: For x86 target platforms, .NET x64 patches were additionally downloaded and vice versa (Thanks to "wsususer")
+- Fix: Chinese traditional language option was erroneously labelled "Taiwanese" in UpdateGenerator script (Thanks to "wyattwong")
+- Fix: DownloadUpdates.sh script downloaded two copies of XP SP3 (Thanks to "nebyah")
+- Fix: DownloadUpdates.sh script contained obsolete removal of wsusscn2.cab (Thanks to "nebyah")
+- Fix: Missing variable initialization in DownloadUpdates.sh script could lead to syntax error (Thanks to Ulrich Windl)
+- Fix: Replaced Microsoft's unstable file hash computation tool fciv.exe by open source utility hashdeep.exe (Thanks to "insertrealname" and "boco")
+- Fix: SetTargetEnvVars.cmd script expects Windows Update Agent (WUA) version 7.4.7600.226 now (Thanks to Mark Gerber)
+- Fix: Decreased "cross-product" ISO image sizes by removing legacy Windows 2000 platform
+--------------------------------------------------------------------------------
+Version 6.51 -- 08.04.10
+- HashDeep utility updated to version 3.6
+- Fix: Windows Script Host (WSH) v. 5.7 will now be installed on Windows 2000 and Server 2003 (x86) systems since Microsoft removed WindowsXP-Windows2000-Script56-KB917344-x86-<language>.exe files (Thanks to "roba0665" and "Denniss")
+- Fix: office2007-kb947318-fullfile-x86-glb.exe was missed (Thanks to "wsususer")
+- Fix: OfficeXP-kb832668-v2-fullfile-enu.exe was missed due to an invalid URL in Microsoft's update catalog file (Thanks to "mjakobi" and "boco")
+--------------------------------------------------------------------------------
+Version 6.6 -- 14.06.10
+- NOTE: This version is supposed to be the last one supporting Windows 2000 (see http://support.microsoft.com/lifecycle/?p1=3071)
+- NOTE: Inverted logic for 'Include/Exclude Service Packs' option in UpdateGenerator script; UpdateGenerator.ini file keyword changed; no parameter modification for DownloadUpdates script (Thanks to "AlBundy", "Gerby" and "-Iwan-")
+- Office updates up to 06/2010 integrated by static definitions
+- Optional installation of .NET Framework 4 on Windows XP, Vista, 7 and Server 2003/2008 (R2) systems (Thanks to "AnonymousHero")
+- Optional installation of Microsoft Security Essentials on Windows XP, Vista and 7 (x86/x64) systems (Thanks to "AlBundy")
+- Date of last download / medium creation will be displayed/logged by UpdateGenerator/UpdateInstaller/DoUpdate scripts (Thanks to "automatix")
+- DoUpdate.cmd script will now adjust boot sequence for automatic reboots on Windows Vista, 7 and Server 2008 (R2) systems (Thanks to "NorFie")
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to May 2010 (Thanks to "harry")
+- DirectX End-User Runtimes updated to June 2010 (Thanks to Matthias Köhler and "Denniss")
+- AutoIt script compiler updated to version 3.3.6.1
+- CompileAutoItScripts.cmd script added (Thanks to "boco")
+- DetermineSystemProperties.vbs script detects Office 2010 now
+- Automatic clock adjustment for daylight savings time removed (Thanks to "Gerby" and "boco")
+- English FAQs initiated (Thanks to "boco")
+- Fix: CreateISOImage.sh script didn't correctly evaluate ISO filter files containing Windows (<CR><LF>) line feeds (Thanks to Bob Lindell)
+- Fix: DoUpdate.cmd script didn't return errorlevel 3010 (reboot required) after installation of dynamically determined updates (Thanks to "hel")
+- Fix: Missing WSH_VERSION_TARGET_* variables lead to misleading error messages under Windows Vista/7 (Thanks to "lexx_qq")
+- Fix: Windows Media Player 11 and Terminal Services Client 6 Installation attempts failed on Windows Server 2003 x64 systems
+- Fix: Invalid hash file search sequence lead to false audit errors when installing .NET Framework 3.5 SP1 Family Update (kb958481, kb958483 and kb958484)
+- Fix: Dynamic determination of Windows Update Agent download URLs replaced by static definitions (Thanks to "automatix", "boco" and "Denniss")
+- Fix: FinalizationHook.cmd wasn't executed by DoUpdate.cmd (Thanks to "-Iwan-")
+- Fix: Recall requests removed after installations of Windows Installer (MSI) and Windows Script Host (WSH) (Thanks to "BrentNewland")
+- Fix: Hash computation and verification were missed for Windows Update Agent and catalog file (wsusscn2.cab)
+- Fix: Browser choice update (kb976002) is black listed now (Thanks to "boco")
+- Fix: Installation of IE8 did not request recall on Windows Vista and Server 2008 systems (Thanks to "boco")
+- Fix: Installation of .NET Frameworks won't any longer try to install language packs (Thanks to "schose" and "AlBundy")
+- Fix: Windows Media Player update attempts lead to errors on Windows Server 2003 (x86/x64) systems
+- Fix: Reboot requests were ignored if all missing updates were either black listed or not found
+- Fix: Update process could have been unintentionally abandoned if update medium didn't contain latest Office Service Pack (Thanks to "Lurchie7")
+- Fix: PrepareReleaseTree.cmd script did not properly detect non-existing target paths containing spaces (Thanks to Mark Gerber)
+- Fix: Localized updates for MSXML4 and MSXML6 are unavailable for several languages (Thanks to "vsu")
+- Fix: Required localized versions of Office 2003 patches KB975051 and KB983503 will now be downloaded (Thanks to "vsu")
+- Fix: Outlook 2003 and 2007 Junk Email Filter updates won't any longer be installed by static definitions (Thanks to "Computerist" and "-Iwan-")
+- Fix: Installation of .NET 1.1 updates kb947742, kb953297, kb971108 and kb979906 could lead to unexpected reboots (Thanks to "lbriggs", "vsu" and "boco")
+- Fix: Replaced deprecated update kb955655 for Visio 2003 by kb982126 (Thanks to "vsu")
+--------------------------------------------------------------------------------
+Version 6.6.1 -- 17.06.10
+- English FAQs completed (Thanks to "boco")
+- Fix: DirectX End-User Runtimes rolled back to v. 9.28.1886 (February 2010) because v. 9.29.1962 (June 2010) fails to install under Windows 2000 (Thanks to "Denniss")
+- Fix: Installation of IE8 did not request recall on Windows XP and Server 2003 systems
+- Fix: Installation of .NET 3.5 SP1 did not request recall
+--------------------------------------------------------------------------------
+Version 6.6.2 -- 27.08.10
+- Office updates up to 08/2010 integrated by static definitions
+- DownloadUpdates.cmd script will now delete NTFS alternate data streams from downloaded files (Thanks to "MikeWill34")
+- UpdateInstaller script will now automatically map a network drive when started from an unmapped UNC path (Thanks to "BrentNewland")
+- FAQs corrected and enhanced (Thanks to "-Iwan-")
+- Fix: XSLT filters for Windows XP enhanced to avoid updates for Windows XP Embedded (Thanks to "Gerby", "boco" and "Matjes")
+- Fix: Download exclude list for Windows XP updated since Microsoft modified the "List of fixes that are included in Windows XP Service Pack 3" (http://support.microsoft.com/kb/946480/en-us) on July 08, 2010
+- Fix: Check of .NET Framework 4 installation state failed when updating from command line (Thanks to "imrumpf")
+- Fix: DownloadUpdates.cmd script contained invalid subdirectory rename instructions for backward compatibility (Thanks to "heinzel")
+--------------------------------------------------------------------------------
+Version 6.6.3 -- 15.09.10
+- Office updates up to 09/2010 integrated by static definitions
+- Prerequisites' checks enhanced for UpdateGenerator (directory substructure) and UpdateInstaller (path properties, see http://msdn.microsoft.com/en-us/library/aa365247(VS.85).aspx) scripts (Thanks to Matthias Köhler)
+- Fix: Missing hash file deletion on download without verification could subsequently lead to false audit errors
+- Fix: Version checks could fail if version strings were of unexpected/abbreviated structure (Thanks to Lars Bassen)
+- Fix: DownloadUpdates.sh script did not evaluate exclude lists because of missing "dos2unix" command (Thanks to "NoKurth" and "nebyah")
+- Fix: Cmd.exe environment size reduced by abbreviating versions' variable names (see http://support.microsoft.com/kb/830473/en-us)
+--------------------------------------------------------------------------------
+Version 6.6.4 -- 13.10.10
+- Office updates up to 10/2010 integrated by static definitions
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to August 2010 (Thanks to "Gerby")
+- Fix: Hash computation attempts on empty / non existing directories subsequently lead to false audit errors (Thanks to "rednaxela" and "-Iwan-")
+- Fix: XSLT filters for Windows Server 2003 missed kb975558 (Thanks to "nes" and "wolfbardo")
+- Fix: Download exclude list for Windows XP (ExcludeList-wxp-x86.txt) erroneously excluded kb923561
+- Fix: Static download links corrected for Windows XP SP3 and Server 2003 SP2 (Thanks to "Denniss")
+- Fix: Office XP patches kb975008 and kb2293422 weren't downloaded as the required language specific versions (Thanks to "s.a.h.")
+- Fix: Office 2003 patch kb2293428 wasn't downloaded as the required language specific version
+- Fix: Improved error handling and reporting of scripts InstallOSUpdate.cmd and InstallOfficeUpdate.cmd
+- Fix: Eliminated misleading warnings about missing integrity database files on first download runs with verification enabled (Thanks to "honkytonky")
+--------------------------------------------------------------------------------
+Version 6.6.5 -- 10.11.10
+- Office updates up to 11/2010 integrated by static definitions
+- Self update capability added (Thanks to "Ernst.Eiswuerfel")
+- Optional automatic system shutdown on download completion added to UpdateGenerator script (Thanks to "rswrc")
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to Oktober 2010 (Thanks to "Matjes" and "Denniss")
+- OS language detection corrected and enhanced according to http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx
+- Fix: Late popd in DownloadUpdates.cmd script lead to logging error (Thanks to "boco")
+- Fix: Missing hash computation after download of Office Update Inventory Tool Catalog file subsequently lead to false audit errors (Thanks to "Frank1")
+- Fix: UpdateGenerator and UpdateInstaller scripts will terminate if system's environment variable TEMP contains a trailing colon (Thanks to "mth404")
+- Fix: KB951847 (.NET Framework 3.5 SP1) added to installation exclude list due to misleading warnings (Thanks to "rednaxela")
+- Fix: ISO creation under Linux lead to invalid "builddate.txt" format (Thanks to Ulrich Windl)
+- Fix: FAQs enhanced (Thanks to "Lenge")
+--------------------------------------------------------------------------------
+Version 6.7 -- 06.12.10
+- Windows 2000 support removed
+- Office 2010 support added
+- Office updates will be dynamically determined again (Thanks to Martin Trenkner)
+- Office support removed from Linux download and ISO creation scripts
+- Office updates will also preferentially be downloaded from an optional local WSUS server
+- Downloads from a local WSUS server will now also use proxy settings (Thanks to "OlegK")
+- WSUS download source configuration may optionally be transferred to client side WUStatusServer
+- Automatic recall feature enhanced to support Windows Vista and Server 2008 systems
+- Proprietary autologon implementation replaced by Sysinternals' tool Autologon.exe
+- Removed obsolete utility extract.exe
+- XSLT filters for Windows ("win") refined (Thanks to "Denniss")
+--------------------------------------------------------------------------------
+Version 6.7.1 -- 22.12.10
+- Microsoft Security Essentials' installation updated to version 2.0 (Thanks to "Matjes")
+- Optional verification of digital file signatures will now include Windows Update Agent installation and catalog files (Thanks to "albertx")
+- Files whose digital signatures can't be verified will now be automatically deleted
+- Downloads from a local WSUS server will now only optionally use proxy settings (Thanks to "omo683")
+- Subsequent downloads from a local WSUS server speeded up by using wget '-N' option
+- CreateISOImage.cmd script will now compute hashes for generated ISO files
+- Obsolete directories ...\client\win\<language>\ie6setup will be removed (Thanks to "boco")
+- Fix: Self version check script CheckOUVersion.cmd did not work properly in v. 6.7
+- Fix: Self update script UpdateOU.cmd overwrote itself while running
+- Fix: DownloadUpdates.cmd script ignored custom static and exclude lists if corresponding lists were not delivered (Thanks to "wwsmith")
+- Fix: DoUpdate.cmd script ignored custom static installation definition list ...\static\custom\StaticUpdateIds-dotnet.txt (Thanks to "wwsmith")
+- Fix: CopyToTarget.cmd and CreateISOImage.cmd scripts missed language specific directories when called with "all" parameter (Thanks to "psj")
+- Fix: DownloadUpdates.sh script contained a reference to the obsolete filter ExtractDownloadLinks-win-x86-glb.xsl (Thanks to "NoKurth")
+- Fix: DownloadUpdates.sh script contained a duplicate menu id (Thanks to Thomas Rieck)
+--------------------------------------------------------------------------------
+Version 6.7.2 -- 06.01.11
+- Optional installation of Internet Explorer 9 Beta on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems
+- Optional download and automatic update of Windows Defender definition files
+- Optional installation of Windows Defender on Windows XP and Server 2003 (x86/x64) systems
+- CreateISOImage.cmd and CopyToTarget.cmd scripts will now log to ..\log\download.log file (Thanks to "Matjes")
+- Optional verification of digital file signatures will now include .NET, MSSE and Windows Defender packages
+- HashDeep utility updated to version 3.7
+- Fix: Microsoft removed the Office File Converter Pack (oconvpck.exe) from their servers (Thanks to "-Iwan-", "harry" and "Denniss")
+- Fix: CreateISOImage.cmd script did not properly signal errors (Thanks to "AlBundy")
+--------------------------------------------------------------------------------
+Version 6.8 -- 22.02.11
+- Windows 7 / Server 2008 R2 Service Pack 1 integrated
+- Optional installation of Internet Explorer 9 Release Candidate on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems
+- Superseded updates will now be dynamically determined and automatically excluded from download (Thanks to "Denniss" and "harry")
+- Self update will now check integrity of downloaded release archive before updating
+- Fix: Internet Explorer 9 Beta offline installation missed prerequisites according to http://support.microsoft.com/kb/2399238 (Thanks to "boco")
+- Fix: Internet Explorer 9 prerequisites were erroneously installed even for IE8 on Windows Vista and Server 2008 systems (Thanks to "boco")
+- Fix: Case sensitive file name handling lead to false audit errors when attempting to install Windows Defender on Windows XP systems (deu and jpn only)
+- Fix: DownloadUpdates.sh script contained invalid references to StaticDownloadLink-msse-*.txt (Thanks to "Andrew")
+- Fix: CreateISOImage.sh script erroneously supported "wxp-x64" target (Thanks to "rupat")
+- Fix: Added missing custom directory support for StaticDownloadLinks-dotnet.txt and StaticDownloadLinks-msse-<architecture>-glb.txt (Thanks to "rednaxela" and "yodog")
+- Fix: Added missing template files for static download definitions of .NET updates (Thanks to "rednaxela")
+- Fix: Obsolete MSXML patches kb925672, kb925673, kb927977, kb927978, kb933579, kb936021 and kb936181 were not excluded (Thanks to "rustam")
+- Fix: Obsolete .NET patches kb886903, kb928366, kb971108, kb979906, kb917283, kb922770, kb947746, kb947748, kb971110, kb971111 and kb974417 were not excluded (Thanks to "Denniss")
+- Fix: Numerous obsolete patches for all platforms were not excluded (Thanks to "Denniss")
+- Fix: XSLT filter for Windows Server 2003 x64 global included Japanese updates (Thanks to "Denniss")
+- Fix: DownloadUpdates.sh and CreateISOImage.sh scripts did not support symbolic links as working directories (Thanks to "NoKurth")
+- Fix: Installation of kb2416447 (security update for .NET 1.1) caused uncontrolled reboots (Thanks to "wwsmith" and "Denniss")
+- Fix: Security update for .NET 3.5 SP1 on Windows Vista / Server 2008 (kb2416470) was not properly installed (Thanks to "Denniss")
+- Fix: Security update for Jscript for Windows Server 2003 (KB971961) was not downloaded for Jscript v. 5.6 (Thanks to "Denniss")
+- Fix: Double-quoted argument check in SafeRmDir.cmd could cause installation failures (Thanks to "thadsaab" and "Neb")
+--------------------------------------------------------------------------------
+Version 6.8.1 -- 24.02.11
+- Fix: UpdateInstaller script did not properly detect SP1 for Windows 7 / Server 2008 R2 on x64 systems (Thanks to "Gerby")
+- Fix: Installation attempts of IE9 RC failed on Windows 7 and Server 2008 R2 SP1 systems because of obsolete prerequisites' check
+- Fix: CreateISOImage.cmd script did not support UNC targets as output paths (Thanks to "WSUS-Fan")
+--------------------------------------------------------------------------------
+Version 6.8.2 -- 15.03.11
+- Optional installation of Internet Explorer 9 on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems
+- Language Pack support added for .NET Frameworks 3.5 SP1 and 4 (Thanks to "aker")
+- Installation and update packages for .NET Frameworks 3.5 SP1 and 4 will be validated only once a day if verification is enabled
+- Fix: Automatic recall preparation failed for new version 3.1 of Sysinternals' tool Autologon.exe (Thanks to "Yany", "harry" and "boco")
+- Fix: Download exclude lists for Windows 7 / Server 2008 R2 (x86/x64) updated since Microsoft modified their list of included fixes and updates (see http://www.microsoft.com/downloads/en/details.aspx?FamilyID=61924cea-83fe-46e9-96d8-027ae59ddc11&displaylang=en) on March 4th, 2011 (Thanks to "harry")
+- Fix: Download filters missed CAPICOM security update kb931906 again
+- Fix: Several obsolete cumulative security updates for Internet Explorer remained (Thanks to "Denniss")
+--------------------------------------------------------------------------------
+Version 6.8.4 -- 05.05.11
+- DownloadUpdates.cmd script will now avoid re-downloading after daylight saving time to standard time switch by setting TZ environment variable (Thanks to "Gerby")
+- Optional cleanup of target directory added to CopyToTarget.cmd script and USB stick option (Thanks to "Mike")
+- Optional updating of DirectX End-User Runtimes (Thanks to "Denniss", "aker", "boco" and "-Iwan-")
+- Microsoft Security Essentials and Windows Defender installation and definition files will now be validated only once a day (Thanks to "Denniss")
+- Superseded updates will now be determined depending on archive attribute of catalog file wsusscn2.cab (Thanks to "harry")
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to March 2011 (Thanks to "Gerby")
+- AddCustomLanguageSupport.cmd and RemoveCustomLanguageSupport.cmd scripts added to ease download of localized IEx, .NET and MSSE installation files (Thanks to "harry" and "aker")
+- Fix: Remote Desktop Connection 7.0 client (kb969084) was erroneously attempted to be installed on Windows Server 2008 (x86/x64) systems (Thanks to "mAsTa")
+- Fix: Regional date format settings could cause redundant determination of .NET updates (Thanks to "harry")
+- Fix: DirectX main version will now be determined correctly according to http://msdn.microsoft.com/en-us/library/ee416805(v=VS.85).aspx
+- Fix: Obsolete update for the DirectX IDirectPlay4 API (kb839643) was not excluded (Thanks to "Denniss")
+- Fix: Superseded updates' determination missed several entries (Thanks to Martin Trenkner)
+- Fix: 'Clean up download directories' option will now also affect directories for .NET and MSSE installation files
+--------------------------------------------------------------------------------
+Version 6.8.5 -- 06.06.11
+- DownloadUpdates.sh script will now create hash files for downloaded updates (Thanks to Stefan Jöhnke)
+- DownloadUpdates.sh script will now support optional download of Windows Defender definition files (Thanks to Stefan Jöhnke)
+- DownloadUpdates.sh script will now support custom static and exclude directories (Thanks to Stefan Jöhnke)
+- HashDeep utility updated to version 3.9.1
+- Fix: DownloadUpdates.sh and CreateISOImage.sh scripts did not support working directories containing spaces (Thanks to Stefan Jöhnke)
+- Fix: Registry references to WOUTempAdmin profile were not cleaned up (Thanks to Bert Schinkel-Momsen)
+- Fix: Determination of Office and superseded updates caused invalid file system activities (Thanks to "Yaso Kuhl")
+- Fix: Windows 7 / Server 2008 R2 Service Pack 1 (kb976932) was attempted to be installed as a patch (Thanks to "Denniss")
+--------------------------------------------------------------------------------
+Version 6.8.6 -- 16.06.11
+- Optional installation of C++ 2005, 2008 and 2010 Runtime Libraries (Thanks to "Denniss" and "boco")
+- Fix: Office updates' installation tables were not updated (Thanks to "rednaxela")
+--------------------------------------------------------------------------------
+Version 6.9 -- 01.07.11
+- INSTALLATION HINT: If you localized your installation using AddCustomLanguageSupport.cmd {lng}, please call it again after updating WOU in order to get MSSE 2.1 downloaded (see below)
+- NOTE: This version is supposed to be the last one supporting Office XP (see http://support.microsoft.com/lifecycle/?p1=2533)
+- Office 2010 Service Pack 1 integrated
+- Optional installation of Office File Validation Add-in (Thanks to "Gerby")
+- C++ Runtime Libraries' installation option will now only update existing versions
+- Static download definitions for Microsoft Security Essentials updated to version 2.1 (Thanks to "Denniss")
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to June 2011 (Thanks to "Denniss")
+- Fix: Two EoLn spaces were too much for TZ environment variable setting (Thanks to "psj")
+- Fix: C++ Runtime Libraries' x86 versions were not installed/updated on x64 Operating Systems (Thanks to "Denniss")
+- Fix: C++ 2005 and 2008 Runtime Libraries' installations will now be called using undocumented "/r:n" switch (Thanks to "pdietrich")
+- Fix: DirectX main version detection did not use "/64bit" switch on x64 Operating Systems
+- Fix: Temporary file package.xml remained after Office downloads (Thanks to "Denniss")
+- Fix: "Clean up download directories" functionality could lead to "file not found" error messages (Thanks to "rednaxela")
+--------------------------------------------------------------------------------
+Version 7.0 -- 01.10.11
+- Linux download and ISO creation scripts now support Office again and exclusion of superseded updates (Thanks to Stefan Jöhnke)
+- Support removed for Office XP since Microsoft discontinued support for it on July 12th, 2011 (see http://support.microsoft.com/lifecycle/?p1=2533)
+- C++ 2010 Runtime Libraries updated to include kb2565063 / MS11-025 (Thanks to "Denniss")
+- Update for Root Certificates (rootsupd.exe/kb931125) download URL updated to provide most recent version always (Thanks to "Gerby")
+- Optional verification of downloaded updates will now check SHA-1 message digest included in file names
+- Download of updates will optionally use a local WSUS server only (Thanks to "FrankWeber" and "balonik")
+- User's SID will now only be determined if WOUTempAdmin is logged on (Thanks to "Adorno")
+- HashDeep utility updated to version 3.9.2, x64 variant included (Thanks to "Gerby" and "boco")
+- Fix: Temporary file "%TEMP%\InstalledUpdateIds.txt" remained after update run without any missing update (Thanks to "Denniss")
+- Fix: Temporary files "%TEMP%\sigcheck-wddefs-%TARGET_ARCH%-glb.txt" remained after download of Windows Defender definition files (Thanks to "boco")
+- Fix: ISO and USB filters for x86 platforms erroneously excluded .NET Framework 4 installation packages (Thanks to "boco")
+- Fix: Download exclude lists for Windows 7 / Server 2008 R2 (x86/x64) modified since Microsoft updated their list of updates included in SP1 (see http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=269) on March 24th, 2011
+- Fix: Download exclude list for Office (...\exclude\ExcludeList-ofc.txt) improved
+- Fix: UpdateGenerator will now also check for valid script path (Thanks to "Sydnelson")
+- Fix: DownloadUpdates.sh script called wget using problematic -c and --no-cache switches (Thanks to "Medvedko")
+--------------------------------------------------------------------------------
+Version 7.1 -- 01.11.11
+- Office 2007 Service Pack 3 integrated
+- Office Compatibility Pack Service Pack 3 integrated
+- Automatic recall feature enhanced to support network shares permitting anonymous access
+- DownloadUpdates.cmd and DoUpdate.cmd scripts now support "/skipdynamic" switch for "statics only" mode
+- DownloadUpdates.cmd and DoUpdate.cmd scripts will now log errorlevels of custom initialization and finalization hook scripts (Thanks to "aker")
+- Fix: Linux download scripts contained invalid formatted conditional statements (Thanks to "t3573r")
+- Fix: Linux download scripts did not support o2k10 target (Thanks to "Medvedko")
+- Fix: Download procedure missed kb2564958 for Windows XP / Server 2003 (x86/x64) because of variant file name scheme (Thanks to "peter2" and "harry")
+- Fix: TZ environment variable setting failed under Windows Server 2003 (x86) due to "SET /A" bug (erroneous INT overflow error)
+--------------------------------------------------------------------------------
+Version 7.2 -- 06.12.11
+- Office File Converter/Compatibility Packs and Office File Validation Add-In may now be installed separately
+- Installation routine will now adjust power management settings when running under WOUTempAdmin user account to avoid standby and hibernate modes
+- DownloadUpdates.cmd script now supports "/skipdownload" switch for "determine only" mode
+- DownloadUpdates.cmd switches "/skipdownload" and "/skipdynamic" may be preset in UpdateGenerator.ini file
+- Installation exclude list (...\client\exclude\ExcludeList.txt) may contain comma separated descriptions (Thanks to "Pete Monger")
+- DoUpdate.cmd script won't terminate any longer if most recent OS Service Pack is not found
+- Fix: Linux script DownloadUpdates.sh did not download C++ Runtime Libraries (Thanks to "Spider-Mann")
+- Fix: DownloadUpdates.cmd showed misleading warnings when attempting to remove alternate data streams on non-NTFS file systems (Thanks to "aker")
+- Fix: Linux script DownloadUpdates.sh missed grep -F option ('fixed strings') several times (Thanks to "zoc")
+- Fix: When running under WOUTempAdmin user account, DoUpdate.cmd script will now assume that the service 'automatic updates' (wuauserv) is running if its start mode is 'Auto' (Thanks to "1inux")
+- Fix: Office File Validation installation now includes update kb2553065 (Thanks to "harry" and "-Iwan-")
+- Fix: Automatic recall failed if script path contained a blank (Thanks to "abox")
+--------------------------------------------------------------------------------
+Version 7.3 -- 19.01.12
+- Optional installation of most recent Update for Root Certificates (Thanks to "mth404")
+- Superseded updates' determination speeded up for systems running paranoid AV scanners (Thanks to Peter Schöll)
+- HashDeep utility updated to version 4.0.0
+- AutoIt script compiler updated to version 3.3.8.0
+- Removed proprietary, w2k-compatible shutdown/reboot implementation
+- Fix: Download part missed Excel 2003 Security Update kb2596954 (Thanks to "peter2")
+- Fix: Installation part tried to install IEx on Server 2008(R2) Core systems (Thanks to "herbert")
+- Fix: Linux script DownloadUpdates.sh used invalid wget parameter combination '-N -O' (Thanks to "harry", "nebyah" and "Spider-Mann")
+- Fix: CopyToTarget.cmd script failed when started from a read-only share (Thanks to "OlegK")
+- Fix: CopyToTarget.cmd script failed when output path contained a blank
+- Fix: Office Compatibility Pack SP3 will now be stringently installed after Office Compatibility Pack (Thanks to "aker" and "Denniss")
+- Fix: Using an incomplete cross-platform update medium, the installation procedure could try to install x86 patches on x64 platforms (Thanks to U. Bookjans)
+- Fix: Linux script DownloadUpdates.sh performed invalid dos2unix conversions (Thanks to "ewasscher")
+- Fix: Damaged Windows Scripting (WSH) installations could cause misleading syntax errors in DoUpdate.cmd (Thanks to "martink")
+--------------------------------------------------------------------------------
+Version 7.3.1 -- 13.04.12
+- HashDeep utility updated to version 4.1
+- AutoIt script compiler updated to version 3.3.8.1
+- Fix: Installation of .NET Framework 4 could fail on Windows Server 2003 (x86/x64) systems due to missing prerequisite "Windows Imaging Component (WIC)" (Thanks to "dreamz")
+- Fix: Linux script DownloadUpdates.sh did not download MSSE definition files (Thanks to M. Speck)
+- Fix: Linux script DownloadUpdates.sh did not report dos2unix conversion failures (Thanks to R. Zocholl)
+- Fix: Download URLs of Sysinternals' tools changed (Thanks to "harry")
+- Fix: Download part missed Office 2010 Security Update kb2598039
+--------------------------------------------------------------------------------
+Version 7.3.2 -- 30.05.12
+- Installation part will now disable the screensaver when running under WOUTempAdmin user account (Thanks to "harry")
+- Existing installations of Microsoft Security Essentials may now be updated to most recent version (Thanks to Th. Baisch)
+- Fix: Linux script DownloadUpdates.sh attempted invalid dos2unix calls (Thanks to "Spider-Mann")
+- Fix: Scripts contained typos in log messages (Thanks to "Extrinsic")
+- Fix: Download part missed Security Update kb2633171 for Windows Vista and 7 (x86)
+- Fix: Microsoft Security Essentials definition files wouldn't be updated on Windows Server systems (Thanks to "Denniss")
+- Fix: Windows Defender definition files were attempted to be updated even if Windows Defender was disabled (Thanks to "Denniss" and "aker")
+- Fix: Network drive reconnection during recall failed on English systems (Thanks to J. Holland)
+--------------------------------------------------------------------------------
+Version 7.4 -- 05.07.12
+- Automatic recall feature enhanced to support Service Pack installations on Windows Vista, 7 and Server 2008(R2) systems
+- Optional installation/updating of Microsoft Silverlight
+- HTTP Proxy password storage to UpdateGenerator.ini file may now be avoided (Thanks to "Mortimer")
+- CreateISOImage.cmd script and UpdateGenerator.ini file now support "[/]skiphashes" switch to skip time-consuming hash computation of generated ISO files
+- HashDeep utility updated to version 4.2
+- InitializationHook.cmd calls moved upwards in DownloadUpdates.cmd and DoUpdate.cmd scripts (Thanks to S. Struß)
+- Fix: For Windows XP (x86) systems, kb2686509 was downloaded twice (Thanks to Th. Baisch)
+- Fix: Linux script DownloadUpdates.sh threw misleading connection timeout errors (Thanks to J. Steffens)
+- Fix: Linux script DownloadUpdates.sh attempted invalid dos2unix calls II (Thanks to "Spider-Mann")
+--------------------------------------------------------------------------------
+Version 7.4.1 -- 14.08.12
+- NOTE: This version is supposed to be the last one maintaining the Linux download scripts
+- UpdateGenerator GUI logic improved
+- Installation part will now suppress Winlogon Legal Notice during automatic recalls (Thanks to "Mortimer" and "aker")
+- Fix: Microsoft removed the Command Line Transformation Utility (msxsl.exe) from their servers
+- Fix: For Windows XP (x86) systems, an invalid version of kb2686509 was downloaded (Thanks to "Aldegundis", "mbathen", "aker" and "harry")
+- Fix: Download part missed Security Update kb2645640 for Windows Server 2003 (x86/x64)
+- Fix: .NET 3.5 patches kb2657424 and kb2604111 could fail to install on Windows Vista systems (Thanks to R. Tolley)
+- Fix: Error handling in CreateISOImage.cmd and CopyToTarget.cmd scripts corrected
+- Fix: Linux script DownloadUpdates.sh did not create platform specific subdirectories for .NET patches (Thanks to "zan69")
+- Fix: Linux script DownloadUpdates.sh contained invalid Windows (<CR><LF>) instead of Unix (<LF>) line feeds (Thanks to Ch. Grafe)
+- Fix: Slackware part and fromdos alias in Linux download script DownloadUpdates.sh (Thanks to A. Klie)
+--------------------------------------------------------------------------------
+Version 7.4.2 -- 15.08.12
+- Support removed for the Linux download scripts
+- Fix: Microsoft removed the Windows Defender installation files for Windows XP / Server 2003 (x86/x64) from their servers (Thanks to "psj", "LigH" and "aker")
+- Fix: Microsoft removed the Office 2003 Resource Kit (ork.exe), containing the Office File Converter Pack (oconvpck.exe), from their servers (Thanks to "LigH" and "boco")
+--------------------------------------------------------------------------------
+Version 7.5 -- 10.10.12
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate .NET 4.5 language pack(s) downloaded
+- Linux download scripts reintegrated (Thanks to H. Hullen)
+- Optional installation of Windows Management Framework 3.0 on Windows 7 and Server 2008(R2) (x86/x64) systems (Thanks to "boco")
+- Optional installation of .NET Framework 4 will now install .NET Framework 4.5 instead of v. 4.0 on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems (Thanks to "harry")
+- Office 2003 Resource Kit (ork.exe) reintegrated, since Microsoft provides it again (Thanks to "harry" and "aker")
+- UpdateGenerator script will now download mkisofs.exe regardless of the current ISO image creation settings (Thanks to "harry")
+- Fix: Automatic recall feature was broken on Windows XP systems (Thanks to "cecinit" and "boco")
+- Fix: Download part missed Security Update kb967723 for Windows Server 2003 (x86/x64)
+- Fix: ISO and USB filters for Windows 7 and Server 2008 R2 now include .NET Framework 3.5 SP1 installation files, since Windows Server 2008 R2 does not automatically contain .NET Framework 3.5 SP1
+- Fix: ISO and USB filters for Windows XP and Server 2003 (x64) erroneously excluded kb923789
+- Fix: UpdateGenerator script will now check for existence of USB target directory before attempting to copy to it (Thanks to "kara2004")
+--------------------------------------------------------------------------------
+Version 8.0 -- 02.01.13
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate IE10 installation file(s) downloaded
+- Support added for Windows 8 and Server 2012 (Thanks to "boco")
+- Optional installation of Internet Explorer 10 Release Preview on Windows 7 and Server 2008 R2 (x86/x64) systems
+- Support added for Remote Desktop Connection 8.0 client (kb2592687) on Windows 7 / Server 2008 R2 (x86/x64) systems
+- Support added for C++ 2012 Runtime Libraries Update 1 (Thanks to B. Knapp and "harry")
+- Linux scripts reviewed and enhanced to support Windows 8 / Server 2012 targets (Thanks to H. Hullen)
+- HashDeep utility updated to version 4.3
+- ISO filters improved to mutually exclude .NET Framework 4.0/4.5 installation packages (Thanks to "boco")
+- Removed obsolete "trailing colon" restriction for environment variable TEMP from UpdateGenerator script (Thanks to "daos" and "boco")
+- DownloadUpdates.cmd script now evaluates a custom ExcludeList-superseded-exclude.txt file (Thanks to "boco")
+- Default changed for updating DirectX Runtime Libraries
+- Fix: Network drive reconnection failed during subsequent recalls if its default was 'persistent' (Thanks to J. Holland)
+- Fix: Microsoft Silverlight x64 version was erroneously attempted to be installed on Windows XP/Vista and Server 2003/2008 (x64) systems (Thanks to "friday123" and "Denniss")
+- Fix: Update for Root Certificates (rootsupd.exe/kb931125) was not properly detected on x64 systems (Thanks to "boco")
+- Fix: Linux script CreateISOImage.sh did not exit on missing iso creation tool (Thanks to S. Baur and H. Hullen)
+- Fix: 'x86-cross-product' ISO images exceeded 4.7 GB (max. capacity of DVD-5 media) and therefore won't contain Vista, but Server 2003 updates now
+- Fix: State of service 'Windows Update' (wuauserv) might be determined incorrectly (Thanks to "boco")
+- Fix: UpdateInstaller script offered .NET Framework 3.5 SP1 installation under Windows 7 / Server 2008 R2 (Thanks to Ch. Giesers)
+- Fix: UpdateInstaller script did not properly detect existing .NET Framework 3.5 SP1 installations under Windows 7 / Server 2008 R2 (Thanks to "boco")
+- Fix: Update Rollup 1.1 for Windows MultiPoint Server 2011 (kb2626067) was erroneously downloaded
+--------------------------------------------------------------------------------
+Version 8.1 -- 21.02.13
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate MSE installation file(s) downloaded
+- Support added for MSI packages' and custom software installations
+- Download targets, detection and update capability added for Office 2013
+- Updating of Microsoft Security Essentials definition files will now include Network Inspection System definitions (Thanks to B. Schinkel-Momsen and "harry")
+- Update for untrusted/revoked Root Certificates (rvkroots.exe/kb2798897) included (Thanks to "rbr555")
+- Optional creation of collection script ...\cmd\custom\RunAll.cmd (Thanks to "boco")
+- Fix: Microsoft moved and renamed Microsoft Security Essentials installation files (Thanks to "harry", "boco" and "Denniss")
+- Fix: On Windows Vista / Server 2008 (x86/x64) systems, IE8 installation failed due to invalid parameter "/closeprograms" (Thanks to R. Tolley)
+- Fix: Check for new WOU versions failed if environment variable PATH did not contain %SystemRoot%\system32 (Thanks to "surfmaxx" and "aker")
+- Fix: Suboptimal sequence in DoUpdate.cmd script could lead to .NET installation failures
+- Fix: Removed Windows activation determination code from DetermineSystemProperties.vbs script since it's not used any longer (Thanks to "aker" and "boco")
+- Fix: Missing semicolon in Linux script CreateISOImage.sh lead to syntax error (Thanks to "falcon")
+--------------------------------------------------------------------------------
+Version 8.1.1 -- 23.02.13
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate MSE installation file(s) downloaded
+- Fix: Microsoft moved and renamed the Security Essentials installation files again (Thanks to "scharl", "boco" and "harry")
+--------------------------------------------------------------------------------
+Version 8.2 -- 28.02.13
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate IE10 installation file(s) downloaded
+- Optional installation of Internet Explorer 10 on Windows 7 and Server 2008 R2 (x86/x64) systems (Thanks to "harry" and "boco")
+- Static download definitions may be updated while downloading (Thanks to "boco")
+- Office update exclude list refined to include Visio updates (e.g. kb2687508) now (Thanks to "Gerby")
+- Static download URLs updated for C++ 2005 and 2012 Runtime Libraries
+- Fix: Linux script CreateISOImage.sh did not support symbolic links (Thanks to "jpotto")
+--------------------------------------------------------------------------------
+Version 8.3 -- 21.03.13
+- Microsoft Silverlight updated to v. 5.1.20125.0 (Thanks to "harry")
+- MSI packages' installations support MST transformation files now (Thanks to "rbr555")
+- Support removed for .NET Frameworks 2.0 SP0/SP1 and 3.5 SP0 (Thanks to M. Trenkner)
+- Fix: Internet Explorer 9 / 10 and prerequisites will now be attempted to be installed only once (Thanks to "soeftel" and "boco")
+- Fix: Removed static download definition for obsolete Security Update kb2598039 for Office 2010 x86 (Thanks to "harry")
+- Fix: Added static download definition for Update kb2687503 (may replace kb2597986) for Office 2010 x86 (Thanks to "harry")
+- Fix: Missing "/f" switch for reg.exe could cause PrepareRecall.cmd, PrepareShowLogFile.cmd and CleanupRecall.cmd to wait for user interaction (Thanks to "rbr555")
+- Fix: Linux script DownloadUpdates.sh corrected (Thanks to St. Baur, J. Steffens and H. Hullen)
+--------------------------------------------------------------------------------
+Version 8.4 -- 27.05.13
+- UpdateInstaller script will now remind user's presets inbetween manual recalls (Thanks to "paul1149")
+- DoUpdate.cmd script will now beep to request manual reboots (Thanks to "paul1149")
+- Fix: Microsoft does not support dynamic determination of Updates for Office 2013 (Thanks to W. Wenzel)
+- Fix: Installation part missed updates for Internet Explorer 10 (Thanks to "Gerby")
+- Fix: UpdateGenerator script will now check installation state of Trusted Root Certificates (Thanks to "boco")
+- Fix: UpdateGenerator script will now block UNC script paths (Thanks to "hereiam")
+- Fix: UpdateGenerator and UpdateInstaller scripts will now block invalid %TEMP% paths (Thanks to "e2020" and "aker")
+- Fix: Double-quoted parameter check could prevent installation of Office File Converter Pack (Thanks to "Rassilon")
+- Fix: Download part missed PowerPoint 2007 Security Update kb2596764 due to a bug in Microsoft's update catalog file wsusscn2.cab
+- Fix: Language messages and prerequisites' problem corrected in Linux scripts (Thanks to H. Hullen)
+- Fix: Invalid download paths for C++ Runtime Libraries in Linux script DownloadUpdates.sh (Thanks to H. Hullen)
+- Fix: Differences between Linux and Windows download parts (Thanks to "talou" and H. Hullen)
+--------------------------------------------------------------------------------
+Version 8.5 -- 26.07.13
+- NOTE: If you customized your copy of WOU using the script AddOffice2010x64Support.cmd {lng}, please call it again once (per language) to get the appropriate Office 2010 SP2 installation file(s) downloaded
+- Office 2010 Service Pack 2 integrated (Thanks to "harry" and "aker")
+- Microsoft Silverlight updated to v. 5.1.20513.0 (Thanks to "harry")
+- Support added for C++ 2012 Runtime Libraries Update 3 (Thanks to "harry")
+- HTTP Proxy password prompt will now encode special characters according to RFC1738 (Thanks to "Mortimer")
+- Custom update definitions for .NET Frameworks 3.5 SP1 and 4 will be executed even if the Frameworks are already installed (Thanks to "DK3" and "aker")
+- Fix: Service Packs for Office 2003, 2007 and 2010 were not installed if Office 2013 was present (Thanks to "Gerby" and "aker")
+- Fix: HTTP Proxy password prompt did not appear again after HTTP Proxy changes (Thanks to V. Bartheld)
+- Fix: Download part missed kb2813170 for Windows XP, 7 and Server 2003 (x86) due to a bug in Microsoft's update catalog file wsusscn2.cab (Thanks to M. Trenkner)
+- Fix: Download part missed kb2425227 for Windows 7 and Server 2008 R2 (x86/x64) due to a bug in Microsoft's update catalog file wsusscn2.cab
+- Fix: Download part missed updates kb2817480 for Office 2003 and kb2596764 for Office 2007 (Thanks to "harry")
+- Fix: Download part got updates for Lync (Thanks to "harry")
+--------------------------------------------------------------------------------
+Version 8.6 -- 16.09.13
+- NOTE: If you like to use aria2 instead of wget for downloading, please call ActivateAria2Downloads.cmd once
+- Detection capability added for Windows 8.1 / Server 2012 R2 and Internet Explorer 11
+- Optional use of aria2 instead of wget to speed up downloading (Thanks to "qoole" and "brb8two")
+- List of superseded updates will now be recalculated if ExcludeList-superseded-exclude.txt was modified
+- Microsoft Security Essentials and MSI packages will now be installed last (Thanks to "paul1149")
+- CreateISOImage.cmd and CreateISOImage.sh scripts will now create UDF instead of Joliet formatted ISO images (Thanks to "tapek")
+- DownloadUpdates.cmd script will now automatically update mkisofs tool
+- Added missing URL for Turkish version of Service Pack 2 for Office 2010 x64 (Thanks to "harry")
+- Fix: Static installation definitions for Office updates were not correctly evaluated on dual Office installations (Thanks to "aker")
+- Fix: XSLT filters for Windows 8 / Server 2012 also got updates for Windows 8.1 / Server 2012 R2 (Thanks to "harry")
+- Fix: UpdateGenerator script won't any longer try to copy to non-existent USB target paths (Thanks to "boco" and "aker")
+- Fix: DownloadUpdates.cmd script will now avoid misleading file integrity verification failures after an incomplete or broken download run (Thanks to "boco")
+- Fix: DownloadUpdates.cmd script erroneously deleted StaticDownloadLinks-o2k13-x64-glb.txt (Thanks to "psj")
+- Fix: Microsoft updated kb2574819 (DTLS, prerequisite for RDP 8.0) for Windows 7 and Server 2008 R2 (x86/x64) (Thanks to "cecinit" and "Matjes")
+- Fix: Download part missed kb2644615 for Windows 7 and Server 2008 R2 (x86/x64) due to a bug in Microsoft's update catalog file wsusscn2.cab
+- Fix: Download part missed kb956744 for Windows Server 2003 (x86) due to a bug in Microsoft's update catalog file wsusscn2.cab
+- Fix: Download part missed kb2817465 and kb2768017 for Office 2013
+- Fix: Cleaned up ExcludeList-superseded-exclude.txt (Thanks to M. Trenkner)
+- Fix: Download failures of mkisofs tool will now result in a warning instead of an error (Thanks to Th. Lohe)
+- Fix: Minor fix in Linux script DownloadUpdates.sh (Thanks to "Buster" and H. Hullen)
+--------------------------------------------------------------------------------
+Version 8.7 -- 25.10.13
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate .NET 4.5.1 language pack(s) downloaded
+- Support added for Windows 8.1 and Server 2012 R2
+- Support added for Windows Management Framework 4.0 on Windows 7 and Server 2008 R2 / 2012 (x86/x64) systems (Thanks to "zhaojie")
+- .NET Framework 4.5 updated to v. 4.5.1 (Thanks to "boco" and "harry")
+- Microsoft Silverlight updated to v. 5.1.20913.0 (Thanks to "harry")
+- C++ 2013 Runtime Libraries integrated (Thanks to "harry")
+- Installation part will now log Windows licensing info (Thanks to Bert Schinkel-Momsen)
+- Update for the Windows Operating System Loader (kb2506014) added for Windows Vista, 7 and Server 2008(R2) (x64) (Thanks to "friday123")
+- Static download definitions added for Disk Cleanup Wizard addon for Windows 7 SP1 (kb2852386) (Thanks to "David" and Th. Baisch)
+- Static download definitions added for Update for Deprecation of MD5 Hashing Algorithm for Microsoft Root Certificate Program (kb2862973) for Windows Vista, 7, 8 and Server 2008(R2)/2012 (x86/x64) (Thanks to "friday123")
+- Static download URLs for aria2 download utility updated to v. 1.18.1
+- Excluded Update Rollups 1-4 (kb2554636, kb2630436, kb2705122 and kb2757013) for Windows Storage Server 2008 R2 Essentials (Thanks to "zhaojie")
+- Fix: Sysinternals jumbled parameters and screwed up Sigcheck v. 2.0 (Thanks to "Gerby")
+- Fix: Installation failed on Japanese Windows Vista systems due to special characters in Win32_OperatingSystem.Caption (Thanks to I. Wada)
+- Fix: DoUpdate.cmd script repeatedly installed custom static update definitions for .NET Frameworks 3.5 SP1 and 4 (Thanks to "Wes" and "aker")
+- Fix: DownloadUpdates.cmd script threw misleading file integrity verification warnings for .NET updates (Thanks to "boco")
+- Fix: Patch installation using Dism.exe failed when called by a custom x86 starter process (Thanks to "MacKeon", "Baumix" and "boco")
+- Fix: Downloading from internal WSUS server failed (Thanks to P. Pacha)
+- Fix: Download part missed kb2835361 for Windows Vista, 7 and Server 2008(R2) (x86/x64) due to a bug in Microsoft's update catalog file wsusscn2.cab
+- Fix: Download part missed kb2827238 for Excel 2013
+- Fix: Minor fixes in Linux scripts (Thanks to "MacKeon" and H. Hullen)
+--------------------------------------------------------------------------------
+Version 8.7.1 -- 28.10.13
+- Fix: .NET Framework 4.5.1 wasn't offered for installation if v. 4.5 was already installed (Thanks to "DK3")
+--------------------------------------------------------------------------------
+Version 8.7.2 -- 04.11.13
+- Fix: Windows Management Framework 4.0 wasn't offered for installation on Windows Server 2012 systems
+- Fix: DoUpdate.cmd script will now also try to determine missing updates if state of service 'Windows Update' (wuauserv) is "Start Pending" (Thanks to "friday123")
+- Fix: Check for trailing backslash in environment variable TEMP was broken in UpdateGenerator and UpdateInstaller scripts (Thanks to "chavv")
+--------------------------------------------------------------------------------
+Version 8.8 -- 18.11.13
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate IE11 installation file(s) downloaded
+- NOTE: If you customized your copy of WOU using the script AddOffice2010x64Support.cmd {lng}, please call it again once (per language) to get the static multilingual x64 update files for Office 2010 downloaded
+- Optional installation of Internet Explorer 11 on Windows 7 and Server 2008 R2 (x86/x64) systems (Thanks to "boco")
+- Speeded up determination of missing updates on Windows XP, Vista and Server 2003/2008 (x86/x64) systems by installing kb2888505 as a prerequisite (Thanks to "boco", "Gerby" and the community)
+- Support added for C++ 2012 Runtime Libraries Update 4 (Thanks to "boco" and "flummie")
+- On Windows XP (x86) systems without SP3, kb953356 will now be installed before SP3 (Thanks to "nlewis")
+- Service Pack support added for Microsoft Office Viewers (Word, Excel and PowerPoint) (Thanks to "banzeo" and "aker")
+- Excluded Update Rollups 1-3 (kb2781267, kb2824160 and kb2862551) for Windows Server 2012 Essentials
+- Fix: Office multilingual updates' directory (ofc glb) was blown up (Thanks to M. Köhler, "Denniss" and "psj")
+- Fix: Download part missed Security Updates kb2768005 and kb2837618 for Office 2013
+- Fix: AddOffice2010x64Support.cmd script didn't consider StaticDownloadLinks-o2k10-x64-glb.txt (Thanks to "psj")
+- Fix: 'x86-cross-product' ISO images exceeded 4.7 GB (max. capacity of DVD-5 media) and therefore won't any more contain updates for Windows Server 2003
+--------------------------------------------------------------------------------
+Version 8.9 -- 15.01.14
+- AutoIt script compiler updated to version 3.3.10.2
+- Static download URLs for aria2 download utility updated to v. 1.18.3 (Thanks to M. Köhler)
+- Updated static download URL for untrusted/revoked root certificates (rvkroots.exe/kb2917500)
+- Update scan prerequisite for Windows XP and Server 2003 (x86) systems (latest IEx cumulative security update) will now be dynamically determined (Thanks to "harry" and "aker")
+- UpdateGenerator script now supports variable ini files given as a command line parameter (Thanks to "boco")
+- MSI packages and custom software will now be installed before Microsoft's updates (Thanks to "d4vr0s")
+- Linux download script DownloadUpdates.sh now also supports Windows 8.1 and Server 2012 R2 (Thanks to H. Hullen)
+- Fix: Download part missed Security Updates kb2850057 and kb2850064 for Office 2013
+- Fix: Update scan prerequisite installation restricted to Windows XP and Server 2003 (x86) systems (Thanks to "boco" and "Denniss")
+- Fix: Windows XP (x86) SP3 prerequisite update for non-Intel processors (kb953356) was erroneously attempted to be installed on systems without SP2 (Thanks to A. Pfohl)
+- Fix: Downloading of updated CPP and MSE installation packages could fail after an incomplete previous run (Thanks to Th. Baisch)
+- Fix: Download URLs for C++ 2012 Runtime Libraries Update 4 adjusted to English versions (Thanks to "harry")
+- Fix: DoUpdate.cmd script missed escape characters for log file output (Thanks to "aker", "boco" and "Matjes")
+- Fix: Excluded obsolete/superseded cumulative security updates for Internet Explorer under Windows Vista and Server 2003/2008 (x86/x64) (Thanks to "harry")
+- Fix: Linux download script DownloadUpdates.sh stored .NET installation files in invalid path (Thanks to "rogger", H. Buhrmester and H. Hullen)
+--------------------------------------------------------------------------------
+Version 9.0 -- 05.03.14
+- INSTALLATION HINT: If you customized your copy of WOU using the script AddOffice2010x64Support.cmd {lng}, please call it again once (per language) to get the appropriate Office 2013 SP1 installation file(s) downloaded
+- NOTE: This version is supposed to be the last one supporting Windows XP and Office 2003 (see http://support.microsoft.com/lifecycle/?p1=3223 and http://support.microsoft.com/lifecycle/?p1=2488)
+- Office 2013 Service Pack 1 integrated (Thanks to "Gerby")
+- DoUpdate.cmd script now supports "/instielatest" parameter for platform independent custom scripting (Thanks to "hdneuenfeldt" and "aker")
+- RemoveGermanLanguageSupport.cmd script added for non-german users' convenience (Thanks to "Progman" and "sao")
+- Removed obsolete update scan prerequisite installation for Windows XP (x86) systems (Thanks to "Denniss", "psycx", "Manfred" and the community)
+- Fix: CompileAutoItScripts.cmd script won't any longer use compression for compilation in order to avoid false positive alerts from AV scanners (Thanks to "boco")
+- Fix: Excluded obsolete/superseded cumulative security updates for Internet Explorer under Windows XP/Server 2003 (x64) and 7/Server 2008 R2 (x64) (Thanks to "harry")
+- Fix: Excluded obsolete initial revision of security update for USB drivers (kb2862330) for Windows 7 and Server 2008 R2 (x86/x64) systems (Thanks to M. Köhler)
+- Fix: Removed obsolete static download definitions for kb2862973 (Update for Deprecation of MD5 Hashing Algorithm for Microsoft Root Certificate Program) (Thanks to "boco" and "harry")
+- Fix: Linux download script DownloadUpdates.sh didn't write builddate.txt file (Thanks to "Spider-Mann")
+--------------------------------------------------------------------------------
+Version 9.1 -- 04.04.14
+- NOTE: This version will be the last one supporting Windows XP and Office 2003 (see http://support.microsoft.com/lifecycle/?p1=3223 and http://support.microsoft.com/lifecycle/?p1=2488)
+- Support added for Remote Desktop Connection 8.1 client (kb2830477) on Windows 7 / Server 2008 R2 (x86/x64) systems (Thanks to K. Olbrich)
+- Microsoft Silverlight updated to v. 5.1.30214.0 (Thanks to "harry")
+- Static download URLs for aria2 download utility updated to v. 1.18.5 (Thanks to M. Köhler)
+- Fix: 'x86-cross-product' ISO images exceeded 4.7 GB (max. capacity of DVD-5 media) and therefore won't any longer contain updates for Windows XP and Office 2003 / 2007 and installation files for .NET 3.5 SP1 / 4.0
+- Fix: RemoveGermanLanguageSupport.cmd script didn't consider StaticDownloadLinks-dotnet.txt (Thanks to "rubasik")
+- Fix: Version determination of Sysinternals' Sigcheck tool will now default to v. 2.x (Thanks to "aker")
+--------------------------------------------------------------------------------
+Version 9.2 -- 14.04.14
+- NOTE: This version will be the very last one supporting Windows XP and Office 2003 (see http://support.microsoft.com/lifecycle/?p1=3223 and http://support.microsoft.com/lifecycle/?p1=2488)
+- Windows 8.1 Update 1 (kb2919355) integrated (Thanks to "Gerby", "aker", "boco" and the community)
+- HashDeep utility updated to version 4.4 (Thanks to St. Christensen)
+- DoUpdate.cmd script will now also log OS revision number (Thanks to "Dirk67")
+- Fix: Excluded download of kb2927581 (Update Rollup 1.2 for Windows MultiPoint Server 2011 on Windows Server 2008 R2 systems)
+- Fix: Linux script CreateISOImage.sh wildcard processing (Thanks to H. Hullen)
+--------------------------------------------------------------------------------
+Version 9.2.1 -- 05.05.14
+- NOTE: This version will be the very very last one supporting Windows XP and Office 2003 (see http://support.microsoft.com/lifecycle/?p1=3223 and http://support.microsoft.com/lifecycle/?p1=2488)
+- Fix: Download filters missed kb2964358 (MS14-021) for IE6 under Windows XP (Thanks to "harry")
+- Fix: Microsoft corrected Windows 8.1 Update 1 (kb2919355) by adding kb2959977 (Thanks to "harry")
+- Fix: Microsoft now delivers Windows 8.1 Update 1 installation files through catalog file wsusscn2.cab (Thanks to "psj")
+- Fix: DetermineSystemProperties.vbs script did not detect Microsoft Silverlight x86 installations under x64 Operating Systems (Thanks to "rbr555")
+--------------------------------------------------------------------------------
+Version 9.3 -- 23.05.14
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate .NET 4.5.2 language pack(s) downloaded
+- .NET Framework 4.5 updated to v. 4.5.2 (Thanks to "harry")
+- Support removed for Windows XP since Microsoft discontinued support for it on April 8th, 2014 (see http://support.microsoft.com/lifecycle/?p1=3223)
+- Support removed for Office 2003 since Microsoft discontinued support for it on April 8th, 2014 (see http://support.microsoft.com/lifecycle/?p1=2488)
+- ISO and USB filters adjusted (Thanks to "harry" and "Matjes")
+- Fix: UpdateGenerator and UpdateInstaller dialog scaling corrected for Windows 8 / 8.1 and Server 2012 (R2) systems (Thanks to "fly")
+- Fix: Microsoft corrected Windows 8.1 Update 1 (kb2919355) again by adding clearcompressionflag.exe
+- Fix: Download part missed Security Update kb2880463 (MS14-023) for Office 2013 (Thanks to "Gerby")
+--------------------------------------------------------------------------------
+Version 9.3.1 -- 12.06.14
+- AutoIt script compiler updated to version 3.3.12.0
+- Fix: Windows 8.1 Update 1 integrated installation media may not contain kb2919355 supplementary patches, e.g. kb2959977 (Thanks to A. Koziaris)
+- Fix: Update kb2969339 added to Windows 8.1 Update 1 (kb2919355) installation routine (Thanks to "Gerby")
+- Fix: .NET Framework 4.5.2 was not properly detected and installed on Windows 8.1 and Server 2012 R2 systems (Thanks to "DK3")
+- Fix: Download part missed kb2964358 (MS14-021) for Windows XP x64 and Server 2003 x64 (Thanks to "off")
+- Fix: Download part missed kb975713 (MS10-007) for Windows XP x64 and Server 2003 x64 (Thanks to "off")
+- Fix: Download part missed Security Update kb2878284 (MS14-023) for Office 2010
+- Fix: Download part missed Security Update kb2881013 (MS14-036) for Office 2013 (Thanks to "Gerby")
+- Fix: Root Certificates' updates kb931125 and kb2917500 added to installation exclude list (explicit installation) (Thanks to "aker")
+- Fix: Target confusion in Linux script DownloadUpdates.sh (Thanks to "OliWee")
+--------------------------------------------------------------------------------
+Version 9.4 -- 02.09.14
+- NOTE: Please delete ...\exclude\ExcludeList-superseded.txt once you updated to v. 9.4 to be sure to have it re-created during the next download run
+- Updated static download URL for untrusted/revoked root certificates (rvkroots.exe/kb2982792) (Thanks to "friday123")
+- Microsoft Silverlight updated to v. 5.1.30514.0 (Thanks to "harry")
+- Windows Update Agent (WUA) will now be updated to v. 7.6.7600.320 on Windows 7 / 8 and Server 2008 R2 / 2012 (x86/x64) systems (Thanks to "boco")
+- ListMissingUpdateIds.vbs script won't any longer list updates which are marked as hidden on the target computer (Thanks to "aker")
+- CreateISOImage.cmd and CopyToTarget.cmd scripts will now also call InitializationHook.cmd and FinalizationHook.cmd scripts if present (Thanks to M. Köhler)
+- Linux scripts now also support Mac OS X (Darwin) and BSD (Thanks to "ovizii" and H. Hullen)
+- Static download URLs for aria2 download utility updated to v. 1.18.7 (Thanks to "harry")
+- Fix: Superseded updates' determination was broken by new wsusscn2.cab catalog file format (Thanks to "boco", "aker" and "wyoming")
+- Fix: Updates kb2939087 and kb2975061 added to Windows 8.1 Update 1 (kb2919355) installation routine (Thanks to B. Schinkel-Momsen)
+- Fix: Superseded Updates kb2919442 and kb2969339 removed from Windows 8.1 Update 1 (kb2919355) installation routine (Thanks to "harry")
+- Fix: Improved detection of Office architecture (Thanks to "luxor", "aker", "boco" and "Denniss")
+- Fix: Improved detection of PowerShell 2.0 (Thanks to "aker")
+- Fix: Linux scripts contained misleading error message regarding commonparts.sh (Thanks to H. Hullen)
+- Fix: Linux scripts' improvements (Thanks to "hbuhrmester" and H. Hullen)
+--------------------------------------------------------------------------------
+Version 9.4.1 -- 30.09.14
+- Static download URLs for aria2 download utility updated to v. 1.18.8 (Thanks to "harry")
+- Fix: Static download URLs for MSE Network Realtime Inspection definitions updated (Thanks to "harry")
+- Fix: TouchMSITree.cmd script did not properly handle duplicate file name parts and MST file names containing spaces (Thanks to F. Mezou)
+- Fix: If executed manually, CleanupRecall.cmd script did not delete registry reference to WOUTempAdmin profile (Thanks to "aker")
+- Fix: Download part did not exclude kb2976627 (superseded cumulative security update for IE) for Windows Vista and Server 2008 (x86/x64) (Thanks to "Matjes")
+- Fix: Minor options' control flow bug in UpdateInstaller script
+--------------------------------------------------------------------------------
+Version 9.4.2 -- 04.10.14
+- Fix: MSI packages' installation was broken (Thanks to "rbr555")
+--------------------------------------------------------------------------------
+Version 9.5 -- 25.11.14
+- NOTE: If you customized your copy of WOU using the script AddCustomLanguageSupport.cmd {lng}, please call it again once (per language) to get the appropriate Windows Essentials 2012 installation file(s) downloaded
+- Integrated November 2014 Update Rollup (kb3000850) for Windows 8.1 (x86/x64) and Server 2012 R2 (Thanks to "Gerby")
+- Support added for Windows Essentials 2012 - not yet available for Linux download script (Thanks to J. Smith)
+- Fix: Download part did not completely exclude kb2976627 (MS14-051, superseded cumulative security update for IE) (Thanks to "Matjes")
+- Fix: Microsoft revoked kb2949927 for Windows 7 and Server 2008 R2 (x86/x64) (Thanks to "Matjes")
+- Fix: DoUpdate.cmd script will now raise a warning instead of an error if most recent Windows Update Agent installation file is not found (Thanks to "radkins", "Kettenhund" and "aker")
+- Fix: CreateISOImage.cmd and CreateISOImage.sh scripts will now create ISO images containing Joliet directory information as well as UDF file system (Thanks to "Pamela", "aker" and "boco")
+- Fix: Removed obsolete Security Updates for Flash Player (kb913433 and kb923789)
+- Fix: Removed obsolete Security Updates for MDAC 2.8 SP1 (kb911562 and kb927779)
+- Fix: Reviewed and consolidated internal structures
+--------------------------------------------------------------------------------
+Version 9.5.1 -- 05.01.15
+- Linux scripts now also support Windows Essentials 2012 (Thanks to H. Hullen)
+- RemoveEnglishLanguageSupport.cmd script added for non-english users' convenience
+- Fix: Removed download exclusion of kb2976627 (MS14-051, superseded cumulative security update for IE) for IE11 under Windows 7, 8.1 and Server 2008/2012 R2 (x86/x64) systems
+- Fix: Removed superseded IE cumulative security update kb3003057 (MS14-065) from November 2014 Update Rollup (kb3000850) installation for Windows 8.1 (x86/x64) and Server 2012 R2 (Thanks to "jonas")
+- Fix: Filter file ExcludeListUSB-all-x86.txt erroneously excluded .NET Framework 4.5.2 installation packages (kb2901907) (Thanks to "random")
+--------------------------------------------------------------------------------
+Version 9.5.2 -- 11.02.15
+- Static download URLs for aria2 download utility updated to v. 1.18.9 (Thanks to "harry")
+- Fix: CleanupRecall.cmd script could erroneously delete a user profile different from WOUTempAdmin (Thanks to "LogicDaemon")
+- Fix: Removed static download definition for obsolete Update kb2687503 for Office 2010 x86 (Thanks to "harry")
+--------------------------------------------------------------------------------
+Version 9.5.3 -- 05.03.15
+- Update for Root Certificates (rootsupd.exe/kb931125) updated to v. 41,0,2195,0 (March 2014) (Thanks to "Gerby", "boco", "-Iwan-" and "aker")
+- Added fix for text quality degradation (kb3037639) after security update kb3013455 for Windows Vista and Server 2003/2008 (x86/x64) systems
+- Increased filtering stability by operating findstr.exe case insensitively (Thanks to "hbuhrmester")
+- Self update will now automatically update custom language additions (Thanks to "aker")
+- Static download URLs for aria2 download utility updated to v. 1.18.10 (Thanks to "harry")
+- Fix: Replaced obsolete Security Update for Office 2010 kb2878284 (MS14-023) by kb2956073 (MS15-012)
+--------------------------------------------------------------------------------
+Version 9.5.4 -- 14.03.15
+- Fix: Removed obsolete fix for text quality degradation (kb3037639) for Windows Vista and Server 2003/2008 (x86/x64) systems (Thanks to "Denniss")
+- Fix: Download part missed kb3031432 and kb3004375 for Windows 7 and Server 2008 R2 (x86/x64) systems (Thanks to A. Goldbaum, "Denniss" and "harry")
+--------------------------------------------------------------------------------
+Version 9.6 -- 02.04.15
+- Ability added to enable .NET Framework 3.5 feature on Windows 8, 8.1 and Server 2012(R2) (x86/x64) systems (Thanks to J. Smith)
+- Update for untrusted/revoked Root Certificates (rvkroots.exe) updated to v. 8,0,2195,0 (kb3050995, March 2015) (Thanks to "harry" and "aker")
+- Detection capability added for Windows 10
+- Fix: DoUpdate.cmd script will now stop service 'Windows Update' (wuauserv) after scanning for missing updates to prevent system reboot prompts (Thanks to "putput", "blackerking", "phaedrus" and "aker")
+- Fix: UpdateGenerator and UpdateInstaller dialog scaling calculation enhanced (Thanks to "Ethan" and "ProTofik")
+- Fix: When launched by a foreign 32-bit host process on a 64-bit system, CleanupRecall.cmd script did not properly disable autologon (Thanks to "JabraXx")
+- Fix: Consolidated ExcludeList-superseded-exclude.txt
+--------------------------------------------------------------------------------
+Version 9.7 -- 25.06.15
+- NOTE: This version is supposed to be the last one supporting Windows Server 2003 (see https://support.microsoft.com/en-us/lifecycle?p1=3198)
+- Integrated December 2014 update rollup (kb3013769) for Windows 8.1 (x86/x64) and Server 2012 R2 (Thanks to "Gerby")
+- Microsoft Silverlight updated to v. 5.1.40416.0 (Thanks to "harry")
+- Static download URLs for aria2 download utility updated to v. 1.19.0 (Thanks to "harry")
+- Fix: Unsigned file rootsupd.exe was deleted (Thanks to "hbuhrmester" and the community)
+- Fix: Download part missed Security Updates kb2553428/kb2965236 (MS15-033) and kb2863817 (MS15-059) for Office 2010
+- Fix: Download part missed Security Update kb3039749 (MS15-059) for Office 2013 (Thanks to "Gerby")
+- Fix: Reintegrated IE cumulative security update kb3003057 (MS14-065) into November 2014 update rollup (kb3000850) installation for Windows 8.1 (x86/x64) and Server 2012 R2 (Thanks to "Gerby")
+- Fix: Excluded security update kb3057781 (MS15-044) for .NET Framework 4.6 RC (Thanks to "Denniss" and "harry")
+- Fix: Replaced superseded update kb2913751 by kb2923545 in Remote Desktop Connection 8.1 client installation on Windows 7 / Server 2008 R2 (x86/x64) systems
+- Fix: Adjusted aria2 download options (Thanks to "hbuhrmester")
+- Fix: Removed obsolete script CheckTRCerts.cmd (Thanks to "hbuhrmester")
+--------------------------------------------------------------------------------
+Version 9.8 -- 07.08.15
+- .NET Framework 4 updated to v. 4.6 (Thanks to "harry" and "aker")
+- C++ 2015 Runtime Libraries integrated (Thanks to "harry")
+- Support removed for Windows Server 2003 since Microsoft discontinued support for it on July 14th, 2015 (see https://support.microsoft.com/en-us/lifecycle?p1=10394)
+- AutoIt script compiler updated to version 3.3.14.1 (Thanks to "harry")
+- Integrated Windows Update Client August 2015 (kb3075851/kb3075853) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 (Thanks to "Denniss" and "harry")
+- Fix: Static installation definition added for kb2552343 under Windows 7 and Server 2008 R2 (x86/x64) in order to fix repeated installation attempts of kb2532531 (Thanks to "cantab" and "aker")
+- Fix: Download part missed Security Update kb2863817 (MS15-059) for Office 2010
+- Fix: Linux scripts' improvements (Thanks to "techge", "deramon", "DanielEckl", "hbuhrmester" and H. Hullen)
+--------------------------------------------------------------------------------
+Version 10.0 -- 20.08.15
+- Support added for Windows 10 and Server 2016
+- Microsoft Silverlight updated to v. 5.1.40728.0 (Thanks to "harry")
+- Fix: Replaced obsolete Lync 2013 Security Update kb2881013 (MS14-036) by kb3055014 (MS15-080)
+- Fix: Download part missed Security Update kb3054876 (MS15-081) for Visio 2010
+- Fix: Removed obsolete Security Update kb2965236 (MS15-033) for Office 2010
+- Fix: Disk Cleanup Wizard addon (kb2852386) for Windows 7 / Server 2008 R2 (x64) updated to v2 (Thanks to "scu")
+- Fix: Linux scripts' improvements (Thanks to H. Klatte, N. Möndjen and H. Hullen)
+--------------------------------------------------------------------------------
+Version 10.0.1 -- 10.09.15
+- Shortcut evaluation added for Office only media (Thanks to "Tester", "Lokmup", "Denniss" and "aker")
+- DownloadUpdates.cmd script will now delete NTFS alternate data streams from new or updated script files (Thanks to "blackerking", "boco" and "aker")
+- Integrated Windows Update Client September 2015 (kb3083324/kb3083325) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 (Thanks to "harry")
+- Fix: Replaced obsolete Office 2010 Security Update kb2863817 (MS15-059) by kb3054965 (MS15-099)
+- Fix: Replaced obsolete Office 2013 Security Update kb3039749 (MS15-059) by kb3054932 (MS15-099) (Thanks to "Gerby")
+- Fix: Replaced obsolete Lync 2013 Security Update kb3055014 (MS15-080) by kb3085500 (MS15-097) (Thanks to "Gerby")
+- Fix: Linux scripts' improvements (Thanks to H. Klatte and H. Hullen)
+--------------------------------------------------------------------------------
+Version 10.0.2 -- 11.09.15
+- Integrated September 2015 cumulative update for Windows 10 (kb3081455) and prerequisite compatibility update (kb3081452)
+- Blacklisted superseded August 2015 cumulative updates for Windows 10 (kb3081444 and kb3081448)
+- Fix: DownloadUpdates.cmd script did not delete NTFS alternate data streams from new script files (Thanks to "aker")
+--------------------------------------------------------------------------------
+Version 10.1 -- 17.09.15
+- Speeded up determination of missing updates on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems by installing kb3078601 (MS15-080) as a prerequisite (Thanks to "Denniss", "Dalai" and the community)
+- Moved Windows Vista and 8 to UpdateGenerator's legacy products' tab (Thanks to "boco")
+- Fix: Excluded obsolete patches for .NET Framework versions 1.1, 2.0 and 3.0 (Thanks to "Denniss")
+- Fix: Replaced superseded Office 2007 Security Update kb2760415 (MS13-091) by kb3054987 (MS15-099) (Thanks to "Denniss")
+--------------------------------------------------------------------------------
+Version 10.2 -- 15.10.15
+- Support added for Office 2016
+- AutoIt script compiler updated to version 3.3.14.2
+- Static download URLs for aria2 download utility updated to v. 1.19.2 (Thanks to "harry")
+- DetermineSystemProperties.vbs script will now create file "%USERPROFILE%\Desktop\WOUSystemProperties.txt" instead of "%TEMP%\SetSystemEnvVars.cmd" if executed manually (Thanks to "boco")
+- Fix: Removed obsolete September 2015 cumulative update for Windows 10 (kb3081455) and prerequisite compatibility update (kb3081452)
+- Fix: Replaced obsolete Visio 2010 Security Update kb3054876 (MS15-081) by kb3085514 (MS15-110)
+- Fix: Download part erroneously excluded Security Updates kb2535512 (MS11-042) and kb2973201 (MS14-039) for Windows Vista and Server 2008 (x86)
+- Fix: .NET Framework 4.6 was not properly installed on Server Core systems (Thanks to R. Bronca)
+--------------------------------------------------------------------------------
+Version 10.2.1 -- 12.11.15
+- Integrated Windows Update Client improvement updates (kb3102810/kb3102812) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 (Thanks to "harry")
+- Fix: Replaced superseded Office 2007 Security Update kb3054987 (MS15-099) by kb3085620 (MS15-099)
+- Fix: Replaced superseded Office 2010 Security Update kb3054965 (MS15-099) by kb3085560 (MS15-099)
+- Fix: Replaced superseded Word 2010 Security Update kb2553428 (MS15-033) by kb2965313 (MS15-116)
+- Fix: Replaced superseded Visio 2010 Security Update kb3085514 (MS15-110) by kb3101526 (MS15-116)
+- Fix: Download part missed OneNote 2010 Security Update kb3054978 (MS15-116)
+- Fix: Replaced superseded Office 2013 Security Update kb3054932 (MS15-099) by kb3085572 (MS15-099)
+- Fix: Replaced superseded Lync 2013 Security Update kb3085500 (MS15-097) by kb3101496 (MS15-116 and MS15-123)
+- Fix: Replaced superseded Office 2016 Security Update kb2910993 (MS15-099) by kb3085635 (MS15-099)
+- Fix: Replaced superseded Lync 2016 Security Update kb2910994 (MS15-097) by kb3085634 (MS15-116 and MS15-123)
+- Fix: Replaced superseded Visio 2016 Security Update kb2920708 (MS15-081) by kb3101507 (MS15-116)
+- Fix: Linux scripts' improvements (Thanks to M. Althaus and H. Hullen)
+--------------------------------------------------------------------------------
+Version 10.3 -- 05.01.16
+- Speeded up determination of missing updates on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems by adding kb3087039 (MS15-097) and kb3109094 (MS15-128 and MS15-135) to scan prerequisites (Thanks to "Denniss", "Dalai", "aker" and the community)
+- .NET Framework 4 updated to v. 4.6.1 (Thanks to "boco", "harry" and "aker")
+- C++ 2015 Runtime Libraries updated to v. 14.0.23506 (Thanks to "Denniss" and "harry")
+- Microsoft Silverlight updated to v. 5.1.41105.0 (Thanks to "harry")
+- Aria2 download utility updated to v. 1.19.3 (Thanks to "harry")
+- Fix: Replaced superseded Windows Update Client improvement updates (kb3102810/kb3102812) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 by Windows Update Client December 2015 (kb3112343/kb3112336) (Thanks to "harry")
+- Fix: Replaced superseded Lync 2013 Security Update kb3101496 (MS15-116 and MS15-123) by kb3114351 (MS15-128)
+- Fix: Replaced superseded Lync 2016 Security Update kb3085634 (MS15-116 and MS15-123) by kb3114372 (MS15-128)
+- Fix: .NET Framework 4.6 was erroneously offered for installation on Windows 10 Threshold 2 systems (Thanks to "aker")
+- Fix: Download target "ofc glb" was executed twice if Office 2016 was selected in addition to any other Office product (Thanks to "banzeo" and "hbuhrmester")
+- Fix: USB filters for Windows did not exclude Office 2016 (Thanks to "hbuhrmester")
+- Fix: Minor bug in RemoveOffice2010x64Support.cmd script (Thanks to "pandabianco")
+- Fix: Linux scripts' improvements (Thanks to H. Hullen)
+--------------------------------------------------------------------------------
+Version 10.3.1 -- 05.01.16
+- Fix: DoUpdate.cmd script contained invalid installation file name for .NET Framework 4.6.1
+--------------------------------------------------------------------------------
+Version 10.3.2 -- 14.01.16
+- Microsoft Silverlight updated to v. 5.1.41212.0 (Thanks to "harry")
+- Fix: Replaced superseded Visio 2010 Security Update kb3101526 (MS15-116) by kb3114402 (MS16-004)
+- Fix: Replaced superseded Visio 2016 Security Update kb3101507 (MS15-116) by kb3114511 (MS16-004)
+- Fix: Moved kb2552343 for Windows 7 and Server 2008 R2 (x86/x64) from static installation definitions to scan prerequisites (Thanks to "jonas" and "aker")
+- Fix: Removed kb2592687 from Remote Desktop Connection 8.1 client installation on Windows 7 / Server 2008 R2 (x86/x64) systems (Thanks to "jonas")
+- Fix: Excluded obsolete kb3097877 for Windows 10 x64 from download (Thanks to "aker")
+- Fix: AddCustomLanguageSupport.cmd script contained invalid file name prefix for .NET Framework 4.6.1 (Thanks to "hbuhrmester")
+--------------------------------------------------------------------------------
+Version 10.4 -- 01.02.16
+- Support removed for Windows 8 (w62 x86) since Microsoft discontinued support for it on January 12, 2016 (see https://support.microsoft.com/en-us/lifecycle#Microsoft-Windows-81)
+- Mandatory installation of most recent Internet Explorer on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems (see https://www.microsoft.com/en-us/WindowsForBusiness/End-of-IE-support)
+- Speeded up determination of dynamic Office updates by integrating UnxUtils (http://sourceforge.net/projects/unxutils/) "join" and "gsort" (Thanks to "hbuhrmester")
+- Speeded up determination of missing updates on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems by adding kb3124000 (MS16-005) to scan prerequisites (Thanks to "Denniss", "Dalai" and the community)
+- Dynamically determined updates will now be validated only once a day (Thanks to "hbuhrmester", "aker" and "Denniss")
+- DownloadUpdates.cmd script will now check for sufficient file system rights (Thanks to "hbuhrmester")
+- DownloadUpdates.cmd script will now support "/excludewinglb" switch to avoid Silverlight downloads (Thanks to "boco")
+- UpdateGenerator.ini file will now support "includewinglb" setting in [Options] to control "/excludewinglb" switch for DownloadUpdates.cmd script
+- Fix: Enhanced hashdeep verification stability by deleting zero size checksum files (Thanks to "hbuhrmester")
+- Fix: URLs corrected in StaticDownloadLinks-sysinternals.txt (Thanks to "hbuhrmester" and "harry")
+- Fix: builddate.txt file will now also support dd.mmm.yyyy date format (Thanks to S. Sutherland)
+- Fix: FAQs corrected (Thanks to "aker")
+--------------------------------------------------------------------------------
+Version 10.5 -- 15.02.16
+- Flexible multi-stage updating option added (Thanks to "einsfran", "Cababs", "Denniss", "aker" and "boco")
+- UpdateInstaller script will now show popup information for mandatory installation of most recent Internet Explorer on Windows Vista, 7 and Server 2008(R2) (x86/x64) systems (Thanks to "Denniss")
+- Replaced superseded Windows Update Client December 2015 (kb3112343/kb3112336) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 by Windows Update Client February 2016 (kb3135445/kb3135449) (Thanks to "harry")
+- Replaced superseded scan prerequisite update kb3124000 (MS16-005) by kb3134214 (MS16-018) (Thanks to "Denniss", "Dalai" and the community)
+- Static update definitions may be updated while downloading
+- Excluded obsolete dynamic updates for Office XP and 2003 (Thanks to "Denniss" and "aker")
+- Introduced file ..\exclude\custom\ExcludeListForce-all.txt to exclude even statically defined updates from download (Thanks to "archiveguy", "boco" and "aker")
+- Fix: Updates for .NET Framework 4.5.x won't be excluded any longer (Thanks to H. van Doormaal)
+- Fix: ISO and USB filters refined to exclude unused .NET Framework updates (Thanks to "harry")
+- Fix: DoUpdate.cmd script will now also enable/disable service 'Windows Update' (wuauserv) on demand (Thanks to "DCEM", "boco" and "aker")
+- Fix: Windows Defender definition files were attempted to be updated even if Windows Defender was disabled II (Thanks to "aker")
+--------------------------------------------------------------------------------
+Version 10.6 -- 03.03.16
+- Support added for Windows Management Framework 5.0 on Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems (Thanks to "harry")
+- Ability added to enable .NET Framework 3.5 feature even on Windows 10 and Server 2016 (x86/x64) systems (Thanks to "eLPuSHeR", "Cababs", "aker" and "boco")
+- Replaced superseded Windows Update Client February 2016 (kb3135445/kb3135449) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 by Windows Update Client March 2016 (kb3138612/kb3138615) (Thanks to "harry")
+- DoUpdate.cmd script will now support "/skipieinst" switch to avoid mandatory installation of most recent Internet Explorer (Thanks to "Joe", "FrankH", "smeijer", "jbegarek", "mAsTa", "boco", "Denniss" and "aker")
+- UpdateInstaller.ini file will now support "skipieinst" setting in [Installation] to control "/skipieinst" switch for DoUpdate.cmd script
+- Fix: DoUpdate.cmd script will now only install most recent Internet Explorer if IE feature was not disabled before (Thanks to "Joe", "FrankH", "smeijer", "jbegarek", "mAsTa", "boco", "Denniss" and "aker")
+- Fix: Installation of kb3134814 (MS16-009) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 missed partial update kb3141092 (Thanks to "tpa2")
+- Fix: .NET Framework 4 rolled back to v. 4.6 for Windows Vista and Server 2008 (x86/x64) systems (Thanks to "joew", "Lokmup" and "Denniss")
+- Fix: Installation of MSU packages failed because DoUpdate.cmd script disabled service 'Windows Update' (wuauserv) (Thanks to "rbr555", "boco" and "aker")
+- Fix: WOUTempAdmin password enhanced to satisfy complexity policies (Thanks to G. Sciuto and "mtk")
+- Fix: DoUpdate.cmd script attempted to restore invalid registry value "DelayedAutoStart" for service 'Windows Update' (wuauserv) under Windows 10 (Thanks to "maddes")
+--------------------------------------------------------------------------------
+Version 10.6.1 -- 18.03.16
+- Replaced superseded scan prerequisite update kb3134214 (MS16-018) by kb3139852 (MS16-034) (Thanks to "Denniss", "Dalai" and the community)
+- Aria2 download utility updated to v. 1.21.0 (Thanks to "harry")
+- Fix: Online update scan interfered with determination of missing updates (Thanks to "aker", "boco", "Denniss" and "okseeusoon")
+- Fix: Corrected 'same day' rule
+- Fix: Removed obsolete partial IE update kb3141092 (MS16-009) from static definitions
+- Fix: Download part missed Outlook 2007 Security Update kb2880510 (MS16-029)
+- Fix: Download part missed Outlook 2010 Security Update kb3114883 (MS16-029)
+- Fix: Download part missed Outlook 2013 Security Update kb3114829 (MS16-029)
+- Fix: Download part missed Outlook 2016 Security Update kb3114861 (MS16-029)
+--------------------------------------------------------------------------------
+Version 10.6.2 -- 21.04.16
+- C++ 2015 Runtime Libraries updated to v. 14.0.23918 (Thanks to "harry")
+- Replaced superseded scan prerequisite update kb3139852 (MS16-034) by kb3145739 (MS16-039) (Thanks to "Dalai")
+- Aria2 download utility updated to v. 1.22.0 (Thanks to "harry")
+- Fix: Replaced superseded Lync 2013 Security Update kb3114351 (MS15-128) by kb3114944 (MS16-039)
+- Fix: Replaced superseded Lync 2016 Security Update kb3114372 (MS15-128) by kb3114960 (MS16-039)
+- Fix: Download part erroneously excluded Security Update kb3032663 (MS15-048) for .NET Framework 4.5.x under Windows 8.1 (x86/x64) and Server 2012 R2 (Thanks to "aker" and "Denniss")
+- Fix: Excluded obsolete updates for .NET Framework 4.5 and 4.5.1 (Thanks to "Denniss" and "harry")
+- Fix: Power management settings were only adjusted for WOUTempAdmin user account (Thanks to G. Dixon)
+--------------------------------------------------------------------------------
+Version 10.6.3 -- 17.06.16
+- Added scan prerequisite update kb3161664 (MS16-073) (Thanks to "Denniss" and "Dalai")
+- C++ 2013 Redistributable Runtime Libraries updated to v. 12.0.40649.5 (Thanks to "harry")
+- Aria2 download utility updated to v. 1.23.0 (Thanks to "harry")
+- DownloadUpdates.cmd script will now also support x64 variant of Sysinternals' Sigcheck tool v. 2.51+ (Thanks to "harry")
+- Fix: Querying state of service 'Windows Update' (wuauserv) could fail on foreign systems (Thanks to P. Pellegrini)
+- Fix: Errors on running version check fired misleading new version notifications (Thanks to "Telli")
+- Fix: Renamed md5deep to hashdeep in Linux script DownloadUpdates.sh (Thanks to B. Marwell)
+- Fix: Replaced superseded Visio 2010 Security Update kb3114402 (MS16-004) by kb3114872 (MS16-070)
+- Fix: Replaced superseded Visio 2016 Security Update kb3114511 (MS16-004) by kb3115041 (MS16-070)
+- Fix: FAQs enhanced and corrected (Thanks to "jonas" and "aker")
+--------------------------------------------------------------------------------
+Version 10.7 -- 15.07.16
+- Simplified, stabilized and speeded up determination of superseded updates (Special thanks to H. Buhrmester)
+- Strict verification of digital file signatures (Thanks to "Preyr")
+- Added June 2016 update rollup (kb3161608/kb3161606) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 to update scan prerequisites (Thanks to "harry" and "jonas")
+- Replaced superseded scan prerequisite update kb3087039 (MS15-097) by kb3164033 (MS16-074) (Thanks to "aker")
+- Replaced superseded scan prerequisite update kb3161664 (MS16-073) by kb3168965 (MS16-090) (Thanks to "Dalai" and "Wolfsrabe")
+- C++ 2015 Redistributable Runtime Libraries updated to v. 14.0.24210.0 (Thanks to "mAsTa" and "harry")
+- Microsoft Silverlight updated to v. 5.1.50428.00 (Thanks to "mAsTa")
+- UpdateInstaller script won't any longer show IE installation info popup if IE is recent (Thanks to "aker")
+- DownloadUpdates.cmd script will now also support x64 variant of Sysinternals' Streams tool v. 2.52+
+- Fix: CleanupRecall.cmd script did not restore previously configured Autologon (Thanks to A. Schönbach)
+- Fix: Adobe Flash Player updates for Windows 10 LTSB (build 10240) were erroneously attempted to be installed on Windows 10 TH2 (build 10586) systems and vice versa (Thanks to "DaffyDuck2", "aker", "boco" and "mAsTa")
+- Fix: Excluded cumulative update for Windows Server 2016 Technical Preview 5 (kb3158987) from download (Thanks to "aker")
+- Fix: Corrected WMF installation on Windows Vista and Server 2008 (x86/x64) systems
+- Fix: Replaced superseded Outlook 2010 Security Update kb3114883 (MS16-029) by kb3115246 (MS16-088)
+- Fix: Duplicates in Office exclude lists (Thanks to "Denniss")
+--------------------------------------------------------------------------------
+Version 10.7.1 -- 29.07.16
+- DownloadUpdates.cmd script will now backup and restore known good catalog file wsusscn2.cab
+- Replaced superseded June 2016 update rollup (kb3161608/kb3161606) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2 by July 2016 update rollup (kb3172605/kb3172614) (Thanks to "harry")
+- Replaced superseded April 2015 servicing stack update for Windows 8.1 / Server 2012 R2 (kb3021910) by July 2016 servicing stack update (kb3173424) (Thanks to "jonas")
+- Added July 2016 servicing stack update (kb3173426) and July 2016 update rollup (kb3172615) for Windows Server 2012 to update scan prerequisites
+- Inserted reboot/recall after Update scan prerequisites' installation
+- Removed obsolete explicit installation of Windows Update Agent
+- FAQs corrected and enhanced
+- Fix: Decreased minimum installation stage size from 50 to 40 updates (Thanks to "sbawo")
+- Fix: Removed obsolete Update for Microsoft Update client for Windows Server 2012 (kb2937636) from scan prerequisites
+- Fix: Download part missed kb2978042 (MS14-057) and kb3035489 (MS15-048) for Server 2012
+- Fix: On Server 2008 R2 / 2012 systems, kb2992611 (MS14-066) was repeatedly offered for installation (Thanks to A. Schönbach)
+- Fix: Cleaned up ExcludeList-superseded-exclude.txt
+--------------------------------------------------------------------------------
+Version 10.7.2 -- 03.08.16
+- .NET Framework 4 updated to v. 4.6.2 (Thanks to "boco" and "harry")
+--------------------------------------------------------------------------------
+Version 10.7.3 -- 11.08.16
+- Added scan prerequisite update kb3177725 (MS16-098) (Thanks to "Dalai")
+- Aria2 download utility updated to v. 1.25.0 (Thanks to "harry")
+- Fix: Rearranged scan prerequisites' installation sequence in order to avoid repeated installation of kb3172605 (July 2016 update rollup for Windows 7 / Server 2008 R2)
+- Fix: Replaced superseded Office 2007 Security Update kb3085620 (MS15-099) by kb3114442 (MS16-099)
+- Fix: Replaced superseded Office 2010 Security Update kb3085560 (MS15-099) by kb3114400 (MS16-099)
+- Fix: Replaced superseded OneNote 2010 Security Update kb3054978 (MS15-116) by kb3114885 (MS16-099)
+- Fix: Replaced superseded Outlook 2010 Security Update kb3115246 (MS16-088) by kb3115474 (MS16-099)
+- Fix: Replaced superseded Office 2013 Security Update kb3085572 (MS15-099) by kb3114340 (MS16-099)
+- Fix: Download part missed Lync 2013 Security Update kb3039779 (MS15-044)
+- Fix: Replaced superseded Lync 2013 Security Update kb3114944 (MS16-039) by kb3115431 (MS16-097)
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb3114960 (MS16-039) by kb3115408 (MS16-097)
+- Fix: Removed obsolete Outlook 2007 Security Update kb2880510 (MS16-029)
+- Fix: Removed obsolete Outlook 2013 Security Update kb3114829 (MS16-029)
+- Fix: Removed obsolete Outlook 2016 Security Update kb3114861 (MS16-029)
+--------------------------------------------------------------------------------
+Version 10.7.4 -- 15.09.16
+- NOTE: This version will be the last one supporting Windows Essentials 2012 (see https://support.microsoft.com/en-gb/help/17779/download-windows-essentials and https://support.microsoft.com/en-gb/help/13785/windows-essentials-2012-release-notes)
+- C++ 2015 Redistributable Runtime Libraries updated to v. 14.0.24212.0 (Thanks to "jamielightfoot", "danahis" and "boco")
+- Microsoft Silverlight updated to v. 5.1.50709.0 (Thanks to "harry")
+- Aria2 download utility updated to v. 1.26.1 (Thanks to "harry")
+- Removed scan prerequisite updates kb3078601, kb3109094, kb3145739, kb3164033, kb3168965 and kb3177725 for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to M. zu Klampen)
+- Removed Windows Update Client March 2016 (kb3138612/kb3138615) from update scan prerequisites for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2
+- Static installation definitions for Windows 10 (x86/x64) and Server 2016 systems will now distinguish between OS build numbers (Thanks to "aker")
+- DoUpdate.cmd script will now support "/skipdefs" switch to avoid mandatory installation of most recent Windows Defender and Microsoft Security Essentials definition files
+- UpdateInstaller.ini file will now support "skipdefs" setting in [Installation] to control "/skipdefs" switch for DoUpdate.cmd script
+- Self update will now preserve custom language removals (Thanks to "negg")
+- DoUpdate.cmd script will now install custom static definitions before built-in ones
+- UpdateGenerator script will now show release info (modifications) when found a new version (Thanks to L. Opitz)
+- Fix: Added static installation definition for July 2016 Servicing stack update for Windows 10 (kb3173427/kb3173428) to avoid repeated installation attempts of kb3172729 (Security update for Secure Boot) (Thanks to "Moopere" and "aker")
+- Fix: Removed redundant static download definitions for July 2016 servicing stack update for Windows 8.1 / Server 2012(R2) (kb3173424/kb3173426)
+- Fix: Excluded updates for Windows Server 2016 Technical Preview 5 (kb3172989/kb3174060) from download (Thanks to "aker")
+- Fix: Replaced superseded Outlook 2010 Security Update kb3115474 (MS16-099) by kb3118313 (MS16-107)
+--------------------------------------------------------------------------------
+Version 10.8 -- 26.09.16
+- Support removed for Windows Essentials 2012 (see https://support.microsoft.com/en-gb/help/17779/download-windows-essentials and https://support.microsoft.com/en-gb/help/13785/windows-essentials-2012-release-notes)
+- Replaced superseded scan prerequisite update kb3177725 (MS16-098) by kb3185911 (MS16-106) for Windows Vista and Server 2008 (x86/x64) (Thanks to "Dalai")
+- Replaced superseded scan prerequisite servicing stack update kb3020369 by kb3177467 for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to "aker")
+- Replaced superseded July 2016 Servicing stack update (kb3173428) by September 2016 Servicing stack update (kb3181403) for Windows 10 Version 1511
+- Added static download and installation definitions for August 2016 Servicing stack update for Windows 10 Version 1607 (kb3176936)
+- Service 'Windows Update' (wuauserv) will now also be adjusted before installing Windows Update scan prerequisites
+- C++ 2015 Redistributable Runtime Libraries updated to v. 14.0.24215.1 (Thanks to "Denniss")
+- Aria2 download utility updated to v. 1.27.1 (Thanks to "harry")
+- Default value for 'Include C++ Runtime Libraries and .NET Frameworks' download option changed to 'enabled'
+- Removed GUI option 'Install Office File Validation' from UpdateInstaller script (only relevant for legacy Office 2007)
+- Additional reboot/recall entered after installation of Windows Management Framework in order to get properly installed July 2016 update rollup (kb3172605)
+- Fix: Microsoft renewed July 2016 update rollup (kb3172605) for Windows 7 (x86/x64) and Server 2012 R2 (Thanks to "harry")
+- Fix: Custom language removals weren't preserved during dynamic updating of static download definitions (Thanks to "hbuhrmester")
+- Fix: Download part erroneously excluded security update for Windows authentication methods kb3167679 (MS16-101) for Windows 7 / 8.1 (x86/x64) and Server 2008/2012 R2
+--------------------------------------------------------------------------------
+Version 10.8.1 -- 01.12.16
+- NOTE: This version is supposed to be the last one containing the Linux download scripts
+- C++ 2010 Redistributable Runtime Libraries updated to v. 10.0.40219.473 (Thanks to "harry")
+- Microsoft Silverlight updated to v. 5.1.50901.0 (Thanks to "harry")
+- Aria2 download utility updated to v. 1.29.0
+- Improved autorun.inf file (Thanks to "dsca", "psj" and "aker")
+- Exclude definitions for download and update may be updated while downloading (Thanks to "aker")
+- Replaced superseded August 2016 Servicing stack update (kb3176936) by October 2016 Servicing stack update (kb3199986) for Windows 10 Version 1607 (Thanks to "aker")
+- Fix: Revised list of scan prerequisite updates for Windows Vista and Server 2008 (x86/x64) (Thanks to "lmacri", "Dalai", "boco", "harry" and the community)
+- Fix: Excluded outdated initial revision of kb3167679 for Windows Vista and Server 2008 (x86/x64)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb3115431 (MS16-097) by kb3118348 (MS16-120) (Thanks to "Gerby")
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb3115408 (MS16-097) by kb3118327 (MS16-120)
+- Fix: ISO and USB images for Windows Vista and Server 2008 (x86/x64) contained unused installation packages for .NET Framework 4.6.2
+--------------------------------------------------------------------------------
+Version 10.9 -- 06.01.17
+- C++ 2013 Redistributable Runtime Libraries updated to v. 12.0.40660.0 (Thanks to "epguy9")
+- Ability added to use 'security only updates' instead of 'quality rollups' for Windows 7, 8.1 and Server 2008/2012 (R2) (x86/x64) systems (Thanks to the mods)
+- Fix: Revised list of scan prerequisite updates for Windows Vista and Server 2008 (x86/x64) (Thanks to "Dalai", "lmacri", "SIW2" and the community)
+- Fix: Revised ExcludeList-superseded-exclude.txt
+- Fix: Revised ...\client\exclude\ExcludeList.txt
+- Fix: Corrected adjustment of service 'Windows Update' (wuauserv)
+- Fix: Download part erroneously excluded Security Update kb3163246 (MS16-091) for Microsoft .NET Framework 3.5 on Windows Server 2012
+--------------------------------------------------------------------------------
+Version 10.9.1 -- 29.01.17
+- Support added for Windows Management Framework 5.1 on Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems (Thanks to "harry")
+- Replaced superseded October 2016 Servicing stack update (kb3199986) by January 2017 Servicing stack update (kb3211320) for Windows 10 Version 1607 (Thanks to "aker")
+- If "/autoreboot" and "/shutdown" options are selected and WOUTempAdmin is used, the installation routine will perform an additional reboot/recall cycle to finalize the system's updating process (Thanks to "PromptCare")
+- Aria2 download utility updated to v. 1.31.0 (Thanks to "harry" and "Rush")
+- Aria2 binaries will be automatically updated if activated
+- January 2017 updates added to 'security only' lists for Windows 7 and Server 2012 R2 (x86/x64) systems (Thanks to "hbuhrmester" and "boco")
+- Progress bar will also be shown during download of dynamically determined updates (Thanks to "bigwave")
+- Fix: Custom language and architecture additions weren't correctly preserved during dynamic updating of static download definitions (Thanks to "hbuhrmester")
+- Fix: ExcludeList-SPs.txt file didn't affect dynamically determined updates (Thanks to "negg" and "hbuhrmester")
+--------------------------------------------------------------------------------
+Version 10.9.2 -- 19.03.17
+- NOTE: This version will be the last one supporting Windows Vista (see https://support.microsoft.com/en-us/help/22882/windows-vista-end-of-support)
+- Default installation stage size made architecture dependent (Thanks to "aker")
+- C++ 2015 Redistributable Runtime Libraries (v. 14.0.24212.x) replaced by C++ 2017 Redistributable Runtime Libraries v. 14.10.25008.0 (Thanks to "harry" and "boco")
+- March 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems (Thanks to "hbuhrmester")
+- Replaced superseded January 2017 Servicing stack update (kb3211320) by March 2017 Servicing stack update (kb4013418) for Windows 10 Version 1607 (Thanks to "aker")
+- Microsoft Silverlight updated to v. 5.1.50905.0 (Thanks to "harry")
+- Excluded several obsolete dynamic updates for Office XP (Thanks to "Denniss")
+- Fix: Installation of scan prerequisite updates failed after updating Remote Desktop Client on Windows Vista / 7 and Server 2008(R2) (x86/x64) systems (Thanks to "aker")
+- Fix: Revised list of scan prerequisite updates for Windows Vista and Server 2008 (x86/x64) (Thanks to "Dalai", "lmacri", "Volume Z" and the community)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb3118348 (MS16-120) by kb3172539 (MS17-013) (Thanks to "Gerby")
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb3118327 (MS16-120) by kb3178656 (MS17-013)
+- Fix: FAQs corrected (Thanks to "jonas")
+--------------------------------------------------------------------------------
+Version 11.0 -- 28.06.17
+- Included complete rewrite of the Linux scripts version 1.0-beta-3 (Special thanks to H. Buhrmester)
+- Support removed for Windows Vista since Microsoft discontinued support for it on April 11, 2017 (see https://support.microsoft.com/en-us/help/22882/windows-vista-end-of-support)
+- April 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- May 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- June 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Replaced superseded March 2017 Servicing stack update (kb4013418) by June 2017 Servicing stack update (kb4023834) for Windows 10 Version 1607 (Thanks to "aker")
+- Added June 2017 Servicing stack update (kb4022405) for Windows 10 Version 1703 (Thanks to "aker")
+- .NET Framework 4 updated to v. 4.7 (Thanks to "harry" and "aker")
+- Microsoft Silverlight updated to v. 5.1.50907.0
+- Aria2 download utility updated to v. 1.32.0
+- Installallation part will now show time stamps while installing updates (Thanks to "negg" and "aker")
+- Fix: Incorrect handling of 'security only updates' and 'quality rollups' for the .NET Frameworks on Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Fix: Revised list of scan prerequisite updates for Windows Server 2008 (x86/x64) (Thanks to "Dalai", "lmacri", "Denniss" and the community)
+- Fix: Download part erroneously excluded Security Update kb3149090 (MS16-047) for SAM and LSAD remote protocols
+- Fix: Download part missed July 2016 Servicing stack update for Windows 10 (kb3173427) (Thanks to "aker")
+- Fix: Download part erroneously excluded Security Updates kb3032655 and kb3163245 for .NET Framework 3.5.1 on Windows 7 SP1 and Windows Server 2008 R2 SP1
+- Fix: Replaced superseded Office 2007 Security Update kb3114442 (MS16-099) by kb3118304 (June 2017)
+- Fix: Replaced superseded Office 2010 Security Update kb3114400 (MS16-099) by kb3203461 (June 2017)
+- Fix: Replaced superseded Outlook 2010 Security Update kb3118313 (MS16-107) by kb3203467 (June 2017)
+- Fix: Replaced superseded Office 2013 Security Update kb3114340 (MS16-099) by kb3203392 (June 2017)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb3172539 (MS17-013) by kb3191939 (June 2017)
+- Fix: Added missing Skype for Business 2015 Security Update kb3191937 (June 2017)
+- Fix: Replaced superseded Office 2016 Security Update kb3085635 (MS15-099) by kb3203383 (June 2017)
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb3178656 (MS17-013) by kb3203382 (June 2017)
+--------------------------------------------------------------------------------
+Version 11.0.1 -- 14.07.17
+- Included complete rewrite of the Linux scripts version 1.0-beta-4 (Special thanks to H. Buhrmester)
+- July 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Fix: Replaced obsolete Security Update for Office 2010 kb2956073 (MS15-012) by kb3203468 (July 2017)
+- Fix: Incorrect calculation of ExcludeList-superseded-seconly.txt
+--------------------------------------------------------------------------------
+Version 11.0.2 -- 07.10.17
+- NOTE: This version will be the last one supporting Office 2007 (see https://support.microsoft.com/en-us/help/3198497/office-2007-approaching-end-of-extended-support)
+- August 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems (Thanks to "hbuhrmester" and "Dalai")
+- September 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Included complete rewrite of the Linux scripts version 1.0-beta-5 (Special thanks to H. Buhrmester)
+- C++ 2017 Redistributable Runtime Libraries updated to v. 14.11.25325.0 (Thanks to "harry")
+- UpdateGenerator script will now use default text editor for displaying download log file (Thanks to "bpit")
+- DoUpdate.cmd script will now signal errors by setting environment variable ERROR_OCCURRED (Thanks to "sklaes")
+- Fix: Determination of 'Windows Update' service state could fail due to language dependent output of service control utility sc.exe (Thanks to "georgeman", "Dalai" and "aker")
+- Fix: Added missing Outlook 2007 Security Update kb4011110 (September 2017)
+- Fix: Added missing Outlook 2016 Security Update kb4011052 (July 2017) (Thanks to "arturk77")
+- Fix: Replaced superseded Office 2007 Security Update kb3118304 (June 2017) by kb3213646 (September 2017)
+- Fix: Replaced superseded Outlook 2010 Security Update kb2956078 (July 2017) by kb4011089 (September 2017)
+- Fix: Replaced superseded Office 2010 Security Update kb3203461 (June 2017) by kb3213626 (September 2017)
+- Fix: Replaced superseded Office 2013 Security Update kb3203392 (June 2017) by kb3213564 (September 2017)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb3191937 (June 2017) by kb3213568 (September 2017)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb3191939 (June 2017) by kb4011107 (September 2017)
+- Fix: Replaced superseded Office 2016 Security Update kb3203383 (June 2017) by kb3213551 (September 2017)
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb3203382 (June 2017) by kb4011040 (September 2017)
+--------------------------------------------------------------------------------
+Version 11.0.3 -- 12.10.17
+- NOTE: This version will be the very last one supporting Office 2007 (see https://support.microsoft.com/en-us/help/3198497/office-2007-approaching-end-of-extended-support)
+- October 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Replaced superseded September 2016 Servicing stack update (kb3181403) by August 2017 Servicing stack update (kb4035632) for Windows 10 Version 1511 (Thanks to "aker")
+- Replaced superseded June 2017 Servicing stack update (kb4023834) by August 2017 Servicing stack update (kb4035631) for Windows 10 Version 1607 (Thanks to "aker")
+- Fix: DownloadUpdates.cmd script deleted release script DetermineServiceState.vbs by mistake (Thanks to "Gerby", "boco", "aker", "AlexLi" and "psj")
+- Fix: Replaced superseded Outlook 2010 Security Update kb4011089 (September 2017) by kb4011196 (October 2017)
+- Fix: Reactivated missing Skype for Business 2015 Security Update kb3191937 (June 2017)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb4011107 (September 2017) by kb4011179 (October 2017)
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb4011040 (September 2017) by kb4011159 (October 2017)
+--------------------------------------------------------------------------------
+Version 11.1 -- 18.12.17
+- November 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- December 2017 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- .NET Framework 4 updated to v. 4.7.1 (Thanks to "Rush", "harry" and "aker")
+- Removed obsolete .NET Framework 4 prerequisite installation file kb4019990 (Thanks to "jonas")
+- Integrated .NET Framework November 2017 Security and Quality Rollups
+- C++ 2017 Redistributable Runtime Libraries updated to v. 14.12.25810.0 (Thanks to "harry")
+- Support removed for Office 2007 since Microsoft discontinued support for it on October 10th, 2017 (see https://support.microsoft.com/en-us/help/3198497/office-2007-approaching-end-of-extended-support)
+- Excluded several obsolete dynamic updates for Office XP, 2003 and 2007 (Thanks to "aker" and "Denniss")
+- Aria2 download utility updated to v. 1.33.1 (Thanks to "Rush")
+- Added static update definition files for Windows 10 Version 1709 (build 16299) (Thanks to "aker", "boco" and "Rush")
+- Replaced superseded August 2017 Servicing stack update (kb4035631) by November 2017 Servicing stack update (kb4049065) for Windows 10 Version 1607 (Thanks to "harry")
+- Replaced superseded June 2017 Servicing stack update (kb4022405) by November 2017 Servicing stack update (kb4049011) for Windows 10 Version 1703 (Thanks to "harry")
+- Added November 2017 Servicing stack update (kb4054022) for Windows 10 Version 1709 (Thanks to "harry")
+- Fix: ListInstalledUpdateIds.vbs script didn't list patches from Wow6432Node (Thanks to "random")
+--------------------------------------------------------------------------------
+Version 11.1.1 -- 16.01.18
+- January 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Framework January 2018 Security and Quality Rollups
+- DoUpdate.cmd script will now show a warning if the compatibility mode is active (Thanks to "Dalai")
+- DoUpdate.cmd script will now show a warning if quality compatibility registry value is not set (Thanks to B. Schinkel-Momsen)
+- Replaced superseded servicing stack update for Windows 10 Version 1709 kb4054022 (November 2017) by kb4058702 (January 2018) (Thanks to "aker")
+- Excluded several obsolete dynamic updates for Office 2003 and 2007 (Thanks to "Denniss")
+- Fix: Replaced superseded Office 2010 Security Update kb4011618 (November 2017) by kb4011610 (January 2018)
+- Fix: Replaced superseded Outlook 2010 Security Update kb4011196 (October 2017) by kb4011273 (January 2018)
+- Fix: Replaced superseded Office 2013 Security Update kb3162047 (November 2017) by kb4011580 (January 2018)
+- Fix: Replaced superseded Office 2016 Security Update kb4011262 (November 2017) by kb4011574 (January 2018)
+--------------------------------------------------------------------------------
+Version 11.2 -- 23.03.18
+- Included complete rewrite of the Linux scripts version 1.1 (Special thanks to H. Buhrmester)
+- February 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- March 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Replaced superseded servicing stack update for Windows 10 Version 1709 kb4058702 (January 3rd, 2018) by kb4074608 (January 30th, 2018) (Thanks to "aker" and A. Pastor)
+- Replaced superseded servicing stack update for Windows 10 Version 1709 kb4074608 (January 30th, 2018) by kb4087256 (February 13th, 2018) (Thanks to "aker")
+- Replaced superseded servicing stack update for Windows 10 Version 1709 kb4087256 (February 13th, 2018) by kb4090914 (March 5th, 2018) (Thanks to "aker")
+- C++ 2017 Redistributable Runtime Libraries updated to v. 14.13.26020.0 (Thanks to "harry")
+- Wget download utility updated to version 1.19.4 (Thanks to "filthyWSUS" and "boco")
+- Aria2 download sources moved to https://github.com/aria2/aria2/releases
+- AutoIt script compiler updated to version 3.3.14.5
+- Added ...\client\opt\QualityCompat.reg for manual or custom scripted setting of the AV compatibility registry key (see https://support.microsoft.com/en-us/help/4072699/windows-security-updates-and-antivirus-software)
+- Fix: Default UpdateInstaller.ini values will now win against copied %TEMP%\UpdateInstaller.ini values if they have no GUI counterpart
+- Fix: Incorrect error handling in UpdateInstaller script (Thanks to "Dalai")
+- Fix: Incorrect Wow64DisableWow64FsRedirection call in UpdateInstaller script (Thanks to "Dalai")
+- Fix: Download part erroneously excluded Security Update kb2631813 for Windows 7 x64 and Windows Server 2008 R2
+- Fix: DoUpdate.cmd script threw false warning about active compatibility mode on Server 2016 systems
+- Fix: Replaced superseded Outlook 2010 Security Update kb4011273 (January 2018) by kb4011711 (February 2018)
+- Fix: Microsoft re-released January 2018 Security and Quality Rollup for .NET Framework 4.6 and higher for Windows 7 and Server 2008 R2 (x86/x64) systems (Thanks to H. Buhrmester)
+--------------------------------------------------------------------------------
+Version 11.2.1 -- 28.03.18
+- Fix: Scrolling progress bar could cause wget.exe to crash (Thanks to "Alex", "Dalai" and "boco")
+- Fix: Download part erroneously excluded Security Update kb2813347 for RDP client 7.0 under Windows 7 x64 and Windows Server 2008 R2
+--------------------------------------------------------------------------------
+Version 11.2.2 -- 16.04.18
+- NOTE: This version will be the last one supporting Windows 10 Version 1511 (see https://support.microsoft.com/en-us/help/4093109/windows-10-update-kb4093109)
+- April 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Replaced superseded November 2017 Servicing stack update (kb4049065) by March 2018 Servicing stack update (kb4089510) for Windows 10 Version 1607 (Thanks to "boco")
+- Replaced superseded March 2018 Servicing stack update (kb4089510) by April 2018 Servicing stack update (kb4093137) for Windows 10 Version 1607 (Thanks to "aker")
+- Replaced superseded November 2017 Servicing stack update (kb4049011) by April 2018 Servicing stack update (kb4093432) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded March 2018 Servicing stack update (kb4090914) by April 2018 Servicing stack update (kb4099989) for Windows 10 Version 1709 (Thanks to "aker")
+- Removed warning about missing quality compatibility registry value from DoUpdate.cmd script (Thanks to "boco")
+- Fix: UpdateGenerator script did not create ISO image if only Office 2016 was selected (Thanks to "JonesHL")
+--------------------------------------------------------------------------------
+Version 11.3 -- 01.05.18
+- Support removed for Windows 10 Version 1511 since Microsoft discontinued support for it on April 10th, 2018 (see https://support.microsoft.com/en-us/help/4093109/windows-10-update-kb4093109) (Thanks to "aker" and "boco")
+- Included complete rewrite of the Linux scripts version 1.3 (Special thanks to H. Buhrmester)
+- Static updates will now be installed before dynamically determined ones
+- Fix: Removed compression and UPX packing options from CompileAutoItScripts.cmd script in order to reduce false AV scanner alerts (Thanks to "Dalai")
+- Fix: Download part did not exclude superseded February 2018 security update kb4074592 for Windows 10 Version 1703 (x86) systems
+- Fix: Removed redundant static download definitions for July 2016 Servicing stack update kb3173427 for Windows 10 Version 1507 (x86/x64)
+- Fix: Corrected static and exclude definitions for .NET Frameworks' updates
+- Fix: Corrected error handling for DllStructCreate / Wow64DisableWow64FsRedirection calls in UpdateInstaller script (Thanks to R. Krause, "pasha", "aker" and "Dalai")
+--------------------------------------------------------------------------------
+Version 11.4 -- 28.05.18
+- Included complete rewrite of the Linux scripts version 1.7 (Special thanks to H. Buhrmester)
+- May 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Framework May 2018 Security and Quality Rollups
+- .NET Framework 4 updated to v. 4.7.2 (Thanks to "boco" and "aker")
+- C++ 2017 Redistributable Runtime Libraries updated to v. 14.14.26405.0 (Thanks to "harry")
+- Aria2 download utility updated to v. 1.34.0 (Thanks to "harry")
+- Replaced superseded April 2018 Servicing stack update (kb4093137) by May 2018 Servicing stack update (kb4132216) for Windows 10 Version 1607 (Thanks to "aker")
+- Replaced superseded April 2018 Servicing stack update (kb4093432) by May 2018 Servicing stack update (kb4132649) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded April 2018 Servicing stack update (kb4099989) by May 2018 Servicing stack update (kb4131372) for Windows 10 Version 1709 (Thanks to "boco")
+- Replaced superseded May 8th 2018 Servicing stack update (kb4131372) by May 21st 2018 Servicing stack update (kb4132650) for Windows 10 Version 1709 (Thanks to "aker")
+- Excluded several obsolete updates for Windows 10 Version 1511 (Thanks to "aker")
+- Removed obsolete static download definitions for PowerPoint Viewer SP2 (kb2687456) (Thanks to "aker")
+- Fix: Corrected Windows Script Host status detection in UpdateInstaller script (Thanks to "pk68" and "Dalai")
+- Fix: Hardened CompileAutoItScripts.cmd, MakeRelease.cmd and PrepareReleaseTree.cmd scripts by adding quotes to %~dps0 based calls (Thanks to "aker")
+- Fix: ISO and USB filters adjusted
+--------------------------------------------------------------------------------
+Version 11.5 -- 28.09.18
+- Included complete rewrite of the Linux scripts version 1.10 (Special thanks to H. Buhrmester)
+- June 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- July 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- August 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- September 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Framework July 2018 Security and Quality Rollups
+- Integrated .NET Framework August 2018 Security and Quality Rollups
+- Integrated .NET Framework September 2018 Security and Quality Rollups
+- C++ 2017 Redistributable Runtime Libraries updated to v. 14.15.26706.0 (Thanks to "harry")
+- Removed obsolete code for updating Windows Installer and Windows Script Host from DoUpdate.cmd script
+- Added /showdismprogress switch to DoUpdate.cmd and InstallOSUpdate.cmd scripts as well as corresponding key to [Messaging] section of UpdateInstaller.ini file (Thanks to "negg" and "boco")
+- Servicing stack updates for Windows 10 will now be treated as scan prerequisite updates (Thanks to "boco" and "aker")
+- Replaced superseded May 21st 2018 Servicing stack update (kb4132650) by July 2018 Servicing stack update (kb4339420) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded June 2018 Servicing stack update (kb4338853) by September 2018 Servicing stack update (kb4456655) for Windows 10 Version 1803 (Thanks to "aker")
+- UpdateGenerator script will now show signature date of catalog file wsusscn2.cab (Thanks to "boco" and "aker")
+- Excluded several obsolete dynamic updates for Office 2003 and 2007, Excel Converter, Excel Viewer and Visio Viewer (Thanks to "Denniss")
+- Fix: Microsoft re-released .NET Framework 4.7.2 (Thanks to "boco", "aker" and the community)
+- Fix: DownloadUpdates.cmd script exited with error on invalid static definitions for .NET Frameworks
+- Fix: Download part missed Security Updates kb2973112 and kb3122648 for .NET Framework 3.5.1 on Windows 7 / Server 2008 R2 (x86/x64) systems
+- Fix: ISO and USB filters for w61 and newer erroneously excluded ndp46-* patches
+- Fix: Replaced superseded Outlook 2010 Security Update kb4011711 (February 2018) by kb4022205 (June 2018)
+- Fix: Replaced superseded Outlook 2010 Security Update kb4022205 (June 2018) by kb4032222 (August 2018)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb4011179 (October 2017) by kb4022225 (July 2018)
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb4011159 (October 2017) by kb4022221 (July 2018)
+- Fix: ISO and USB filters corrected (Thanks to H. Buhrmester)
+--------------------------------------------------------------------------------
+Version 11.6 -- 22.02.19
+- October 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- November 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- December 2018 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- January 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- February 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Framework December 2018 Security and Quality Rollups
+- Integrated .NET Framework January 2019 Security and Quality Rollups
+- Integrated .NET Framework February 2019 Security and Quality Rollups
+- Wget download utility updated to version 1.20 (Thanks to "boco")
+- C++ 2017 Redistributable Runtime Libraries updated to v. 14.16.27027.1 (Thanks to "harry")
+- Microsoft Silverlight updated to v. 5.1.50918.0 (Thanks to "harry")
+- Replaced superseded July 2016 Servicing stack update (kb3173427) by April 2018 Servicing stack update (kb4093430) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded November 2018 Servicing stack update (kb4465659) by February 2019 Servicing stack update (kb4485447) for Windows Server 2016 and Windows 10 Version 1607
+- Replaced superseded November 2018 Servicing stack update (kb4465660) by February 2019 Servicing stack update (kb4487327) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded December 2018 Servicing stack update (kb4477136) by February 2019 Servicing stack update (kb4485448) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded December 2018 Servicing stack update (kb4477137) by February 2019 Servicing stack update (kb4485449) for Windows 10 Version 1803 (Thanks to "aker")
+- Added November 2018 Servicing stack update (kb4470788) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Removed obsolete static download definitions for September 2016 version of servicing stack update kb3177467 for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to Th. Baisch)
+- Introduced FinalizationHookFinal.cmd to be called once at the very end of the updating process (Thanks to "sborisv", "boco" and "Dalai")
+- Support added for ...\exclude\custom\ExcludeList-superseded-exclude-seconly.txt (Thanks to H. Buhrmester)
+- Introduced GUI accelerator keys <enter> for start and <escape> for exit (Thanks to "Larry L. Laffer")
+- FAQs adjusted (Thanks to "jonas")
+- Fix: Replaced superseded Outlook 2010 Security Update kb4032222 (August 2018) by kb4461529 (November 2018)
+- Fix: Replaced superseded Outlook 2010 Security Update kb4461529 (November 2018) by kb4461576 (December 2018)
+- Fix: Replaced superseded Outlook 2010 Security Update kb4461576 (December 2018) by kb4461623 (January 2019)
+- Fix: Replaced superseded Word 2010 Security Update kb2965313 (MS15-116) by kb4461625 (January 2019) and required kb4461614 and kb4461579
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb4022225 (July 2018) by kb4461487 (November 2018)
+- Fix: Added missing Project 2016 Security Update kb4461478 (November 2018)
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb4022221 (July 2018) by kb4461473 (November 2018)
+- Fix: Download part (seconly) missed Security Update kb3003743 for Windows 7 / Server 2008 R2 (x86/x64) systems
+- Fix: FinalizationHook.cmd and FinalizationHookFinal.cmd scripts were interrupted by reboot (Thanks to "CockRobbin")
+- Fix: Global exclusion file ..\exclude\custom\ExcludeListForce-all.txt did not affect static download definitions for .NET frameworks (Thanks to "Updater1" and "hbuhrmester")
+--------------------------------------------------------------------------------
+Version 11.6.1 -- 13.03.19
+- March 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Replaced superseded scan prerequisite servicing stack update kb3177467 by kb4490628 for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to "aker")
+- Added March 2019 SHA-2 code signing support update kb4474419 to scan prerequisites for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to "aker")
+- Temporary power scheme will now switch off the monitor after one minute without locking the computer (Thanks to "GCRaistlin" and "Dalai")
+- Fix: HideList-seconly.txt contained kb4481485 instead of kb4481484 (Thanks to "Dalai")
+- Fix: Download part missed security update kb4462226 for Office 2010 (March 2019)
+- Fix: Corrected error handling for DllCall of Wow64DisableWow64FsRedirection in UpdateInstaller script (Thanks to "Bernd" and "Dalai")
+--------------------------------------------------------------------------------
+Version 11.6.2 -- 13.04.19
+- Included complete rewrite of the Linux scripts version 1.12 (Special thanks to H. Buhrmester)
+- April 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- C++ 2017 Redistributable Runtime Libraries (v. 14.16.27027.1) replaced by C++ 2015-2019 Redistributable Runtime Libraries v. 14.20.27508.1 (Thanks to "aker")
+- Replaced superseded November 2018 Servicing stack update (kb4470788) by April 2019 Servicing stack update (kb4493510) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Added /monitoron switch to DoUpdate.cmd script as well as corresponding key to [Miscellaneous] section of UpdateInstaller.ini file (Thanks to "GCRaistlin", "tlh864", "zimon" and "Dalai")
+- Fix: DownloadUpdates.cmd script didn't handle AM/PM time format correctly while determining catalog date (Thanks to "negg", "Dalai" and "boco")
+- Fix: Corrected and simplified Logging in DownloadUpdates.cmd and DoUpdate.cmd scripts (Thanks to "Dalai")
+- Fix: Replaced superseded cumulative security update for Internet Explorer kb4489873 (February 2019) by kb4493435 (April 2019)
+- Fix: Download part erroneously excluded December 2018 cumulative security update for Internet Explorer kb4483187 (Thanks to "GCRaistlin", "Dalai" and "aker")
+- Fix: Microsoft changed download URLs for Security Essentials and Windows Defender definition files (Thanks to "Fred928", "Dalai" and "hbuhrmester")
+--------------------------------------------------------------------------------
+Version 11.7 -- 10.05.19
+- Disabled autorecall feature on Windows 10 and Server 2016/2019 systems (Thanks to the community)
+- .NET Framework 4 updated to v. 4.8 (Thanks to "boco" and "aker")
+- Wget download utility updated to version 1.20.3 (Thanks to "harry" and "boco")
+- Rearranged UpdateGenerator GUI
+- Fix: DownloadUpdates.cmd script did not set environment variable https_proxy (Thanks to "hbuhrmester")
+- Fix: Replaced superseded Outlook 2010 Security Update kb4461623 (January 2019) by kb4464524 (May 2019)
+- Fix: Removed redundant static download definitions for April 2019 Servicing stack update kb4493510 for Windows Server 2019 and Windows 10 Version 1809 (x86/x64)
+--------------------------------------------------------------------------------
+Version 11.7.1 -- 16.05.19
+- Included complete rewrite of the Linux scripts version 1.13 (Special thanks to H. Buhrmester)
+- May 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Framework May 2019 Security and Quality Rollups
+- Added static update definition files for Windows 10 Version 1903 (build 18362)
+- Replaced superseded April 2018 Servicing stack update (kb4093430) by May 2019 Servicing stack update (kb4498353) for Windows 10 Version 1507 (Thanks to "aker")
+- Removed obsolete May 2018 Servicing stack update (kb4132216) for Windows Server 2016 and Windows 10 Version 1607
+- Replaced superseded February 2019 Servicing stack update (kb4485447) by May 2019 Servicing stack update (kb4498947) for Windows Server 2016 and Windows 10 Version 1607
+- Replaced superseded February 2019 Servicing stack update (kb4487327) by May 2019 Servicing stack update (kb4500640) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded February 2019 Servicing stack update (kb4485448) by May 2019 Servicing stack update (kb4500641) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded February 2019 Servicing stack update (kb4485449) by May 2019 Servicing stack update (kb4497398) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded April 2019 Servicing stack update (kb4493510) by May 2019 Servicing stack update (kb4499728) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Added May 2019 Servicing stack update (kb4500109) for Windows 10 Version 1903 (Thanks to "aker")
+--------------------------------------------------------------------------------
+Version 11.7.2 -- 22.05.19
+- Fix: Reintegrated May 2018 Servicing stack update (kb4132216) for Windows Server 2016 and Windows 10 Version 1607 (Thanks to "aker")
+- Fix: Installation part missed several cumulative updates for .NET Frameworks under Windows 10 (Thanks to "tpa2")
+- Added May 2019 SHA-2 code signing support update kb4474419 to scan prerequisites for Windows Server 2008 (x86/x64) (Thanks to "aker")
+- Fix: Replaced superseded cumulative security update for Internet Explorer for Windows 7 (x86/x64) and Server 2008(R2) kb4493435 (April 2019) by kb4498206 (May 2019)
+--------------------------------------------------------------------------------
+Version 11.7.3 -- 25.06.19
+- Included complete rewrite of the Linux scripts version 1.14 (Special thanks to H. Buhrmester)
+- Added option to install/update Trusted Root Certificates and Certificate revocation lists (Thanks to "Dalai")
+- Removed option to install Windows PowerShell 2.0
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.21.27702.2 (Thanks to "harry")
+- Sysinternals' tools Autologon, Sigcheck and Streams will now also be updated automatically
+- Replaced superseded May 2019 Servicing stack update (kb4500109) by May 2019 Servicing stack update (kb4498523) for Windows 10 Version 1903 (Thanks to "aker")
+- June 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Fix: Installation of .NET Framework 4.8 failed on Windows 10 Version 1903 systems (Thanks to "aker")
+- Fix: Added Server 2019 to labels of UpdateGenerator GUI (Thanks to "boco")
+--------------------------------------------------------------------------------
+Version 11.7.4 -- 16.07.19
+- July 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Frameworks' July 2019 Security Only Updates and Quality Rollups
+- Added April 2019 Servicing Stack Update (kb4493730) for Windows Server 2008 SP2 (Thanks to "aker")
+- Replaced superseded July 2016 Servicing Stack Update (kb3173426) by July 2019 Servicing Stack Update (kb4504418) for Windows Server 2012 (Thanks to "aker")
+- Replaced superseded July 2016 Servicing Stack Update (kb3173424) by July 2019 Servicing Stack Update (kb4504418) for Windows 8.1 / Server 2012 R2 (Thanks to "aker")
+- Replaced superseded May 2019 Servicing stack update (kb4498353) by July 2019 Servicing stack update (kb4509090) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded May 2019 Servicing stack update (kb4498947) by July 2019 Servicing stack update (kb4509091) for Windows Server 2016 and Windows 10 Version 1607 (Thanks to "aker")
+- Replaced superseded May 2019 Servicing stack update (kb4500640) by July 2019 Servicing stack update (kb4509092) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded May 2019 Servicing stack update (kb4500641) by July 2019 Servicing stack update (kb4509093) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded May 2019 Servicing stack update (kb4497398) by July 2019 Servicing stack update (kb4509094) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded May 2019 Servicing stack update (kb4499728) by July 2019 Servicing stack update (kb4509095) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Replaced superseded May 2019 Servicing stack update (kb4498523) by July 2019 Servicing stack update (kb4509096) for Windows 10 Version 1903 (Thanks to "aker")
+- Fix: Added missing Excel 2010 Security Update kb4464572 (July 2019)
+- Fix: Added missing Office 2010 Security Update kb4462224 (July 2019)
+- Fix: Replaced superseded Outlook 2010 Security Update kb4464524 (May 2019) by kb4475509 (July 2019)
+- Fix: Added missing Excel 2013 Security Update kb4464565 (July 2019)
+- Fix: Added missing Office 2013 Security Updates kb4018375, kb4464543 and kb4464558 (July 2019)
+- Fix: Replaced superseded Skype for Business 2015 Security Update kb4461487 (November 2018) by kb4475519 (July 2019)
+- Fix: Added missing Outlook 2013 Security Update kb4464592 (July 2019)
+- Fix: Added missing Excel 2016 Security Update kb4475513 (July 2019)
+- Fix: Added missing Office 2016 Security Updates kb4461539, kb4464534 and kb4475514 (July 2019)
+- Fix: Replaced superseded Skype for Business 2016 Security Update kb4461473 (November 2018) by kb4475545 (July 2019)
+- Fix: Added missing Outlook 2016 Security Update kb4475517 (July 2019)
+--------------------------------------------------------------------------------
+Version 11.8 -- 05.08.19
+- Included complete rewrite of the Linux scripts version 1.15 (Special thanks to H. Buhrmester)
+- Mandatory installation of Internet Explorer 11 on Windows Server 2012 systems (Thanks to "boco" and "aker")
+- Static download definitions added for Intel microcode updates (Thanks to "boco" and "aker")
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.22.27821.0 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4509095) by July 2019 Servicing stack update (kb4512937) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4509096) by July 2019 Servicing stack update (kb4508433) for Windows 10 Version 1903 (Thanks to "aker")
+- Fix: Download part erroneously excluded January 2016 Security Update (kb3122649) for Microsoft .NET Framework 3.5 on Windows Server 2012
+- Fix: Corrected CopyToTarget.cmd usage help output (Thanks to "engelhro", "Dalai" and "aker")
+--------------------------------------------------------------------------------
+Version 11.8.1 -- 12.09.19
+- August 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- September 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Frameworks' September 2019 Security Only Updates and Quality Rollups
+- Replaced superseded April 2019 Servicing Stack Update (kb4493730) by September 2019 Servicing stack update (kb4517134) for Windows Server 2008 SP2 (Thanks to "aker")
+- Replaced superseded March 2019 Servicing Stack Update (kb4490628) by September 2019 Servicing stack update (kb4516655) for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing Stack Update (kb4504418) by September 2019 Servicing Stack Update (kb4512939) for Windows Server 2012 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing Stack Update (kb4504418) by September 2019 Servicing Stack Update (kb4512938) for Windows 8.1 / Server 2012 R2 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4509090) by September 2019 Servicing stack update (kb4512573) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4509091) by September 2019 Servicing stack update (kb4512574) for Windows Server 2016 and Windows 10 Version 1607 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4509092) by September 2019 Servicing stack update (kb4511839) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4509093) by September 2019 Servicing stack update (kb4512575) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4509094) by September 2019 Servicing stack update (kb4512576) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4512937) by September 2019 Servicing stack update (kb4512577) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Replaced superseded July 2019 Servicing stack update (kb4508433) by September 2019 Servicing stack update (kb4515383) for Windows 10 Version 1903 (Thanks to "aker")
+- Fix: Replaced superseded Outlook 2010 Security Update kb4475509 (July 2019) by kb4475573 (August 2019)
+- Fix: Shutdown on completion did not work if there were no patches to apply (Thanks to "51449" and "aker")
+--------------------------------------------------------------------------------
+Version 11.8.2 -- 04.11.19
+- October 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Frameworks' September 2019 Security Only Updates and Quality Rollups II
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.23.27820.0 (Thanks to "aker")
+- Aria2 download utility updated to v. 1.35.0
+- Replaced superseded September 2019 Servicing Stack Update (kb4512939) by October 2019 Servicing Stack Update (kb4521857) for Windows Server 2012 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing Stack Update (kb4512938) by October 2019 Servicing Stack Update (kb4521864) for Windows 8.1 / Server 2012 R2 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing stack update (kb4512573) by October 2019 Servicing stack update (kb4521856) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing stack update (kb4512574) by October 2019 Servicing stack update (kb4521858) for Windows Server 2016 and Windows 10 Version 1607 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing stack update (kb4511839) by October 2019 Servicing stack update (kb4521859) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing stack update (kb4512575) by October 2019 Servicing stack update (kb4521860) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing stack update (kb4512576) by October 2019 Servicing stack update (kb4521861) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing stack update (kb4512577) by October 2019 Servicing stack update (kb4521862) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4521863) by October 2019 Servicing stack update (kb4525419) for Windows 10 Version 1903 (Thanks to "aker")
+- Added installation utility pciclearstalecache addressing inconsistencies in the internal PCI cache for Windows 7 (x86/x64) and Windows Server 2008 R2 (Thanks to "jonas", "boco", "Dalai" and "aker")
+- Removed obsolete compression utility upx.exe (Thanks to "CockRobbin" and "Dalai")
+- Fix: Replaced superseded Project 2016 Security Update kb4461478 (November 2018) by kb4475589 (September 2019)
+- Fix: SHA-2 code signing support update (kb4474419) for Windows 7 and Windows Server 2008(R2) was downloaded in three different versions (Thanks to "boco")
+- Fix: Replaced superseded Outlook 2010 Security Update kb4475573 (August 2019) by kb4475604 (October 2019)
+- Fix: Removed obviously obsolete requirements kb4461614 and kb4461579 for Word 2010 Security Update kb4461625 (January 2019)
+- Fix: Added April 2019 Servicing stack update (kb4493730) to scan prerequisites for Windows Server 2008 (Thanks to "aker")
+- Fix: Added March 2019 Servicing stack update (kb4490628) to scan prerequisites for Windows 7 SP1 and Windows Server 2008 R2 SP1 (Thanks to "jonas")
+- Fix: Download part erroneously excluded July 2017 Security Update (kb4507004) for Microsoft .NET Framework 3.5.1 on Windows 7 / Server 2008 R2 (Thanks to "parker" and "hbuhrmester")
+--------------------------------------------------------------------------------
+Version 11.8.3 -- 14.11.19
+- November 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- C++ 2013 Redistributable Runtime Libraries updated to v. 12.0.40664.0 (Thanks to "TheMMC", "flummie", "Dalai" and "aker")
+- Replaced superseded September 2019 Servicing Stack Update (kb4517134) by November 2019 Servicing stack update (kb4526478) for Windows Server 2008 SP2 (Thanks to "aker")
+- Replaced superseded September 2019 Servicing Stack Update (kb4516655) by November 2019 Servicing stack update (kb4523206) for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing Stack Update (kb4521857) by November 2019 Servicing Stack Update (kb4523208) for Windows Server 2012 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing Stack Update (kb4521864) by November 2019 Servicing Stack Update (kb4524445) for Windows 8.1 / Server 2012 R2 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4521856) by November 2019 Servicing stack update (kb4523200) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4521858) by November 2019 Servicing stack update (kb4520724) for Windows Server 2016 and Windows 10 Version 1607 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4521859) by November 2019 Servicing stack update (kb4523201) for Windows 10 Version 1703 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4521860) by November 2019 Servicing stack update (kb4523202) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4521861) by November 2019 Servicing stack update (kb4523203) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4521862) by November 2019 Servicing stack update (kb4523204) for Windows Server 2019 and Windows 10 Version 1809 (Thanks to "aker")
+- Replaced superseded October 2019 Servicing stack update (kb4525419) by November 2019 Servicing stack update (kb4524569) for Windows 10 Version 1903 (Thanks to "aker")
+- Replaced scan prerequisite October 2019 (kb4519974) by November 2019 (kb4525106) cumulative security update for Internet Explorer 9 on Windows Server 2008 systems
+- Updated download URL for .NET 4.8 offline installation package (Thanks to "Cababs")
+- Fix: Removed November 2019 Servicing stack update (kb4523206) for Windows 7 (x86/x64) and Server 2008 R2 from scan prerequisites
+--------------------------------------------------------------------------------
+Version 11.9 -- 03.03.20
+- NOTE: This version will be the last one supporting Windows 7 and Server 2008 (R2)
+- Included complete rewrite of the Linux scripts version 1.17 (Special thanks to H. Buhrmester)
+- Included new method for the determination of dynamic Office updates for DownloadUpdates.cmd (Special thanks to H. Buhrmester)
+- December 2019 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- January 2020 updates added to 'security only' lists for Windows 7 / 8.1 and Server 2008 R2 / 2012 / 2012 R2 (x86/x64) systems
+- February 2020 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- Integrated .NET Frameworks' January 2020 Security Only Updates and Quality Rollups
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.24.28127.4 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing stack update (kb4526478) by February 2020 Servicing Stack Update (kb4537830) for Windows Server 2008 SP2 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing stack update (kb4523206) by February 2020 Servicing Stack Update (kb4537829) for Windows 7 (x86/x64) and Server 2008 R2 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing Stack Update (kb4523208) by December 2019 Servicing Stack Update (kb4532920) for Windows Server 2012 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing stack update (kb4524569) by February 2020 Servicing stack update (kb4538674) for Windows 10 Version 1903 (Thanks to "aker")
+- Removed utility pciclearstalecache from static installation definitions for Windows 7 (x86/x64) and Windows Server 2008 R2 (Thanks to "janicholson")
+- Fix: Download part missed several and didn't properly exclude other Windows 10 updates due to new URLs (Thanks to H. Buhrmester)
+- Fix: Deletions of unsigned files were not logged properly in DownloadUpdates.cmd (Thanks to H. Buhrmester)
+- Fix: Added July 2016 Servicing stack updates (kb3173426/kb3173424) to scan prerequisites for Windows 8.1 / Server 2012(R2) to avoid endless update loops (Thanks to "aker")
+- Fix: Wget utility refused to download from download.wsusoffline.net and others due to certificate verification failures under Windows 10 / Server 2016/2019 (Thanks to J. Noller)
+- Fix: Wget utility didn't any longer follow HTTP redirections in download URLs for Windows Defender and Microsoft Security Essentials signature files due to user agent aware responses from microsoft.com (Thanks to "Dalai")
+--------------------------------------------------------------------------------
+Version 12.0 -- 12.03.20
+- Support removed for Windows 7 and Server 2008(R2) since Microsoft discontinued support for it on January 14th, 2020
+- Support removed for Microsoft Security Essentials, Windows 7 Defender, Service Packs, Remote Desktop Client and Silverlight (download switches /includemsse and /excludesp, update switches /instmsse, /instmssl and /updatetsc)
+- Support removed for Windows 10 version 1703 since Microsoft discontinued support for it on October 8th, 2019
+- Split Windows 10 download into version specific parts
+- Included complete rewrite of the Linux scripts version 1.19 (Special thanks to H. Buhrmester)
+- March 2020 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- Included improved XSLT filter for the determination of dynamic Office updates by Product Id rather than ProductFamily Id (Special thanks to H. Buhrmester)
+- Replaced superseded November 2019 Servicing stack update (kb4523200) by March 2020 Servicing stack update (kb4540721) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing stack update (kb4520724) by March 2020 Servicing stack update (kb4540723) for Windows 10 Version 1607 and Windows Server 2016 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing stack update (kb4523202) by March 2020 Servicing stack update (kb4541731) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing stack update (kb4523203) by March 2020 Servicing stack update (kb4540724) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing stack update (kb4523204) by March 2020 Servicing stack update (kb4539571) for Windows 10 Version 1809 and Windows Server 2019 (Thanks to "aker")
+- Replaced superseded February 2020 Servicing stack update (kb4538674) by March 2020 Servicing stack update (kb4541338) for Windows 10 Version 1903 and 1909 (Thanks to "aker")
+- Fix: Invalid --no-check-certificate option for Aria2 download utility (Thanks to "negg", "Dalai", "hbuhrmester" and "Gerby")
+- Fix: Wget utility didn't any longer download root certificates properly due to user agent aware responses from microsoft.com (Thanks to "aker")
+- Fix: Adjusted installation sequence to have root certificate packages installed before all all others (Thanks to "aker")
+--------------------------------------------------------------------------------
+Community Edition 12.0 -- 21.06.2020
+- INSTALLATION HINT: In spite of the different name, you still may unpack the Community Edition into an existing structure, overwriting existing files
+- Moved the whole project to GitLab
+--------------------------------------------------------------------------------
+Community Edition 12.1 -- 29.07.2020
+- Included complete rewrite of the Linux scripts version CE-2.1_patch1 (Special thanks to H. Buhrmester)
+- Improved static and exclude definitions download (Thanks to "hbuhrmester" and "aker")
+- Static definitions will no longer be updated, if the current version is not the most recent one to prevent incompatible static definitions from being downloaded (Thanks to "aker")
+- September 2018 to July 2020 updates added to 'security only' lists for Windows Server 2008 (x86/x64) systems
+- February to July 2020 updates added to 'security only' lists for Windows 7 and Server 2008 R2 (x86/x64) systems
+- April to July 2020 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- April to July 2020 updates added to version-specific blacklists for Windows 10 and Server 2016 / 2019 (x86/x64) systems
+- Removed obsolete static files for w60 and w61 (Thanks to "hbuhrmester")
+- Removed obsolete download links for .NET 3.5 and 4.6 (Thanks to "hbuhrmester")
+- Removed obsolete supersedance-excludes for Windows Server 2008 and Windows 7 / Server 2008 R2
+- Removed obsolete Office File Validation Update kb2553065 (Thanks to "aker")
+- Added static update definition files for Windows 10 Version 2004 (build 19041)
+- Allowed to perform "feature upgrades via enablement package" (1903 -> 1909) (Thanks to "aker")
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.26.28720.3 (Thanks to "aker")
+- Replaced superseded Office Updates for Office 2010, 2013 and 2016 (Thanks to "aker")
+- Replaced superseded December 2019 Servicing Stack Update (kb4532920) by July 2020 Servicing Stack Update (KB4566426) for Windows Server 2012 (Thanks to "aker")
+- Replaced superseded November 2019 Servicing Stack Update (kb4524445) by July 2020 Servicing Stack Update (KB4566425) for Windows 8.1 / Server 2012 R2 (Thanks to "aker")
+- Replaced superseded March 2020 Servicing stack update (kb4540721) by July 2020 Servicing stack update (KB4565911) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded March 2020 Servicing stack update (kb4540723) by July 2020 Servicing stack update (KB4565912) for Windows 10 Version 1607 and Windows Server 2016 (Thanks to "aker")
+- Replaced superseded March 2020 Servicing stack update (kb4541731) by July 2020 Servicing stack update (KB4565553) for Windows 10 Version 1709 (Thanks to "aker")
+- Replaced superseded March 2020 Servicing stack update (kb4540724) by July 2020 Servicing stack update (KB4565552) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded March 2020 Servicing stack update (kb4539571) by July 2020 Servicing stack update (KB4558997) for Windows 10 Version 1809 and Windows Server 2019 (Thanks to "aker")
+- Replaced superseded March 2020 Servicing stack update (kb4541338) by July 2020 Servicing stack update (KB4565554) for Windows 10 Version 1903 and 1909 (Thanks to "aker")
+- Added July 2020 Servicing stack update (KB4566785) for Windows 10 Version 2004 (Thanks to "aker")
+- Fix: the global part of an Office update with a global and language-specific part wasn't installed (Thanks to "aker" and "hbuhrmester")
+- Fix: CheckOUVersion.cmd will not report an outdated version anymore, if the current version is newer than the most recent one (Thanks to W. Wenzel and "aker")
+--------------------------------------------------------------------------------
+Community Edition 12.1.1 -- 31.07.2020
+- Cleaned up static download links for Office 2010, 2013 and 2016
+- Fix: fixed typo in UpdateOU.cmd which prevented the self update from working (Thanks to "hbuhrmester")
+--------------------------------------------------------------------------------
+Community Edition 12.2 -- 01.08.2020
+- Updated the ofc-ExcludeLists and removed some static links
+- Fix: more fixes for CheckOUVersion.cmd/UpdateOU.cmd
+--------------------------------------------------------------------------------
+Community Edition 12.3 -- 20.10.2020
+- NOTE: This version will be the last one supporting Windows 10 (1709)
+- NOTE: This version will be the last one supporting Office 2010
+- Included complete rewrite of the Linux scripts version CE-2.2 (Special thanks to H. Buhrmester)
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.27.29112.0 (Thanks to "harry")
+- Removed download of legacy .NET Framework updates (Thanks to "aker")
+- August to October 2020 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- August to October 2020 updates added to version-specific blacklists for Windows 10 and Server 2016 / 2019 (x86/x64) systems
+- Replaced superseded July 2020 Servicing stack update (KB4565912) by September 2020 Servicing stack update (KB4576750) for Windows 10 Version 1607 and Windows Server 2016 (Thanks to "aker")
+- Replaced superseded July 2020 Servicing stack update (KB4565552) by October 2020 Servicing stack update (KB4580398) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded July 2020 Servicing stack update (KB4558997) by October 2020 Servicing stack update (KB4577667) for Windows 10 Version 1809 and Windows Server 2019 (Thanks to "aker")
+- Replaced superseded July 2020 Servicing stack update (KB4565554) by October 2020 Servicing stack update (KB4577670) for Windows 10 Version 1903 and 1909 (Thanks to "aker")
+- Replaced superseded July 2020 Servicing stack update (KB4566785) by September 2020 Servicing stack update (KB4577266) for Windows 10 Version 2004 (Thanks to "aker")
+- wsusscn2.cab does not include September 2017 security update for Office 2010 (KB3213638)
+- Reworked the installation of Servicing Stack updates (Thanks to "aker")
+- Fix: The root certificates are downloaded using https:// instead of http:// now (Thanks to "hbuhrmester")
+- Fix: old files for w60/w61 were not cleaned up (Thanks to "hbuhrmester")
+- Fix: The script files could fail to parse the command line parameters as the should (Thanks to "hbuhrmester" and "aker")
+- Fix: DetermineSystemProperties.vbs might fail to return OS_VER_REVIS on some configurations (Thanks to "rbronca")
+--------------------------------------------------------------------------------
+Community Edition 12.3.1 -- 23.10.2020
+- NOTE: This version will really be the last one supporting Windows 10 (1709)
+- NOTE: This version will really be the last one supporting Office 2010
+- Added static update definition files for Windows 10 Version 20H2 (build 19042)
+- Fix: The Servicing Stack update for Windows 10 1909 and 20H2 could be installed multiple times (Thanks to "aker")
+--------------------------------------------------------------------------------
+Community Edition 12.4 -- 06.12.2020
+- Support removed for Windows 10 version 1709 since Microsoft discontinued support for it on October 13th, 2020
+- Support removed for Office 2010 since Microsoft discontinued support for it on October 13th, 2020
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.28.29325.2 (Thanks to "aker")
+- reintroduced the "/excludesp"-option for the download part (Thanks to "negg")
+- cleaned up ExcludeList-ofc*.txt
+- November 2020 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- November 2020 updates added to version-specific blacklists for Windows 10 and Server 2016 / 2019 (x86/x64) systems
+- Replaced superseded October 2020 Servicing stack update (KB4577667) by November 2020 Servicing stack update (KB4587735) for Windows 10 Version 1809 and Windows Server 2019 (Thanks to "aker")
+- Replaced superseded October 2020 Servicing stack update (KB4577670) by November 2020 Servicing stack update (KB4586863) for Windows 10 Version 1903 and 1909 (Thanks to "aker")
+- Replaced superseded September 2020 Servicing stack update (KB4577266) by November 2020 Servicing stack update (KB4586864) for Windows 10 Version 2004 (Thanks to "aker")
+- Fix: The self-update did not report more recent versions in UpdateGenerator (Thanks to "negg")
+--------------------------------------------------------------------------------
+Community Edition 12.5 -- 30.05.2021
+- NOTE: The ".\client\ofc"-directory is not used anymore and can safely be deleted
+- NOTE: Support removed for Windows 10 version 1903 since Microsoft discontinued support for it on December 8th, 2020
+- NOTE: Support removed for Windows 10 version 1803 since Microsoft discontinued support for it on May 11th, 2021
+- Included complete rewrite of the Linux scripts version CE-2.4 (beta 3) (Special thanks to H. Buhrmester)
+- Added static update definition files for Windows 10 Version 21H1 (build 19043)
+- Support added for .NET 5 (Thanks to "aker" and "boco")
+- Support added for updating Microsoft Edge (Chromium) (Thanks to "aker")
+- use ProductId and UpdateId for download and installation (Thanks to "aker" and "hbuhrmester")
+- update .\xslt\extract-update-cab-exe-ids-and-locations.xsl to include more updates (Thanks to "hbuhrmester")
+- improve determination of superseded updates to prevent exclusion of files used in multiple updates (Thanks to "aker" and "hbuhrmester")
+- use hashdeep's "bare mode" for improved compatibility (Thanks to "hbuhrmester")
+- Allow C++ definitions to be updated via static definition download (Thanks to "aker")
+- Added .\client\exclude\ExcludeList.txt to the static definition update routine (Thanks to "aker")
+- Refactored Windows 10 download to make maintenance easier
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.29.30037.0 (Thanks to "aker" and "harry")
+- December 2020 to May 2021 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- December 2020 to May 2021 updates added to version-specific blacklists for Windows 10 and Server 2016 / 2019 (x86/x64) systems
+- Replaced superseded July 2020 Servicing Stack Update (KB4566426) by April 2021 Servicing Stack Update (kb5001401) for Windows Server 2012 (Thanks to "aker")
+- Replaced superseded July 2020 Servicing Stack Update (KB4566425) by April 2021 Servicing Stack Update (kb5001403) for Windows 8.1 / Server 2012 R2 (Thanks to "aker")
+- Replaced superseded July 2020 Servicing stack update (KB4565911) by April 2021 Servicing stack update (kb5001399) for Windows 10 Version 1507 (Thanks to "aker")
+- Replaced superseded September 2020 Servicing stack update (KB4576750) by April 2021 Servicing stack update (kb5001402) for Windows 10 Version 1607 and Windows Server 2016 (Thanks to "aker")
+- Replaced superseded October 2020 Servicing stack update (KB4580398) by May 2021 Servicing stack update (kb5003364) for Windows 10 Version 1803 (Thanks to "aker")
+- Replaced superseded November 2020 Servicing stack update (KB4587735) by May 2021 Servicing stack update (kb5003243) for Windows 10 Version 1809 and Windows Server 2019 (Thanks to "aker")
+- Replaced superseded November 2020 Servicing stack update (KB4586863) by May 2021 Servicing stack update (kb5003244) for Windows 10 Version 1909 (Thanks to "aker")
+- Replaced superseded November 2020 Servicing stack update (KB4586864) by January 2021 Servicing stack update (KB4598481) for Windows 10 Version 2004 and 20H2 (Thanks to "aker")
+- Added Update for the removal of Adobe Flash Player (KB4577586)
+- Wget download utility updated to version 1.21.1 [2021-03-25] (Thanks to "boco" and "harry")
+- misc. improvements to InstallOSUpdate.cmd and InstallOfficeUpdate.com (Thanks to "aker")
+- Power Plan and screensaver settings will always be restored, if autoreboot is disabled (Thanks to "Eduardo de Oliveira")
+- Fix: ActivateAria2Downloads.cmd did not handle the "/reload" command properly (Thanks to "Dmytro Borys")
+- Fix: Windows 8.1 / Server 2012 R2 April 2014 and November 2014 rollup will be excluded from supersedance checks
+- Fix: "ActiveTimeBias" is not set, if "RealTimeIsUniversal" is set (Thanks to "Gerby")
+--------------------------------------------------------------------------------
+Community Edition 12.5.1 -- 31.05.2021
+- Fix: syntax error in DoUpdate.cmd when installing the Internet Explorer 11 prerequisites (Thanks to "rbronka")
+--------------------------------------------------------------------------------
+Community Edition 12.6 -- 21.10.2021
+- Included complete rewrite of the Linux scripts version CE-2.6 (Special thanks to H. Buhrmester)
+- Support added for Windows Server 2022
+- Added static update definition files for Windows 10 Version 21H2 (build 19044)
+- Implemented revised mechanism of calculating superseded updates (Thanks to "hbuhrmester" and "aker")
+- Updates for Windows 10 are now stored based on the build they are released for (Thanks to "aker")
+- misc. improvements to InstallOSUpdate.cmd and InstallOfficeUpdate.com (Thanks to "aker")
+- Added ability to detect Windows 11 builds
+- .NET 5 updated to version 5.0.11
+- C++ 2015-2019 Redistributable Runtime Libraries updated to v. 14.29.30135.0 (Thanks to "aker")
+- June 2021 to October 2021 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- June 2021 to October 2021 updates added to version-specific blacklists for Windows 10 and Server 2016 / 2019 (x86/x64) systems
+- Replaced superseded April 2021 Servicing stack update (kb5001402) by September 2021 Servicing stack update (kb5005698) for Windows 10 Version 1607 and Windows Server 2016 (Thanks to "aker")
+- Replaced superseded May 2021 Servicing stack update (kb5003243) by August 2021 Servicing stack update (kb5005112) for Windows 10 Version 1809 and Windows Server 2019 (Thanks to "aker")
+- Replaced superseded May 2021 Servicing stack update (kb5003244) by August 2021 Servicing stack update (kb5005412) for Windows 10 Version 1909 (Thanks to "aker")
+- Added August 2021 Servicing stack update (kb5005260) for Windows 10 Version 2004/20H2/21H1 (Thanks to "aker")
+- Wget download utility updated to version 1.21.2 [2021-10-02] (Thanks to "boco")
+- Fix: The self-update errornously reported a more recent versions in UpdateGenerator when the update check fails (Thanks to "negg")
+- Fix: TouchMSITree.cmd/InstallCustomSoftware.cmd could cause an endless loop of reboots (Thanks to "rbr555")
+- Fix: Edge Updater will be updated to the most recent version, too (Thanks to "aker")
+--------------------------------------------------------------------------------
+Community Edition 12.6.1 -- 24.12.2021
+- NOTE: Support removed for Windows 10 version 2004 since Microsoft discontinued support for it on December 14th, 2021
+- Improved mechanism for enforced "feature upgrades via enablement package" mechanism (Thanks to "aker")
+- Improved reliability of DownloadUpdates.cmd in handling file names / URLs with spaces inside (Thanks to "aker")
+- misc. improvements to InstallOSUpdate.cmd and InstallOfficeUpdate.com (Thanks to "aker")
+- Rewrite the complete code related to the installation of .NET 5 and C++ (Thanks to "aker")
+- Changed command line for updating Edge Updater to be more similar to what Edge does (Thanks to "aker")
+- Links to .NET 4.8 updated to fetch the updated files released 2021 (signing date 2021-05-01) (Thanks to "aker")
+- .NET 5 updated to version 5.0.13
+- Support added for .NET 6 (Thanks to "aker")
+- C++ 2015-2022 Redistributable Runtime Libraries updated to v. 14.30.30704.0 (Thanks to "aker")
+- November 2021 to December 2021 updates added to 'security only' lists for Windows 8.1 and Server 2012 / 2012 R2 (x86/x64) systems
+- November 2021 to December 2021 updates added to version-specific blacklists for Windows 10 and Server 2016 / 2019 /2022 (x86/x64) systems
+- Fix: Cosmetic issue enabling Build 20348 for x86 in UpdateGenerator (Thanks to "aker")
+- Fix: Removed erroneously displayed error message(s) in DownloadUpdates.cmd (Thanks to "aker")
+- Fix: DetermineSystemProperties.vbs might fail to detect Office installations, if only some components (e.g. Lync or Groove) are installed (Thanks to "jmcaree")
+--------------------------------------------------------------------------------

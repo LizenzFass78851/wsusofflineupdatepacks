@@ -1,0 +1,5 @@
+http://download.microsoft.com/download/5/5/4/554460AC-68BF-4879-A48E-21AE3F73A60E/Windows8-RT-KB2769165-x64.msu
+http://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/W2K12-KB3191565-x64.msu
+http://download.microsoft.com/download/2/8/5/285D4CCD-9D0E-4425-A398-3A6A65A415DE/Windows8-RT-KB3172615-x64.msu
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2019/04/ie11-win6.2_8d823347334b5cb35a0d174a4267e03a8ae8ccc0.msu
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2019/04/ie11-windows6.2-languagepack-x64-de-de_ddc0f72fb50ee7423f661be5261e7ce3f114970b.msu

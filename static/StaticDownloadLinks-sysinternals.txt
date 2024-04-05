@@ -1,0 +1,3 @@
+https://download.sysinternals.com/files/AutoLogon.zip
+https://download.sysinternals.com/files/Sigcheck.zip
+https://download.sysinternals.com/files/Streams.zip

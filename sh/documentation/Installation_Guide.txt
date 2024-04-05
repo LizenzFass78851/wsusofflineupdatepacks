@@ -1,0 +1,204 @@
+Installation guide for the Linux download scripts
+=================================================
+Last updated for the Linux download scripts, version 2.4-beta-2
+(2021-05-18)
+
+
+WSUS Offline Update already includes the new Linux download scripts. You
+don't need to install the Linux scripts separately, as it was necessary
+for the first beta versions, but you should review the needed packages
+from your Linux distribution.
+
+
+Install the required and recommended packages
+---------------------------------------------
+For Debian and Debian-derived distributions, you need to distinguish
+between the packages "md5deep" and "hashdeep".
+
+The upstream developers moved their project from SourceForge to GitHub,
+and they renamed their project from md5deep to hashdeep:
+
+http://md5deep.sourceforge.net/
+https://github.com/jessek/hashdeep/
+
+Debian followed this move and renamed the package md5deep to hashdeep,
+starting with Debian 8 Jessie-Backports in summer 2015. The general
+rule for Debian and Debian-derived distributions then is: Install the
+package md5deep, if the distribution was released before 2015. Install
+the package hashdeep for all recent distributions.
+
+* For Debian 7 Wheezy:
+
+  su -
+  aptitude install cabextract md5deep unzip wget xmlstarlet \
+                   dialog genisoimage rsync trash-cli jq
+
+* For Debian 8 Jessie-Backports and newer:
+
+  su -
+  aptitude install cabextract hashdeep unzip wget xmlstarlet \
+                   dialog genisoimage rsync trash-cli jq
+
+* For Ubuntu 14.04 LTS Trusty:
+
+  sudo apt-get install cabextract md5deep unzip wget xmlstarlet \
+                       dialog genisoimage rsync trash-cli jq
+
+* For Ubuntu 16.04 LTS Xenial and newer:
+
+  sudo apt-get install cabextract hashdeep unzip wget xmlstarlet \
+                       dialog genisoimage rsync trash-cli jq
+
+Other distributions, which are not Debian-based, seem to keep the package
+name md5deep.
+
+* For Fedora 27 (thanks to "username"):
+
+  sudo dnf install -y cabextract md5deep unzip wget xmlstarlet \
+                      dialog genisoimage rsync trash-cli jq
+
+* For FreeBSD 12.1 (thanks to "TheFlipside"):
+
+  su -
+  pkg install bash cabextract md5deep wget xmlstarlet \
+              cdrkit-genisoimage rsync jq
+
+
+Note, that both packages md5deep and hashdeep install a series of
+related applications: hashdeep, md5deep, sha1deep, sha256deep, tigerdeep,
+and whirlpooldeep. Throughout WSUS Offline Update, you always need the
+application "hashdeep", regardless of the package name.
+
+The script copy-to-target.bash, which was introduced in in version 1.8,
+requires "rsync" to run.
+
+The script update-generator.bash uses the external utility "dialog", to
+create nicely formatted dialogs to select updates, languages and included
+downloads. All dialogs allow multiple selections.
+
+If "dialog" is not installed, then these dialogs are created with
+the internal command "select" of the Bash, which only allows a single
+selection.
+
+The script create-iso-image.bash, which was introduced in version
+1.13, requires either "mkisofs" from the cdrtools or "genisoimage"
+from the cdrkit.
+
+* The cdrtools are the original tools, but they use a Solaris-style
+  license, which restricts the distribution of binary files. Linux
+  distributions like Gentoo, which provide only source files and let
+  the user recompile everything, still provide the cdrtools.
+
+  https://en.wikipedia.org/wiki/Cdrtools
+
+* Most other distributions like Debian and Fedora provide the fork cdrkit.
+
+  https://en.wikipedia.org/wiki/Cdrkit
+
+The download of Microsoft Edge (Chromium) needs jq for parsing JSON
+files. It also needs some tools for the conversion of base64 encoded
+data to hexadecimal numbers, but these tools are part of the respective
+core utilities in Linux and FreeBSD.
+
+
+Install optional packages
+-------------------------
+The packages listed above are necessary to run the Linux download scripts
+in their default configuration. There are some optional features, which
+require the installation of additional packages:
+
+- The verification of digital file signatures only works halfway, because
+  the Microsoft root certificates are not available in Linux. This is
+  discussed in the Manual.pdf. If you still like to try, you need to
+  install "wine" to run Sysinternals Sigcheck.
+
+  Note, that most security updates can be verified by comparing the SHA-1
+  hashes, which are plainly inserted into the filenames, with the values,
+  which are calculated by hashdeep.
+
+- The download utility aria2 features multiple simultaneous downloads,
+  which may be useful for slow connections. It requires the package
+  "aria2".
+
+There is a problem with timestamping, though, which may cause aria2 to
+download existing files again: aria2 sends a single GET request with a
+conditional header If-Modified-Since to the server. Then the server must
+decide, if the server file is newer than the local file. It can answer
+with “304 Not Modified” or “200 OK”. But some Microsoft servers
+ignore the conditional header and ALWAYS return “200 OK”. Then aria2
+proceeds to download the same file again.
+
+wget recognizes the wrong answer in this case, presumably by rechecking
+the message headers itself, and does not download the same file
+again. Therefore I recommend to use wget, until this problem is solved.
+
+
+Download and unpack the wsusoffline archive
+-------------------------------------------
+Download the newest wsusoffline archive and unpack it.
+
+* The download page <https://download.wsusoffline.net/> lists the
+  wsusoffline versions of the original developer. These versions are
+  not maintained anymore, and you should no longer use them.
+
+* Use the Community Edition instead from
+  <https://gitlab.com/wsusoffline/wsusoffline/-/releases>.
+
+  Select the latest release from the "master" branch, for example
+  Community Edition 12.4 or later.
+
+  The differences between the original versions and the Community Editions
+  are explained in the forum post:
+
+  wsusoffline "Community Edition"
+  <https://forums.wsusoffline.net/viewtopic.php?f=7&t=10194>
+
+Note, that the zip archive comes with an accompanying hashes file. You
+can use it to verify the download with:
+
+  hashdeep -a -v -v -l -k wsusofflineCE120_hashes.txt wsusofflineCE120.zip
+
+The new Linux scripts are included in the "sh" subdirectory. Due to
+the packaging on Windows, the scripts are not yet executable. Run the
+included script fix-file-permissions.bash once as:
+
+  bash fix-file-permissions.bash
+
+to make the scripts update-generator.bash, download-updates.bash,
+get-all-updates.bash, and some others executable.
+
+You can then use the script update-generator.bash to interactively select
+your updates, languages and optional downloads.
+
+You can also use the script get-all-updates.bash as a template: This
+script downloads all updates with all available options for the default
+languages German and English. But it is also meant for customization
+– you can simply comment out or delete all items you don't need.
+
+Once the scripts are executable, you can run them from the script
+directory with:
+
+  ./update-generator.bash
+  ./get-all-updates.bash
+  ./download-updates.bash all deu,enu -includesp
+
+
+Notes
+-----
+The new Linux scripts don't work alone – they need the
+configuration files from the wsusoffline installation. Also, the
+Linux download scripts can only replace the Windows download scripts,
+e.g. DownloadUpdates.cmd. To install the updates, you surely need the
+files in the client directory, e.g. the application UpdateInstaller.exe.
+
+Therefore, you should not download the Linux scripts separately, as it
+was necessary for the first beta versions. Just get the latest wsusoffline
+archive and find the Linux scripts in the "sh" subdirectory.
+
+If you need to copy or move the wsusoffline directory, please make sure
+to keep the modification date of all files. You could use "cp --archive"
+or "cp --preserve" instead of just "cp". This is important for all files
+throughout WSUS Offline Update.
+
+You can find the complete documentation is in the subdirectory
+"documentation".

@@ -1,0 +1,14 @@
+kb4338604,July 2018 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4344165,August 2018 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4457025,September 2018 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4470498,December 2018 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4480083,January 2019 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4483468,February 2019 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4495584,May 2019 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4506961,July 2019 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4514337,September 2019 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4532969,January 2020 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4552958,May 2020 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4565584,July 2020 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4569738,August 2020 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
+kb4578985,October 2020 Security only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows Server 2012
