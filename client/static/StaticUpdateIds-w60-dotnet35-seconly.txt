@@ -1,0 +1,1 @@
+kb4470633,December 2018 Security only update for the .NET Framework 3.5 SP1 for Windows Server 2008 SP2

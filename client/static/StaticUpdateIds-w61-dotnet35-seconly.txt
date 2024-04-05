@@ -1,0 +1,21 @@
+kb3032655,May 2015 Security Update for the .NET Framework 3.5.1 on Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb3163245,July 2016 Security Update for Microsoft .NET Framework 3.5.1 on Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb3188730,October 2016 Security Update for the .NET Framework 3.5.1 on Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4014573,April 2017 Security update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4014579,May 2017 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4040966,September 2017 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4054176,January 2018 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4095514,May 2018 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4338612,July 2018 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4344177,August 2018 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4457055,September 2018 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4470600,December 2018 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4480085,January 2019 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4483483,February 2019 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4495612,May 2019 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4506976,July 2019 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4532960,January 2020 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4552965,May 2020 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4565579,July 2020 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4569736,August 2020 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4578980,October 2020 Security only update for the .NET Framework 3.5.1 for Windows 7 SP1 and Windows Server 2008 R2 SP1

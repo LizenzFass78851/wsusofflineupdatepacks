@@ -1,0 +1,11 @@
+http://www.download.windowsupdate.com/msdownload/update/software/svpk/2008/04/windows6.0-kb936330-x86_b8a3fa8f819269e37d8acde799e7a9aea3dd4529.exe
+http://download.windowsupdate.com/msdownload/update/software/svpk/2009/06/windows6.0-kb948465-x86_55f17352b4398ecb4f0cc20e3737631420ca1609.exe
+http://download.windowsupdate.com/msdownload/update/software/crup/2010/06/windows6.0-kb956250-v6001-x86_84bd7293da81e71eab10110b0c25bfde4e9467dc.msu
+http://download.windowsupdate.com/msdownload/update/software/updt/2011/02/windows6.0-kb968930-x86_16fd2e93be2e7265821191119ddfc0cdaa6f4243.msu
+http://download.windowsupdate.com/msdownload/update/software/updt/2009/11/windows6.0-kb969084-x86_14a55ab5792fc8cb9f8dae57b26e59d7790d44e7.msu
+http://download.windowsupdate.com/msdownload/update/software/secu/2010/09/windows6.0-kb2416470-x86_46f400775298ba854264d50537cb1710a95ef9f5.msu
+http://download.windowsupdate.com/msdownload/update/software/updt/2009/10/windows6.0-kb971512-x86_370c3e41e1c161ddce29676e9273e4b8bb7ba3eb.msu
+http://download.windowsupdate.com/msdownload/update/software/updt/2011/02/windows6.0-kb2117917-x86_370435d9efa6643c44d6506666b1960d56cf673a.msu
+http://download.windowsupdate.com/msdownload/update/software/updt/2011/03/wu-ie9-windowsvista-x86_a2b66ff9e9affda9675dd85ba2b637a882979a25.exe
+http://download.windowsupdate.com/msdownload/update/software/updt/2011/03/ie9-langpack-windowsvista-x86-deu_e540c69a3d0c24c14ed8294feeaeb7223d2a8ea3.exe
+http://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.0-KB2506146-x86.msu

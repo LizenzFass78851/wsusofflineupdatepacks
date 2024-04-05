@@ -1,0 +1,1 @@
+http://download.microsoft.com/download/6/1/D/61D3BE5F-0AF0-49C2-8A14-44D8AFA4698A/KOKR/x86/MSEInstall.exe,MSEInstall-x86-kor.exe

@@ -1,0 +1,304 @@
+About the ExcludeListISO-*.txt files
+
+   This file explains the translation of the ExcludeListISO-*.txt files
+   from Windows to Linux.
+
+   The Windows script CreateISOImage.cmd uses mkisofs.exe, while the
+   Linux script create-iso-image.bash uses mkisofs or genisoimage,
+   depending on the distribution. So the format of the filter files
+   should basically be the same. Still, there seem to be some
+   differences in the handling of paths, and the Windows files cannot
+   easily be used on Linux.
+
+General filter rules
+
+   Filters in the files ExcludeListISO-*.txt can be:
+
+     * just the file or directory name
+     * a complete path, relative to the sh directory
+
+   For example, the following filters exclude two unneeded source files
+   and all download directories except the wsus directory:
+
+   o2k10
+   o2k13
+   o2k16
+   ofc
+   w60
+   w60-x64
+   w61
+   w61-x64
+   w62-x64
+   w63
+   w63-x64
+   w100
+   w100-x64
+   win
+   cpp
+   dotnet
+   msse
+   wddefs
+   UpdateInstaller.au3
+   IfAdmin.cpp
+
+   Paths must be complete paths, relative to the sh directory. The above
+   filters could also be written as:
+
+   ../client/o2k10
+   ../client/o2k13
+   ../client/o2k16
+   ../client/ofc
+   ../client/w60
+   ../client/w60-x64
+   ../client/w61
+   ../client/w61-x64
+   ../client/w62-x64
+   ../client/w63
+   ../client/w63-x64
+   ../client/w100
+   ../client/w100-x64
+   ../client/win
+   ../client/cpp
+   ../client/dotnet
+   ../client/msse
+   ../client/wddefs
+   ../client/UpdateInstaller.au3
+   ../client/bin/IfAdmin.cpp
+
+   Subdirectories can be specified with the name of the last directory
+   or with a complete path. The filters:
+
+   x86-glb
+   x64-glb
+
+   match the subdirectories:
+
+   ../client/dotnet/x86-glb
+   ../client/dotnet/x64-glb
+   ../client/msse/x86-glb
+   ../client/msse/x64-glb
+   ../client/wddefs/x86-glb
+   ../client/wddefs/x64-glb
+
+   Shell pattern can be used as needed. In pathnames, one asterisk '*'
+   can replace one directory level. The path:
+
+   ../client/dotnet/x86-glb
+
+   could also be specified as:
+
+   */client/dotnet/x86-glb
+   */*/dotnet/x86-glb
+
+   However, the Linux files ExcludeListISO-*.txt don't use any paths,
+   because they are not needed. Using only the file and directory names,
+   and inserting shell patterns only when needed, seems to work best.
+
+Obsolete Office and Windows versions
+
+   In the current version of WSUS Offline Update, the following
+   directories can always be excluded:
+
+   o2k
+   oxp
+   o2k3
+   o2k7
+   o2k7-x64
+   o2k10
+   w2k
+   wxp
+   w2k3
+   w2k3-x64
+   w62
+
+   These directory names correspond to: Office 2000, Office XP (aka
+   Office 2002), Office 2003, Office 2007, Office 2010, Windows 2000,
+   Windows XP, Windows Server 2003 and Windows 8 (32-bit).
+
+Supported Office versions
+
+   All supported Office versions can be excluded with the directory
+   names:
+
+   o2k13
+   o2k16
+   ofc
+
+   These filters are used for the creation of the ExcludeListISO-*.txt
+   files for single Windows versions.
+
+Supported Windows versions
+
+   All supported Windows versions can be excluded with the directory
+   names:
+
+   w60
+   w60-x64
+   w61
+   w61-x64
+   w62-x64
+   w63
+   w63-x64
+   w100
+   w100-x64
+   win
+
+   This filter block is used in the file ExcludeListISO-all-ofc.txt.
+
+Excluding 64-bit files and directories
+
+   If an ISO image with only 32-bit downloads is created, then the
+   following directories with 64-bit downloads should be excluded:
+
+   w60-x64
+   w61-x64
+   w62-x64
+   w63-x64
+   w100-x64
+   x64-glb
+
+   The filter x64-glb matches the 64-bit subdirectories of dotnet, msse
+   and wddefs.
+
+   The directories cpp and win/glb contain both 32-bit and 64-bit
+   downloads. The filter:
+
+   *_x64.exe
+
+   excludes these files:
+
+   ../client/win/glb/Silverlight_x64.exe
+   ../client/cpp/vcredist2005_x64.exe
+   ../client/cpp/vcredist2008_x64.exe
+   ../client/cpp/vcredist2010_x64.exe
+   ../client/cpp/vcredist2012_x64.exe
+   ../client/cpp/vcredist2013_x64.exe
+   ../client/cpp/vcredist2017_x64.exe
+
+   32-bit and 64-bit Office updates are also downloaded to the same
+   directories. The file ExcludeListISO-all-x86.txt uses the filter:
+
+   *-fullfile-x64-*
+
+   to exclude 64-bit Office downloads in the 32-bit cross-product ISO
+   image file.
+
+Excluding 32-bit files and directories
+
+   If an ISO image with for a 64-bit Windows version is created, then
+   the following directories with 32-bit downloads should be excluded:
+
+   w60
+   w61
+   w63
+   w100
+   x86-glb
+
+   The filter x86-glb matches the 32-bit subdirectories of dotnet, msse
+   and wddefs.
+
+   The remaining rules are not simply the reverse of the above, because
+   64-bit Windows versions may still need some 32-bit installers:
+
+     * Windows Server 2008 in 32-bit and 64-bit (w60 and w60-x64) both
+       need the 32-bit version of Silverlight. Therefore the file
+       ExcludeListISO-w60-x64.txt excludes Silverlight_x64.exe, but not
+       Silverlight_x86.exe (as might be expected).
+
+       https://forums.wsusoffline.net/viewtopic.php?f=5&t=8258#p26844
+
+     * 64-bit Windows versions may need both 32-bit and 64-bit
+       installers for the Visual C++ runtime libraries, to support
+       applications in both architectures.
+
+Handling of .NET Frameworks
+
+   Old, unsupported .NET Frameworks are excluded from download with the
+   files ExcludeList-dotnet-x86.txt and ExcludeList-dotnet-x64.txt. Then
+   the same filters don't need to be included in the files
+   ExcludeListISO-*.txt.
+
+   The Windows files ExcludeListISO-all-x86.txt and
+   ExcludeListISO-all-x64.txt exclude installers and dynamic updates for
+   .NET Framework 3.5. But these cross-product ISO images are supposed
+   to support all Windows versions, and then the .NET Framework 3.5 may
+   be needed. Therefore, the filters *dotnetfx35* and *ndp3* are not
+   used in the Linux files ExcludeListISO-all-x86.txt and
+   ExcludeListISO-all-win-x64.txt.
+
+   The Windows files ExcludeListISO-w60-x86.txt and
+   ExcludeListISO-w60-x64.txt exclude installers and dynamic updates
+   for .NET Framework 4.8. These filters are kept in the Linux files.
+
+   The Windows files ExcludeListISO-w61-x86.txt,
+   ExcludeListISO-w61-x64.txt, ExcludeListISO-w62-x64.txt,
+   ExcludeListISO-w63-x86.txt, ExcludeListISO-w63-x64.txt,
+   ExcludeListISO-w100-x86.txt and ExcludeListISO-w100-x64.txt exclude
+   .NET Frameworks 3.5 and 4.5. They also exclude the installers but
+   not dynamic updates for .NET Framework 4.6.
+
+   I don't really understand, why the installers for .NET Framework 4.6
+   are excluded, but not dynamic updates for the same version. Maybe this
+   was done, to keep the size of the ISO images slightly smaller. But
+   for compatibility with the Windows scripts, I just kept these
+   filters. If needed, these filters can be disabled in local copies of
+   the ExcludeListISO-*.txt files (see below).
+
+Virus definition files for Windows 8
+
+   The integrated Defender of Windows 8 and higher needs the same virus
+   definition files as Microsoft Security Essentials, but without the
+   installers. The old virus definitions for the Defender of Windows 7
+   cannot be used. Therefore, two filters are added for Window 8 - 10:
+
+   wddefs
+   MSEInstall-*.exe
+
+Unneeded files from the directory client/static
+
+   In Windows, some of the files StaticUpdateIds-*.txt may be excluded,
+   but this is rather a side-effect of excluding unneeded directories.
+
+   The approach for Linux is to keep all basic files of a wsusoffline
+   installation, and to exclude only new downloaded or created files.
+
+   In the first versions of the ExcludeListISO-*.txt files, the file
+   wsusoffline/client/static/StaticUpdateFiles-modified.txt was excluded,
+   but this file was moved to wsusoffline/static/sdd in the Community
+   Editions 11.9.2-ESR and 12.1.
+
+Source files
+
+   Two source files are included, because the GPL demands, that the
+   source code of all tools should be made available somewhere. These
+   files are never needed for end users, neither for download nor for
+   installation:
+
+   UpdateInstaller.au3
+   IfAdmin.cpp
+
+Comments
+
+   Empty lines and lines, which start with a number sign '#', are
+   removed by the script create-iso-image.bash. This is just an inverted
+   grep:
+
+   grep -v -e "^$" -e "^#" ExcludeListISO-all.txt
+
+   The ISO image creation tools mkisofs and genisoimage themselves don't
+   support comments.
+
+Local ExcludeListISO-*.txt files
+
+   The supplied files ExcludeListISO-*.txt are installed in the
+   directory:
+
+   sh/exclude
+
+   Users can create copies of these files in the directory:
+
+   sh/exclude/local
+
+   Local files replace the supplied files. This is different from the
+   handling of custom files in WSUS Offline Update, but it is more the
+   Linux way, and it allows to both add and remove filters.

@@ -1,0 +1,4 @@
+http://download.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/ENUS/x86/MSEInstall.exe,MSEInstall-x86-enu.exe
+http://download.microsoft.com/download/0/2/C/02C8AB73-0774-4975-826F-9E8A0FD7F65D/DEDE/x86/MSEInstall.exe,MSEInstall-x86-deu.exe
+http://go.microsoft.com/fwlink/?LinkID=121721&arch=x86
+http://definitionupdates.microsoft.com/download/DefinitionUpdates/NRI/x86/nis_full.exe,nis_full_x86.exe

@@ -1,0 +1,2 @@
+http://download.windowsupdate.com/msdownload/update/software/updt/2011/03/wu-ie9-windowsvista-x86_a2b66ff9e9affda9675dd85ba2b637a882979a25.exe
+http://download.windowsupdate.com/msdownload/update/software/updt/2011/03/ie9-langpack-windowsvista-x86-jpn_8400e4ecbbb1fb4b40e37ec852f2324e7da0adda.exe

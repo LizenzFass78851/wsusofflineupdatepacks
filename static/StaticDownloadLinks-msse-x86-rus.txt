@@ -1,0 +1,1 @@
+http://download.microsoft.com/download/7/6/0/760B9188-4468-4FAD-909E-4D16FE49AF47/RURU/x86/MSEInstall.exe,MSEInstall-x86-rus.exe

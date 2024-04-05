@@ -1,0 +1,12 @@
+cpp2005_x86,C++ 2005 x86 Runtime Libraries,..\cpp\vcredist2005_x86.exe
+cpp2005_x64,C++ 2005 x64 Runtime Libraries,..\cpp\vcredist2005_x64.exe
+cpp2008_x86,C++ 2008 x86 Runtime Libraries,..\cpp\vcredist2008_x86.exe
+cpp2008_x64,C++ 2008 x64 Runtime Libraries,..\cpp\vcredist2008_x64.exe
+cpp2010_x86,C++ 2010 x86 Runtime Libraries,..\cpp\vcredist2010_x86.exe
+cpp2010_x64,C++ 2010 x64 Runtime Libraries,..\cpp\vcredist2010_x64.exe
+cpp2012_x86,C++ 2012 x86 Runtime Libraries,..\cpp\vcredist2012_x86.exe
+cpp2012_x64,C++ 2012 x64 Runtime Libraries,..\cpp\vcredist2012_x64.exe
+cpp2013_x86,C++ 2013 x86 Runtime Libraries,..\cpp\vcredist2013_x86.exe
+cpp2013_x64,C++ 2013 x64 Runtime Libraries,..\cpp\vcredist2013_x64.exe
+cpp2015_x86,C++ 2015-2022 x86 Runtime Libraries,..\cpp\vcredist2015_x86.exe
+cpp2015_x64,C++ 2015-2022 x64 Runtime Libraries,..\cpp\vcredist2015_x64.exe

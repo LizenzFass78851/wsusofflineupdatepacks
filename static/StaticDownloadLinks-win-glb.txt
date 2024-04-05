@@ -1,0 +1,16 @@
+https://www.microsoft.com/pkiops/certs/Microsoft ECC Root Certificate Authority 2017.crt
+https://www.microsoft.com/pkiops/crl/Microsoft ECC Root Certificate Authority 2017.crl
+https://www.microsoft.com/pkiops/certs/Microsoft RSA Root Certificate Authority 2017.crt
+https://www.microsoft.com/pkiops/crl/Microsoft RSA Root Certificate Authority 2017.crl
+https://www.microsoft.com/pkiops/certs/Microsoft EV ECC Root Certificate Authority 2017.crt
+https://www.microsoft.com/pkiops/crl/Microsoft EV ECC Root Certificate Authority 2017.crl
+https://www.microsoft.com/pkiops/certs/Microsoft EV RSA Root Certificate Authority 2017.crt
+https://www.microsoft.com/pkiops/crl/Microsoft EV RSA Root Certificate Authority 2017.crl
+http://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl
+https://www.microsoft.com/pki/certs/MicRooCerAut2011_2011_03_22.crt
+https://www.microsoft.com/pkiops/certs/Microsoft Time Stamp Root Certificate Authority 2014.crt
+https://www.microsoft.com/pkiops/crl/Microsoft Time Stamp Root Certificate Authority 2014.crl
+https://www.microsoft.com/pkiops/certs/Microsoft ECC Product Root Certificate Authority 2018.crt
+https://www.microsoft.com/pkiops/crl/Microsoft ECC Product Root Certificate Authority 2018.crl
+https://www.microsoft.com/pkiops/certs/Microsoft ECC TS Root Certificate Authority 2018.crt
+https://www.microsoft.com/pkiops/crl/Microsoft ECC TS Root Certificate Authority 2018.crl

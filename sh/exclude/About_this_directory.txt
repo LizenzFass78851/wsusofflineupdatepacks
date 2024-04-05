@@ -1,0 +1,24 @@
+The files ExcludeListUSB-*.txt were copied from the directory
+wsusoffline/exclude.
+
+The original files are in a format to be used with the Windows script
+CopyToTarget.cmd and xcopy.exe.
+
+They had to be edited to be used with the Linux script copy-to-target.bash
+and rsync. Changes include:
+
+- changing the separator for pathnames from "\" to "/"
+- adding case-sensitive filters like ndp46 and NDP46, ndp472 and NDP472
+- adding shell patterns "*" as needed
+- adding the filter *vcredist2017_x64* to the file ExcludeListUSB-w60.txt
+- adding the filter /bin/IfAdmin.cpp to all exclude lists
+
+Some files were renamed, to better match the command-line parameters of
+the script copy-to-target.bash:
+
+ExcludeListUSB-all-x64.txt   -->  ExcludeListUSB-all-win-x64.txt
+ExcludeListUSB-ofc.txt       -->  ExcludeListUSB-all-ofc.txt
+ExcludeListUSB-w60-x86.txt   -->  ExcludeListUSB-w60.txt
+ExcludeListUSB-w61-x86.txt   -->  ExcludeListUSB-w61.txt
+ExcludeListUSB-w63-x86.txt   -->  ExcludeListUSB-w63.txt
+ExcludeListUSB-w100-x86.txt  -->  ExcludeListUSB-w100.txt

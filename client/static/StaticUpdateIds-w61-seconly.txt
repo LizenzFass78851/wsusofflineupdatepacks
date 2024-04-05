@@ -1,0 +1,68 @@
+kb3005607,Vulnerability in Windows Audio Service could cause Elevation of Privilege
+kb3138962,Security Update for Windows Media
+kb3149090,April 2016 Security Update for SAM and LSAD remote protocols
+kb3168965,Security Update for Windows kernel-mode drivers
+kb4019990,Update for the d3dcompiler_47.dll component on Windows 7 and Windows Server 2008 R2
+kb3192391,October 2016 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb3197867,November 2016 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb3205394,December 2016 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb3212642,January 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4012212,March 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4015546,April 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4019263,May 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4022722,June 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4025337,July 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4034679,August 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4038779,September 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4041678,October 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4048960,November 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4054521,December 2017 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4056897,January 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4074587,February 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4088878,March 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4093108,April 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4103712,May 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4284867,June 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4338823,July 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4343899,August 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4457145,September 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4462915,October 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4467106,November 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4471328,December 2018 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4480960,January 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4486564,February 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4489885,March 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4493448,April 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4499175,May 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4503269,June 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4507456,July 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4512486,August 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4516033,September 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4520003,October 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4525233,November 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4530692,December 2019 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4534314,January 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+KB4537813,February 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4541500,March 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4550965,April 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4556843,May 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4561669,June 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4565539,July 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4571719,August 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4577053,September 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4580387,October 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4586805,November 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4592503,December 2020 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4598289,January 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4601363,February 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5000851,March 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5001392,April 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5003228,May 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5003694,June 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5004951,7th July 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5004307,July 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5005089,August 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5005615,September 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5006728,October 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5007233,November 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb5008282,December 2021 Security Only Quality Update for Windows 7 SP1 and Windows Server 2008 R2 SP1

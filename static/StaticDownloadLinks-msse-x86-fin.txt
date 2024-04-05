@@ -1,0 +1,1 @@
+http://download.microsoft.com/download/B/E/A/BEAB92D8-4167-4A6E-A941-7049CAADD224/FIFI/x86/MSEInstall.exe,MSEInstall-x86-fin.exe

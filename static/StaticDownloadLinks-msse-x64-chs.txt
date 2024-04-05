@@ -1,0 +1,1 @@
+http://download.microsoft.com/download/1/E/D/1ED80C09-218B-44D7-B72D-E1451634E72D/ZHCN/amd64/MSEInstall.exe,MSEInstall-x64-chs.exe

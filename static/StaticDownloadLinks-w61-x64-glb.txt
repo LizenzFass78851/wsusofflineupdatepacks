@@ -1,0 +1,17 @@
+http://download.windowsupdate.com/msdownload/update/software/svpk/2011/02/windows6.1-kb976932-x64_74865ef2562006e51d7f9333b4a8d45b7a749dab.exe
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/08/windows6.1-kb2834140-v2-x64_3db9d9b3dc20515bf4b164821b721402e34ad9d6.msu
+http://download.windowsupdate.com/msdownload/update/software/ftpk/2013/02/windows6.1-kb2670838-x64_9f667ff60e80b64cbed2774681302baeaf0fc6a6.msu
+http://download.windowsupdate.com/msdownload/update/software/updt/2012/09/windows6.1-kb2729094-v2-x64_e1a3ecc5030a51711f558f90dd1db52e24ce074b.msu
+http://download.windowsupdate.com/msdownload/update/software/crup/2013/01/windows6.1-kb2786081-x64_dc63b04c58d952d533c40b185a8b555b50d47905.msu
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/09/windows6.1-kb2888049-x64_fae6327b151ae04b56fac431e682145c14474c69.msu
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2013/10/windows6.1-kb2882822-x64_ec92821f6ee62ac9d2f74e847f87be0bf9cfcb31.msu
+http://download.microsoft.com/download/7/1/7/7179A150-F2D2-4502-9D70-4B59EA148EAA/IE11-Windows6.1-x64-en-us.exe
+http://download.microsoft.com/download/2/1/C/21C5BF29-634B-4D37-803D-AA565C267B15/IE11-Windows6.1-x64-de-de.exe
+http://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win7AndW2K8R2-KB3191566-x64.zip
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2013/06/windows6.1-kb2574819-v2-x64_a0b7ffff5c8fc9b2f16b323e582bcda3bbe972d5.msu
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/11/windows6.1-kb2830477-x64_21cae4796ac834f66eec9a190815e1e1b8195908.msu
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/11/windows6.1-kb2857650-x64_83ff2b5ef551e039133437a12b2893eba3ba79b5.msu
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2014/02/windows6.1-kb2923545-x64_d263a19b8935efa334ef713cfbfecede3c51a3d1.msu
+http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/pciclearstalecache_d243a607b50db10ed50f03cff570498018c61a59.exe
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2014/05/windows6.1-kb2852386-v2-x64_5755ff2ce5ccaa980350d3a56fc489ce8838a1c5.msu
+http://download.windowsupdate.com/msdownload/update/software/crup/2011/03/windows6.1-kb2506014-x64_cc70f2accbfbae5e68f3c7aa3dba8877d1dc88a7.msu

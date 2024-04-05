@@ -1,0 +1,19 @@
+The compatibility of the Linux download scripts was at least briefly
+tested on:
+
+Distribution         | Bash version
+---------------------+-------------------------
+Debian  7.11 Wheezy  | GNU bash, version 4.2.37
+Debian  8.11 Jessie  | GNU bash, version 4.3.30
+Debian  9.8  Stretch | GNU bash, version 4.4.12
+Debian 10.7  Buster  | GNU bash, version 5.0.3
+
+
+The distributions were identified with:
+
+lsb_release --all
+cat /etc/debian_version
+
+The bash version was identified with:
+
+bash --version
