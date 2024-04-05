@@ -1,0 +1,8 @@
+dotnet-runtime-5.,/install /quiet /norestart
+windowsdesktop-runtime-5.,/install /quiet /norestart
+aspnetcore-runtime-5.,/install /quiet /norestart
+dotnet-runtime-6.,/install /quiet /norestart
+windowsdesktop-runtime-6.,/install /quiet /norestart
+aspnetcore-runtime-6.,/install /quiet /norestart
+proplussp2013,/passive /norestart
+proofloc2013,/quiet /norestart

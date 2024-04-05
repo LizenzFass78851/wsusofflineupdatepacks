@@ -1,0 +1,71 @@
+# File ExcludeListISO-w63.txt
+#
+# Note: Empty lines and lines, which start with a '#', are removed by
+# the script create-iso-image.bash. The ISO image creation tools mkisofs
+# and genisoimage themselves don't support comments.
+
+# Exclude all Office downloads (supported and unsupported versions)
+o2k
+oxp
+o2k3
+o2k7
+o2k7-x64
+o2k10
+o2k13
+o2k16
+ofc
+
+# Exclude unsupported Windows versions
+w2k
+wxp
+w2k3
+w2k3-x64
+w62
+
+# Exclude all supported Windows versions except w63
+w60
+w60-x64
+w61
+w61-x64
+w62-x64
+w63-x64
+w100
+w100-x64
+
+# Exclude 64-bit subdirectories of msse and wddefs
+x64-glb
+
+# Exclude 64-bit installers for vcredist and Silverlight
+*_x64.exe
+
+# Exclude .NET Frameworks 3.5 and 4.5
+dotnetfx35*
+ndp35sp1-*
+ndp45-*
+
+# Exclude installers for .NET Framework 4.6 (but not dynamic updates)
+NDP46-*
+
+# The integrated Defender of Windows 8 and higher needs the virus
+# definition files from the directory wddefs, while the directory msse
+# is not used anymore.
+msse
+
+# Exclude unneeded files from the directory client/md
+hashes-o2k13-*.txt
+hashes-o2k16-glb.txt
+hashes-w60-glb.txt
+hashes-w60-x64-glb.txt
+hashes-w61-glb.txt
+hashes-w61-x64-glb.txt
+hashes-w62-x64-glb.txt
+hashes-w63-x64-glb.txt
+hashes-w100-glb.txt
+hashes-w100-x64-glb.txt
+hashes-msse-x86-glb.txt
+hashes-msse-x64-glb.txt
+hashes-wddefs-x64-glb.txt
+
+# Exclude source files
+UpdateInstaller.au3
+IfAdmin.cpp

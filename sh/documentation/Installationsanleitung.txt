@@ -1,0 +1,214 @@
+Installationsanleitung für die Linux-Download-Skripte
+=====================================================
+Zuletzt aktualisiert für die Linux-Download-Skripte, Version 2.4-beta-2
+(2021-05-18)
+
+
+WSUS Offline Update enthält bereits die neuen Linux-Skripte. Sie
+brauchen die Linux-Skripte deshalb nicht mehr separat zu installieren,
+wie es für die ersten beta-Versionen nötig war. Sie sollten aber die
+benötigten Pakete aus ihrer Linux-Distribution überprüfen.
+
+
+Installieren Sie die benötigten und empfohlenen Pakete
+------------------------------------------------------
+Bei Debian und von Debian abgeleiteten Distributionen müssen Sie zwischen
+den Paketen "md5deep" und "hashdeep" unterscheiden.
+
+Die Entwickler sind mit ihrem Projekt von SourceForge nach GitHub
+umgezogen, und sie haben ihr Projekt von md5deep in hashdeep umbenannt:
+
+http://md5deep.sourceforge.net/
+https://github.com/jessek/hashdeep/
+
+Debian hat diesen Schritt nachvollzogen und das Paket md5deep in
+hashdeep umbenannt. Dieser Wechsel erfolgte im Sommer 2015 mit den
+Debian 8 Jessie-Backports. Die allgemeine Regel für Debian und von
+Debian abgeleitete Distributionen lautet deshalb: Installieren Sie das
+Paket md5deep, wenn die Distribution älter ist als 2015. Installieren
+Sie das Paket hashdeep in allen aktuellen Distributionen.
+
+* Für Debian 7 Wheezy:
+
+  su -
+  aptitude install cabextract md5deep unzip wget xmlstarlet \
+                              dialog genisoimage rsync trash-cli jq
+
+* Für Debian 8 Jessie-Backports und neuer:
+
+  su -
+  aptitude install cabextract hashdeep unzip wget xmlstarlet \
+                   dialog genisoimage rsync trash-cli jq
+
+* Für Ubuntu 14.04 LTS Trusty:
+
+  sudo apt-get install cabextract md5deep unzip wget xmlstarlet \
+                       dialog genisoimage rsync trash-cli jq
+
+* Für Ubuntu 16.04 LTS Xenial und neuer:
+
+  sudo apt-get install cabextract hashdeep unzip wget xmlstarlet \
+                       dialog genisoimage rsync trash-cli jq
+
+Andere Distributionen, die nicht auf Debian basieren, scheinen den
+Paketnamen md5deep beizubehalten.
+
+* Für Fedora 27 (nach "username"):
+
+  sudo dnf install -y cabextract md5deep unzip wget xmlstarlet \
+                      dialog genisoimage rsync trash-cli jq
+
+* Für FreeBSD 12.1 (nach "TheFlipside"):
+
+  su -
+  pkg install bash cabextract md5deep wget xmlstarlet \
+              cdrkit-genisoimage rsync jq
+
+
+Beachten Sie, dass beide Pakete md5deep und hashdeep eine Reihe von
+ähnlichen Anwendungen installieren: hashdeep, md5deep, sha1deep,
+sha256deep, tigerdeep und whirlpooldeep. In WSUS Offline Update müssen
+Sie immer die Anwendung "hashdeep" verwenden, unabhängig vom Paketnamen.
+
+Das in der Version 1.8 neu eingeführte Skript copy-to-target.bash
+benötigt "rsync".
+
+Das Skript update-generator.bash verwendet den externen Befehl "dialog",
+um die Auswahldialoge für Updates, Sprachen und optionale Downloads
+anzuzeigen. Diese Dialoge erlauben alle eine Mehrfachauswahl.
+
+Wenn "dialog" nicht installiert ist, werden die Dialoge mit dem internen
+Befehl "select" der Bash erzeugt, doch dieser Befehl erlaubt nur eine
+einfache Auswahl.
+
+Das in der Version 1.13 eingeführte Skript create-iso-image.bash
+benötigt entweder "mkisofs" aus den cdrtools oder "genisoimage" aus
+dem cdrkit.
+
+* Die cdrtools sind die ursprünglichen Programme, aber die
+  für Solaris entworfene Lizenz begrenzt die Verbreitung von
+  Binärpaketen. Linux-Distributionen wie Gentoo, die nur Quellpakete
+  verwenden, bieten weiter die cdrtools an.
+
+  https://de.wikipedia.org/wiki/Cdrtools
+
+* Die meisten anderen Distributionen wie Debian und Fedora bieten den
+  Fork cdrkit an.
+
+  https://de.wikipedia.org/wiki/Cdrkit
+
+Der Download von Microsoft Edge (Chromium) benötigt jq zum Parsen
+von JSON-Daten. Außerdem werden zwei Tools zum Konvertieren von
+Base64-kodierten Daten in Hexadezimal-Zahlen benötigt, aber diese Tools
+sind als Core Utilities in Linux und FreeBSD vorinstalliert.
+
+
+Optionale Pakete
+----------------
+Die oben genannte Pakete sind notwendig, um die Linux-Download-Skripte
+in ihrer Standard-Konfiguration zu verwenden. Es gibt einige optionale
+Funktionen, die die Installation von weiteren Paketen erfordern:
+
+- Die Verifikation von digitalen Datei-Signaturen funktioniert bislang
+  nur halb, weil die Microsoft Root-Zertifikate in Linux nicht verfügbar
+  sind. Dies wird im Manual.pdf diskutiert. Wenn Sie es trotzdem probieren
+  möchten, müssen sie "wine" installieren, um Sysinternals Sigcheck
+  unter Linux laufen zu lassen.
+
+  Die meisten Sicherheits-Updates können aber auch verifiziert werden,
+  indem die SHA-1-Hashe, die in die Dateinamen eingesetzt wurden, mit
+  den von hashdeep berechneten Werten verglichen werden.
+
+- Der alternative Downloader aria2 kann mehrfache simultane Verbindungen
+  verwenden, was besonders bei langsamen Internet-Verbindungen hilfreich
+  sein kann. Er wird mit dem Paket "aria2" installiert.
+
+Es gibt jedoch ein Problem mit dem Timestamping, das dazu führen kann,
+dass aria2 bereits vorhandene Dateien erneut herunterlädt: aria2 sendet
+eine einzelne GET-Anforderung mit dem bedingten Header If-Modified-Since
+an den Server. Der Server muss dann entscheiden, ob die Datei auf dem
+Server neuer ist als die lokale Datei. Er kann mit "304 Not Modified"
+oder "200 OK" antworten. Manche Microsoft-Server ignorieren aber den
+bedingten Header und antworten IMMER mit "200 OK". Dann lädt aria2
+dieselbe Datei erneut herunter.
+
+wget erkennt in diesem Fall die falsche Antwort, indem es die
+Message-Header selber noch einmal überprüft, und lädt die Datei
+nicht erneut herunter. Deshalb empfehle ich die Verwendung von wget,
+bis dieses Problem gelöst ist.
+
+
+Laden Sie das wsusoffline-Archiv herunter und entpacken Sie es
+--------------------------------------------------------------
+Laden Sie das neueste wsusoffline-Archiv herunter und entpacken Sie es.
+
+* Die Downloadseite <https://download.wsusoffline.net/> führt die
+  ursprünglichen Versionen des Originalentwicklers auf. Diese Versionen
+  werden jedoch nicht länger gepflegt, und Sie sollten sie nicht mehr
+  verwenden.
+
+* Verwenden Sie statt dessen die Community Edition von
+  <https://gitlab.com/wsusoffline/wsusoffline/-/releases>.
+
+  Wählen Sie das neueste Release aus dem "master" Zweig, zum Beispiel
+  Community Edition 12.4 oder höher.
+
+  Die Unterschiede zwischen den Originalversionen und der Community
+  Edition werden in einem Forum-Artikel erklärt:
+
+  wsusoffline "Community Edition"
+  <https://forums.wsusoffline.net/viewtopic.php?f=7&t=10194>
+
+Beachten Sie, dass das Zip-Archiv von einer Hashes-Datei begleitet
+wird. Sie können das Archiv damit überprüfen:
+
+  hashdeep -a -v -v -l -k wsusofflineCE120_hashes.txt wsusofflineCE120.zip
+
+Die neuen Linux-Skripte sind im Verzeichnis "sh" enthalten. Da das
+wsusoffline-Archiv unter Windows erstellt wurde, sind die Skripte noch
+nicht ausführbar. Rufen Sie das Skript fix-file-permissions.bash einmal
+auf mit:
+
+  bash fix-file-permissions.bash
+
+um die Skripte update-generator.bash, download-updates.bash,
+get-all-updates.bash und einige andere ausführbar zu machen.
+
+Sie können dann das Skript update-generator.bash aufrufen, um interaktiv
+ihre Updates, Sprachen und optionale Downloads auszuwählen.
+
+Sie können auch das Skript get-all-updates.bash als Vorlage verwenden:
+Dieses Skript lädt alle Updates mit allen verfügbaren Optionen für
+die Standardsprachen Deutsch und Englisch herunter. Es kann beliebig
+angepasst werden – kommentieren Sie einfach alle Punkte aus, die Sie
+nicht benötigen.
+
+Sobald die Skripte ausführbar sind, können sie aus dem
+Skript-Verzeichnis aufgerufen werden mit:
+
+  ./update-generator.bash
+  ./get-all-updates.bash
+  ./download-updates.bash all deu,enu -includesp
+
+
+Anmerkungen
+-----------
+Die Linux-Skripte funktionieren nicht alleine – sie benötigen die
+Konfigurationsdateien der wsusoffline-Installation. Außerdem können
+die Linux-Download-Skripte nur die Windows-Download-Skripte ersetzen,
+also zum Beispiel DownloadUpdates.cmd. Um die Downloads zu installieren,
+werden auch die Dateien im Verzeichnis client benötigt, zum Beispiel
+der UpdateInstaller.exe.
+
+Sie sollten die Linux-Skripte deshalb nicht mehr separat herunterladen,
+wie es für die ersten beta-Versionen noch nötig war. Laden Sie einfach
+das aktuellste wsusoffline-Archiv herunter und benutzen Sie die Skripte
+im Verzeichnis "sh".
+
+Wenn Sie das Verzeichnis wsusoffline kopieren oder verschieben
+möchten, achten Sie bitte darauf, das Änderungsdatum aller Dateien
+beizubehalten. Sie können zum Beispiel "cp --archive" oder "cp
+--preserve" anstelle von nur "cp" verwenden. Dies ist für die korrekte
+Funktion von WSUS Offline Update notwendig.
+
+Sie finden die komplette Dokumentation im Verzeichnis "documentation".

@@ -1,0 +1,183 @@
+F: Wie kann ich "WSUS Offline Update" selbst aktualisieren?
+A: Sofern in den "release notes" oder Installationshinweisen nicht anders angegeben, können Sie das Archiv (.zip) einer neuen Version einfach in eine bestehende Installationsstruktur hinein entpacken, wenn Sie existierende Dateien überschreiben lassen.
+Natürlich können Sie auch die automatische Selbstaktualisierung nutzen.
+--------------------------------------------------------------------------------
+F: Wo werden die heruntergeladenen Update-Dateien abgelegt?
+A: Alle für den Installationsteil erforderlichen Dateien werden im Unterverzeichnis "client" abgelegt.
+--------------------------------------------------------------------------------
+F: Kann ich Updates vom Download und/oder der Installation ausschließen?
+A: Ja, Sie haben die Möglichkeit, das Verhalten der Download- und Update-Skripte Ihren Bedürfnissen entsprechend anzupassen, indem Sie Updates vom Download oder der Installation ausschließen oder hinzufügen. Zum Ausschluss von Updates gehen Sie bitte wie folgt vor:
+
+1. Ausschluss von Updates vom Download
+Beim Ausschluss von Updates vom Download muss prinzipiell zwischen statisch definierten Updates, z.B. den neuesten Service Packs, und dynamisch ermittelten unterschieden werden.
+  a) Statisch definierte Updates
+    Wollen Sie statisch definierte Updates vom Download ausschließen, so löschen Sie die entsprechenden URL-Definitionen in der zugehörigen Datei "StaticDownloadLinks-<Plattform>[-<Architektur>].txt" im Verzeichnis "static\custom". Bitte beachten Sie, dass die Dateien dort bei einem Update der Software überschrieben werden.
+  b) Dynamische ermittelte Updates
+    Wollen Sie dynamisch ermittelte Updates vom Download ausschließen, so tragen Sie deren "knowledge base ids" (KBxxxxxx bzw. nur xxxxxx) in die zugehörige Datei "ExcludeList-<Plattform>[-<Architektur>].txt" im Verzeichnis "exclude\custom" ein.
+     
+2. Ausschluss von Updates von der Installation
+Beim Ausschluss von Updates von der Installation muss ebenfalls zwischen statisch definierten Updates und dynamisch ermittelten unterschieden werden.
+  a) Statisch definierte Updates
+    Die für die Installation statisch definierten Updates sind in Ihrer jeweils aktuellen Version:
+    - Service Pack (SP)
+    - Microsoft Installer (MSI)
+    - Windows Script Host (WSH)
+    - Internet Explorer (IE)
+    Diese werden jedoch nur dann installiert, wenn deren Versionsnummer auf dem Zielsystem kleiner ist als die in der Datei "SetTargetEnvVars.cmd" im Verzeichnis "client\cmd" definierte. Wollen Sie die Installation eines dieser statisch definierten Updates generell verhindern, so müssen Sie die "Erwartungshaltung" in der Datei "SetTargetEnvVars.cmd" anpassen bzw. entsprechende Sprungmarken in die Datei "DoUpdate.cmd", die den Installationsablauf steuert, einfügen. Dies sollten Sie nur in Ausnahmefällen tun, denn im Falle von SP, WUA, MSI und WSH sind bestimmte Versionen für einen erfolgreichen Installationsablauf erforderlich.
+  b) Dynamische ermittelte Updates
+    Wollen Sie dynamisch ermittelte Updates von der Installation ausschließen, so tragen Sie deren "knowledge base ids" (KBxxxxxx bzw. nur xxxxxx) in die Datei "ExcludeList.txt" im Verzeichnis "client\exclude\custom" ein. Das Update wird nun nicht mehr berücksichtigt; bei der Installation erhalten Sie eine entsprechende Warnung.
+    Bereits ausgeschlossene Updates sind folgende:
+    - kb890830 (Windows-Tool zum Entfernen bösartiger Software (MSRT))
+    - kb2841134 (Internet Explorer 11 (wird ggf. implizit installiert))
+    - kb2687455 (Office 2010 Service Pack 2 (wird ggf. implizit installiert))
+    - kb2817430 (Office 2013 Service Pack 1 (wird ggf. implizit installiert))
+    
+Bitte bedenken Sie dabei, dass Sie durch den Ausschluss von Updates die Sicherheit des Computers beeinträchtigen können.  
+--------------------------------------------------------------------------------
+F: Kann ich Updates dem Download und/oder der Installation hinzufügen?
+A: Ja, Sie haben die Möglichkeit, das Verhalten der Download- und Update-Skripte Ihren Bedürfnissen entsprechend anzupassen, indem Sie Updates vom Download oder der Installation ausschließen oder hinzufügen. Zum Hinzufügen von Updates gehen Sie bitte wie folgt vor:
+
+1. Hinzufügen von Updates zum Download
+Möchten Sie dem Download ein Update hinzufügen, so tragen Sie dessen Download-URL in die entsprechende Datei StaticDownloadLinks-<Plattform>[-<Architektur>]-<Sprache>.txt im Verzeichnis "...\static\custom" ein. Bitte vergessen Sie dabei nicht den abschließenden Zeilenumbruch (<CR><LF>).
+  
+2. Hinzufügen von Updates zur Installation
+Möchten Sie ein Update zur Installation hinzufügen, so tragen Sie dessen "knowledge base id" (KBxxxxxx bzw. nur xxxxxx) in die entsprechende Datei StaticUpdateIds-<Plattform>[-<Architektur>].txt im Verzeichnis "...\client\static\custom" ein. Bitte vergessen Sie dabei nicht den abschließenden Zeilenumbruch (<CR><LF>). Die Updates könnten beispielsweise unter .\client\win\glb gelagert werden; da wird bei jeder Windows-Version nachgesehen.
+--------------------------------------------------------------------------------
+F: Kann ich die dynamische Update-Ermittlung während des Downloads / der Installation überspringen, um nur meine statischen Definitionen zu verwenden?
+A: Ja.
+Zur Unterdrückung der dynamischen Update-Ermittlung während des Downloads müssen Sie den Eintrag "skipdynamic=Enabled" dem Abschnitt [Miscellaneous] Ihrer Datei UpdateGenerator.ini hinzufügen.
+Zur Unterdrückung der dynamischen Update-Ermittlung während der Installation müssen Sie den Eintrag "skipdynamic=Enabled" im Abschnitt [Installation] Ihrer Datei UpdateInstaller.ini setzen.
+--------------------------------------------------------------------------------
+F: Ich habe das neueste Service Pack für meine Zielplattform bereits und möchte es nicht erneut herunterladen. Kann ich es in das Offline Update integrieren?
+A: Ja, unter folgenden Voraussetzungen: Zunächst müssen Sie Ihr vorhandenes Service Pack in das richtige Verzeichnis kopieren, für ein XP-SP2 auf deutsch also unter "...\client\wxp\deu". Ferner müssen Dateiname und -größe mit den Eigenschaften auf dem Microsoft-Server übereinstimmen, im konkreten Beispiel also "WindowsXP-KB835935-SP2-DEU.exe" mit 277.936.872 Bytes. Da der Download mittels "wget" mit dem Parameter "-N" erfolgt, darf die lokale Datei schließlich auch nicht älter sein als die auf dem Microsoft-Server vorhandene.  
+--------------------------------------------------------------------------------
+F: Kann ich Updates für Produkte anderer Hersteller in das Offline Update einbinden?
+A: Nein, und das ist auch nicht geplant. Updates von Drittanbietern haben in aller Regel andere Aufrufkonventionen, so dass eine Integration schwierig wäre. Darüber hinaus dient das Offline Update dazu, einen Computer so gut wie möglich abzusichern, bevor man ihn ans Netz anschließt. Updates anderer Hersteller können danach online bezogen werden; hierzu bieten einige gängige Produkte auch eigene automatische Mechanismen an, z.B. Acrobat Reader, Firefox, Thunderbird, Java Runtime sowie verschiedene Multimedia-Player und -PlugIns.   
+--------------------------------------------------------------------------------
+F: Wie kann ich die Erstellung der Offline-Update-CD-Images automatisieren, beispielsweise über einen "zeitgesteuerten Auftrag"?
+A: Erstellen Sie eine neue Batchdatei im Verzeichnis "cmd", z.B. "DownloadUpdatesAndCreateISOImage.cmd". Fügen Sie die gewünschten Aufrufe von "DownloadUpdates.cmd" und "CreateISOImage.cmd" mit den erforderlichen Parametern in diese neue Datei ein. Die Datei könnte also beispielsweise folgenden Inhalt haben:
+
+@echo off
+call DownloadUpdates wxp deu
+call CreateISOImage wxp deu
+
+Richten Sie danach einen "zeitgesteuerten Auftrag" für das neue Skript "DownloadUpdatesAndCreateISOImage.cmd" zu den von Ihnen gewünschten Zeitpunkten ein. Wenn Sie beispielsweise nach jedem Microsoft-Patchday neue Images erzeugen möchten, wählen Sie jeden zweiten Mittwoch eines Monats.
+--------------------------------------------------------------------------------
+F: Kann ich die Installation der Updates von einer Netzwerkfreigabe starten?
+A: Ja, aber die Funktion "Automatisch neu starten und fortsetzen" wird nur mit Netzwerkfreigaben funktionieren, die anonymen Zugriff erlauben, da andernfalls das für diese Funktion anzulegende temporäre Administratorkonto "WOUTempAdmin" keinen Zugriff auf die Freigabe hat.
+Wenn Sie der Netzwerkressource keinen Laufwerksbuchstaben zugewiesen haben, wird das Skript "UpdateInstaller" dies automatisch tun, da cmd.exe keine UNC-Pfade (\\<Server>\<Freigabe>) als aktuelles Verzeichnis unterstützt (siehe http://support.microsoft.com/kb/156276/).
+Wenn Sie der Netzwerkfreigabe mit Hilfe der Funktion "Netzlaufwerk verbinden..." oder des "net use"-Kommandos selbst einen Laufwerksbuchstaben zuweisen möchten, müssen Sie dies unter Windows Vista/7/Server 2008(R2) in einem administrativen Kontext/Kommandozeilenfenster tun, da das Skript "UpdateInstaller" zur Patch-Installation administrative Privilegien anfordert.
+Bitte bedenken Sie, dass eine Patch-Installation über das Netzwerk dem Gedanken des Offline Updates zuwiderläuft und der Rechner in diesem Zeitraum möglicherweise angreifbar ist.
+--------------------------------------------------------------------------------
+F: Ein Update wird immer wieder installiert, obwohl es auf dem Zielsystem schon vorhanden ist. Woran liegt das und was kann ich dagegen tun?
+A: Dieses Verhalten zeigt sich gelegentlich bei Kernel-Updates auf OEM-Systemen; die Ursache liegt also bei Microsoft.
+Sie können solche Updates manuell mit dem Parameter "/o" (alternativ "/overwriteoem", vgl. http://support.microsoft.com/kb/262841) installieren, um dieses Problem zu beheben.
+--------------------------------------------------------------------------------
+F: Bei der Installation der Updates erhalte ich eine Warnung, dass die Updates kb890830 und kb976002 übersprungen wurden. Warum sind sie nicht integriert?
+A: Beim Update kb890830 handelt es sich genau genommen nicht um ein Update, sondern um das "Malicious Software Removal Tool (MSRT)". Dieses prüft nach einem Neustart des Rechners diesen einmalig auf Schädlingsbefall, kann aber hinsichtlich Aktualität und Erkennungsrate nicht mit kommerziellen Virenscannern konkurrieren. Da es darüber hinaus in vielen Versionen in Microsofts Katalogdatei wsusscn2.cab aufgeführt ist, wird es schon beim Download der Updates herausgefiltert. Das Update kb976002 ist der Browserauswahlbildschirm für den europäischen Markt.  
+--------------------------------------------------------------------------------
+F: Bei der Installation der Updates erhalte ich Warnungen, dass weitere Updates nicht gefunden werden konnten. Was hat es damit auf sich?
+A: Vom Offline Update werden standardmäßig nur Updates heruntergeladen, die in Microsofts Katalogdatei wsusscn2.cab aufgeführt sind. Dies sind mindestens alle kritischen und sicherheitsrelevanten Updates, jedoch nicht alle empfohlenen oder optionalen. Bei Bedarf können Sie die vermissten Updates manuell hinzufügen (s.o.).
+--------------------------------------------------------------------------------
+F: Kann ich die Installation der Updates erzwingen, auch wenn sie bereits auf dem Zielsystem installiert sind?
+A: Ja, aber nicht über die GUI (UpdateInstaller.exe). Bitte rufen Sie dazu "Update.cmd" mit dem Parameter "/all" auf, also z.B. "Update.cmd /autoreboot /showlog /all".
+--------------------------------------------------------------------------------
+F: Auf meinem Zielsystem können keine fehlenden Updates ermittelt werden; auf einem anderen werden fehlende Updates immer wieder installiert. Warum?
+A: Für dieses Verhalten ist in aller Regel der Windows Update Agent (WUA) verantwortlich. Bitte folgen Sie den Hinweisen zum Zurücksetzen der Windows Update-Komponenten (http://support.microsoft.com/kb/971058), um den Defekt des WUA zu beheben.
+--------------------------------------------------------------------------------
+F: Bei der Installation der Updates erhalte ich merkwürdige Fehlermeldungen auf der Konsole, z.B. "D:\Downloads\Updates\Windows\ctupdate30\client\cmd\DetermineSystemProperties.vbs(92, 3) (null): 0x80041014", das Skript bricht daraufhin ab. Woran liegt das und was kann ich dagegen tun?
+A: Für einen fehlerfreien Ablauf benötigt das Installationsskript korrekte Installationen der Windows-Dienste bzw. -Komponenten "Automatische Updates (WUA)", "Windows Script Host (WSH)" und "Windows Management Instrumentation (WMI)".
+Bitte prüfen Sie zunächst, ob Sie diese Komponenten über System-Werkzeuge wie beispielsweise TweakUI, nLite, xp-AntiSpy o.ä. in ihrer Funktionalität eingeschränkt oder sogar deaktiviert haben.
+Ist das nicht der Fall, werden diese Fehler meist durch eine fehlerhafte Scripting-Komponenten- oder WMI-Registrierung verursacht.
+Zur (Re-)Registrierung der Scripting-Komponenten folgen Sie bitte der Anleitung unter http://support.microsoft.com/kb/949140.
+Zur Überprüfung der WMI-Installation können Sie das WMI-Diagnoseprogramm von Microsoft (http://www.microsoft.com/downloads/details.aspx?familyid=d7ba3cd6-18d1-4d05-b11e-4c64192ae97d&displaylang=en einsetzen. Weiterführende technische Informationen zur WMI finden Sie unter http://technet.microsoft.com/de-de/library/cc787057(WS.10).aspx, die WMI-FAQs von Microsoft unter (http://www.microsoft.com/germany/technet/datenbank/articles/600682.mspx).
+--------------------------------------------------------------------------------
+F: Bei der Installation der Updates erhalte die Fehlermeldung: "...\ListMissingUpdateIds.vbs(15, 1) (null): Es war keine Signatur im Antragsteller vorhanden." Wie kann ich Abhilfe schaffen? 
+A: Dieser Fehler tritt auf, wenn die Datei ...\client\wsus\wsusscn2.cab unvollständig heruntergeladen wurde, wodurch deren digitale Signatur natürlich ungültig ist. Bitte starten Sie den Download mittels UpdateGenerator.exe erneut.
+--------------------------------------------------------------------------------
+F: Mein Virenscanner meldet, das heruntergeladene Archiv sei infiziert. Was kann ich tun?
+A: Dies ist ein Fehlalarm! Das Archiv enthält kompilierte AutoIT-Skripte, die manche Anti-Viren-Produkte leider pauschal als Malware bemängeln.
+   Sie können die Unbedenklichkeit der Skripte verifizieren, indem Sie die mitgelieferten Quelltextdateien (*.au3) mit AutoIT (http://www.autoitscript.com/autoit3/) selbst übersetzen oder indem Sie das heruntergeladene Archiv auf VirusTotal (http://www.virustotal.com/) von einer Vielzahl von Virenscannern überprüfen lassen.
+   Weiterhin können Sie zur Verbesserung der Erkennung Ihres Anti-Viren-Produktes beitragen, indem Sie Ihrem Hersteller die "falsch positiv" erkannten Dateien zusenden.
+--------------------------------------------------------------------------------
+F: Beim Herunterladen der Updates erhalte ich Meldungen der Form "ERROR 404: Not Found.". Verwendet das Offline Update hier fehlerhafte URLs?
+A: Nein. Die URLs der herunterzuladenden Updates werden aus Microsofts Katalogdatei package.xml, die in der Datei wsusscn2.cab enthalten ist, zur Laufzeit ermittelt.
+--------------------------------------------------------------------------------
+F: Ich habe die Erstellung eines Office-Update-Pakets auf Deutsch gewählt. Es werden jedoch auch englischsprachige Updates heruntergeladen. Warum?
+A: Einige Office-Updates werden in Microsoft-Katalogdatei wsusscn2.cab (package.xml) sprachabhängig aufgeführt, andere nur in der englischen Fassung. Bei letzteren handelt es sich offenbar um Aktualisierungen für sprachunabhängige Teile von Office; diese lassen sich z.B. auf einem deutschen Office klaglos installieren.
+Daher wurde für die Office-Pakete neben den sprachabhängigen Unterverzeichnissen "deu", "enu" etc. ein weiteres namens "glb" eingeführt, in dem die dynamisch ermittelten englischsprachigen Office-Updates abgelegt werden, unabhängig davon, welche Sprachversion gewählt wurde.
+Im Falle von Office 2003 werden dann bei der Erzeugung des ISO-Images die in "glb" befindlichen englischsprachigen Service-Packs für Project, Visio etc. ausgeblendet, um Platz auf dem Datenträger zu sparen.
+--------------------------------------------------------------------------------
+F: Ich möchte ein ISO-Image von 500MB mit Nero brennen, erhalte aber eine Fehlermeldung, das ISO-Image sei zu groß. Ist es defekt?
+A: Nein, wahrscheinlich nicht. Nero scheint in manchen Versionen die erforderliche Größe des Rohlings falsch zu berechnen. Bitte aktualisieren Sie Ihre Nero-Version oder verwenden Sie ein anderes Brennprogramm.
+--------------------------------------------------------------------------------
+F: Mein ISO-Image ist zu groß für eine CD. Wie kann ich es auf DVD brennen?
+A: Es gibt keinen prinzipiellen Unterschied zwischen einem CD- und einem DVD-ISO-Image, d.h. sofern Ihre Brenn-Software in der Lage ist, ISO-Images und DVDs zu verarbeiten, können Sie jedes ISO-Image auch auf einen DVD-Rohling brennen.
+--------------------------------------------------------------------------------
+F: Beim Erzeugen eines ISO-Images erhalte ich die Warnung: "ISO-9660 filenames longer than 31 may cause buffer overflows in the OS." Ist das problematisch?
+A: Nein. Diese Meldung wird bei allen Benutzern ausgegeben und bedeutet nur, dass das CD-Dateisystem unter einigen älteren Betriebssystemen, z.B. MS-DOS, nicht gelesen werden kann. Auf den für das Offline Update relevanten Plattformen ergeben sich hieraus keine Komplikationen.
+--------------------------------------------------------------------------------
+F: Kann ich die vom Offline Update heruntergeladenen Patches per "Slipstreaming" in ein Installationsmedium aufnehmen?
+A: Da nicht alle Updates die "Slipstreaming"-Funktionalität unterstützen und jeden Monat neue Patches veröffentlicht werden, empfehlen wir, nur das jeweils neueste Service Pack per "Slipstreaming" einzubinden und die danach erschienenen Updates nach der Installation des Betriebssystems mit dem Offline Update zu installieren.
+--------------------------------------------------------------------------------
+F: Ich habe die Option "automatic reboot and recall" verwendet, aber nach dem ersten Neustart nimmt die Software nicht mehr automatisch Ihre Arbeit auf, wie es eigentlich gedacht ist. Was kann ich dagegen tun?
+A: Offenbar haben Sie das Offline Update in einem Bereich Ihres Dateisystems abgelegt, auf den der neu angelegte Benutzer "WOUTempAdmin" trotz administrativer Berechtigungen keinen Zugriff hat, beispielsweise in einem benutzerspezifischen Verzeichnis wie "Eigenen Dateien" oder "Desktop". Bitte verwenden Sie ein anderes Basisverzeichnis zur Installation der Updates.
+--------------------------------------------------------------------------------
+F: Obwohl ich die Option gewählt habe, bekomme ich am Ende der Installation nach dem Neustart die Log-Datei nicht angezeigt. Warum?
+A: Wahrscheinlich hat der Benutzer, mit dem Sie sich nach Abschluss der Installation anmelden, keine Berechtigung, auf den Registrierungsschlüssel HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce oder auf die Log-Datei (%SystemRoot%\ctupdate.log) zuzugreifen. Bitte melden Sie sich nach dem letzten Neustart des Offline Updates einmalig mit dem Benutzerkonto an, mit dem Sie das Update gestartet haben.
+--------------------------------------------------------------------------------
+F: Ich habe die Option "automatic reboot and recall" verwendet; nun wird bei jedem Neustart und bei jeder Abmeldung der Benutzer "WOUTempAdmin" automatisch angemeldet. Wie kann ich das verhindern und den Originalzustand des Rechners wiederherstellen?
+A: Dieser Effekt tritt sehr selten auf. Bitte helfen Sie dabei, die Software zu verbessern, indem Sie dem Entwicklungsteam die Umstände so detailliert wie möglich schildern.
+Zur "Bereinigung" des Rechners gehen Sie bitte wie folgt vor:
+  - Brechen Sie ggf. das laufende Update-Skript mit <Strg>C ab
+  - Führen Sie das Skript "CleanupRecall.cmd" im Verzeichnis "cmd" aus und starten Sie danach den Rechner neu.
+
+Hilft dies nicht, gehen Sie bitte wie folgt vor:
+  - Melden Sie den "WOUTempAdmin" ab. Halten Sie dabei die Taste <Shift> (<Umschalt>) gedrückt, bis der Anmeldedialog erscheint.
+  - Melden Sie sich als "Administrator" an.
+  - Prüfen Sie, ob eine Datei %SystemRoot%\wsusbak-winlogon.reg existiert
+    - Wenn ja, Starten Sie den Registrierungseditor ([Start - Ausführen...] regedit), löschen Sie den Schlüssel "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" und fügen Sie die gesicherten Werte dieses Schlüssels mit einem Doppelklick auf die Datei %SystemRoot%\wsusbak-winlogon.reg in die Registrierung ein. Löschen Sie die Datei %SystemRoot%\wsusbak-winlogon.reg.
+    - Wenn nein, Starten Sie den Registrierungseditor ([Start - Ausführen...] regedit) und manipulieren Sie einige Werte des Schlüssels "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" wie folgt:
+      - DefaultUserName: Administrator (oder ein Benutzer Ihrer Wahl)
+      - DefaultPassword: Wert löschen
+      - AutoAdminLogon: Wert löschen
+      - ForceAutoLogon: Wert löschen
+  - Löschen Sie in der Computerverwaltung das Benutzerkonto "WOUTempAdmin"
+  - Löschen Sie das Benutzerprofil des "WOUTempAdmin", also i.d.R. das Verzeichnis "WOUTempAdmin" unter "C:\Benutzer"/"C:\Users".
+  - Starten Sie den Rechner neu.
+--------------------------------------------------------------------------------
+F: Während des Downloads erhalte ich einen "file integrity verification"-Fehler. Was kann ich dagegen tun?
+A: Wenn Sie sich sicher sind, dass die Dateien in Ihrem Repository nicht manipuliert wurden, können Sie die entsprechenden Prüfsummen-Dateien unter ...\client\md löschen. Sie werden beim nächsten Download-Lauf neu erzeugt.
+--------------------------------------------------------------------------------
+F: Warum sind Auswahlfelder ausgegraut, wenn ich UpdateInstaller.exe starte?
+A: Dies geschieht in Abhängigkeit von Plattform, Update-Medium und Installationsstatus.
+--------------------------------------------------------------------------------
+F: Beim Herunterladen oder bei der Installation erhalte ich einen Fehler, der auf eine ungültige Datei package.xml hinweist. Was kann ich dagegen tun?
+A: Ihre Kopie von Microsoft's Update-Katalogdatei (...\client\wsus\wsusscn2.cab) scheint beschädigt zu sein. Bitte löschen Sie diese und starten Sie den Download erneut.
+--------------------------------------------------------------------------------
+F: Kann ich die Download-Fenster im Hintergrund lassen?
+A: Ja. Bitte editieren Sie die Datei UpdateGenerator.ini und fügen Sie dem Abschnitt "[Miscellaneous]" einen Eintrag bzw. eine Zeile "minimizeondownload=Enabled" hinzu.
+--------------------------------------------------------------------------------
+F: Nach der Installation von Patches mit dem Offline Update erscheint bei jedem Neustart des Rechners eine leere Box ohne jeglichen lesbaren Inhalt. Erst wenn ich auf "OK" klicke, fährt das System ordentlich hoch.
+A: Die Ursache dieses seltenen Verhaltens ist noch unklar. Bitte melden Sie sich als Administrator an, prüfen Sie, ob in der Windows-Registrierung unter "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" ein Wert namens "WSUSOfflineUpdate" oder unter "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" Werte namens "DeleteWOUTempAdminProfile" oder "ShowOfflineUpdateLogFile" zu finden sind und löschen sie diese gegebenenfalls.
+Finden Sie die genannten Einträge nicht, ist dieser Effekt nicht direkt auf das Offline Update zurückzuführen. Für weitere Hinweise ist das Team dankbar.    
+--------------------------------------------------------------------------------
+F: Ich vermisse die Installationspakete für IEx, .NET und MSSE in meiner Sprache. Warum werden sie nicht heruntergeladen und was kann ich tun, um sie herunterzuladen?
+A: Da Service Packs und Updates für Windows Vista / 7 / Server 2008(R2) mehrsprachig sind, gibt es für diese Systeme keine 24sprachige Auswahltabelle, so dass voreingestellt nur die englisch- und deutschsprachigen Versionen der Installationspakete für IEx, .NET und MSSE heruntergeladen werden.
+Um die Sprachversionen Ihrer Wahl zusätzlich herunterladen zu lassen, können Sie das Skript ...\cmd\AddCustomLanguageSupport.cmd verwenden.
+--------------------------------------------------------------------------------
+F: Die Ermittlung ersetzter Aktualisierungen ("superseded updates") dauert sehr lange (mehr als 15 Minuten). Wie kann ich dies beschleunigen?
+A: Manche Anti-Viren-Scanner (insbesondere die "Microsoft Security Essentials" (MSSE)) verzögern die erforderlichen Berechnungen stark. Sie können Ihren AV-Scanner temporär deaktivieren oder eine entsprechende Ausnahme definieren.
+--------------------------------------------------------------------------------
+F: Ich vermisse die x64-Versionen des Service Packs 2 für Office 2010 und des Service Packs 1 für Office 2013. Wie bekomme ich sie heruntergeladen?
+A: Bitte führen Sie einmalig ...\cmd\AddOffice2010x64Support.cmd {lng} aus, um die URLs der Pakete Ihren benutzerspezifischen Download-Definitionen hinzuzufügen (siehe Verzeichnis ...\static\custom).
+--------------------------------------------------------------------------------
+F: Ich benötige die deutschsprachigen Installationspakete für IEx, .NET und MSSE nicht. Wie kann ich deren Download deaktivieren?
+A: Bitte führen Sie einmalig das Skript ...\cmd\RemoveGermanLanguageSupport.cmd aus, um die URLs der Pakete aus den statischen Download-Definitionen zu entfernen.
+--------------------------------------------------------------------------------
+F: Vor der Updateinstallation wird das System geprüft um festzulegen, wieviele Updates in einem Lauf max. installiert werden. Gibt es einen Parameter, um diesen Wert vorzugeben?
+A: Der Parameter kann in der Datei ...\client\cmd\custom\SetUpdatesPerStage.cmdt vorgegeben werden. Er sollte nicht kleiner sein als der Parameter "UPDATES_PER_STAGE" in der Datei \client\cmd\SetTargetEnvVars.cmd (derzeit 40). Kleinere Werte werden automatisch korrigiert. Nach Vorgabe des Stage-Limits muss die Datei in SetUpdatesPerStage.cmd (cmd ohne t) umbenannt werden!
+--------------------------------------------------------------------------------
+F: Beim Download melden wget/aria2 einen Zertifikatfehler.
+A: Dieser Fehler wird durch fehlende Stammzertifikate auf der Download-Maschine hervorgerufen. Zur Umgehung des Problems können die Stammzertifikate auf den neusten Stand gebracht werden. Download-Links sind unter https://gitlab.com/wsusoffline/wsusoffline/-/wikis/Root-CA-Update veröffentlicht.
+--------------------------------------------------------------------------------

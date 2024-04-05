@@ -1,0 +1,26 @@
+{09298F26-A95C-31E2-9D95-2C60F586F075};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [de-de]
+{FF66E9F6-83E7-3A3E-AF14-8DE9A809A6A4};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [en-us]
+{09C0A8D5-EEC1-369D-8C7A-2E2DD17DCA5E};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [es-es]
+{CC1DB186-550F-3CFE-A2A9-EBA5E5A34BC1};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [fr-fr]
+{31B44A9A-7CFE-3039-AEAE-A664F3C5F7BD};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [it-it]
+{E3F7F270-4ADD-3DA6-8B35-A924C134D49F};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [ja-jp]
+{9B775AA1-7B10-379A-9B16-7E373790568C};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [ko-kr]
+{DCB46B42-723F-350E-B18A-449BC6C21636};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [ru-ru]
+{A09D5493-0D9F-3211-B3BF-DD7ABBB318C1};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [zh-cn]
+{F2E0402D-AA60-32E3-8480-39AD5CE79DF2};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022 [zh-tw]
+{E503B4BF-F7BB-3D5F-8BC8-F694B1CFF942};Microsoft Visual C++ 2008 Redistributable - x86 9.0.21022.218
+{5DA8F6CD-C70E-39D8-8430-3D9808D6BD17};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30411
+{6AFCA4E1-9B78-3640-8F72-A7BF33448200};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [de-de]
+{3C3D696B-0DB7-3C6D-A356-3DB8CE541918};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [en-us]
+{57660847-B1F7-35BD-9118-F62EB863A598};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [es-es]
+{820B6609-4C97-3A2B-B644-573B06A0F0CC};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [fr-fr]
+{F03CB3EF-DC16-35CE-B3C1-C68EA09E5E97};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [it-it]
+{402ED4A1-8F5B-387A-8688-997ABF58B8F2};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [ja-jp]
+{887868A2-D6DE-3255-AA92-AA0B5A59B874};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [ko-kr]
+{527BBE2F-1FED-3D8B-91CB-4DB0F838E69E};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [ru-ru]
+{86CE1746-9EFF-3C9C-8755-81EA8903AC34};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [zh-cn]
+{CA8A885F-E95B-3FC6-BB91-F4D9377C7686};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729 [zh-tw]
+{9A25302D-30C0-39D9-BD6F-21E6EC160475};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.17 [en-us]
+{1F1C2DFC-2D24-3E06-BCB8-725134ADF989};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.4148
+{9BE518E6-ECC6-35A9-88E4-87755C07200F};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.6161
+{7CBA9009-7EA4-338B-893D-9607CD829ADF};Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.7523

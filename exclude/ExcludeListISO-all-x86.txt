@@ -1,0 +1,16 @@
+*ndp1*
+*ndp2*
+*ndp3*
+*dotnetfx35*
+*o2k3*
+*o2k7*
+*wxp*
+*w2k3*
+*w62*
+*/*-x64/*
+*/*/x64-glb/*
+*fullfile-x64*
+*_x64*
+*.x64*
+*.au3
+*.cpp

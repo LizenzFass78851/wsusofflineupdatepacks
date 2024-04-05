@@ -1,0 +1,12 @@
+/*/x64-glb
+/w2k3-x64
+/w60-x64
+/w61-x64
+/w62-x64
+/w63-x64
+/w100-x64
+*fullfile-x64*
+*_x64*
+*.x64*
+/*.au3
+/bin/IfAdmin.cpp

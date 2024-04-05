@@ -1,0 +1,61 @@
+# File ExcludeListISO-all-x86.txt
+#
+# Note: Empty lines and lines, which start with a '#', are removed by
+# the script create-iso-image.bash. The ISO image creation tools mkisofs
+# and genisoimage themselves don't support comments.
+
+# Exclude unsupported Office versions
+o2k
+oxp
+o2k3
+o2k7
+o2k7-x64
+
+# Exclude 64-bit Office updates
+*-fullfile-x64-*
+
+# Exclude unsupported Windows versions
+w2k
+wxp
+w2k3
+w2k3-x64
+w62
+
+# Exclude all supported Windows versions except w63 and w100
+w60
+w60-x64
+w61
+w61-x64
+w62-x64
+w63-x64
+w100-x64
+
+# Exclude 64-bit subdirectories of msse and wddefs
+x64-glb
+
+# Exclude 64-bit installers for vcredist and Silverlight
+*_x64.exe
+
+# The two "x64-cross-product" ISO images don't exclude any .NET
+# Frameworks, because they are supposed to support all Windows
+# versions. Dynamic updates for obsolete versions are already excluded
+# in the files wsusoffline/exclude/ExcludeList-dotnet-x86.txt and
+# ExcludeList-dotnet-x64.txt. The .NET Framework 3.5 should not be
+# excluded, because it may still be installed on Window Vista / Server
+# 2008 and possibly other Windows versions.
+
+# Exclude unneeded files from the directory client/md
+hashes-w60-glb.txt
+hashes-w60-x64-glb.txt
+hashes-w61-glb.txt
+hashes-w61-x64-glb.txt
+hashes-w62-x64-glb.txt
+hashes-w63-x64-glb.txt
+hashes-w100-x64-glb.txt
+hashes-msse-x86-glb.txt
+hashes-msse-x64-glb.txt
+hashes-wddefs-x64-glb.txt
+
+# Exclude source files
+UpdateInstaller.au3
+IfAdmin.cpp

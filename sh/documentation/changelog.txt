@@ -1,0 +1,783 @@
+Linux download scripts, version 2.6
+
+   Release date: 2021-10-18
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.6 (b40)
+
+   New features
+
+    * Support for Windows Server 2022
+
+   Internal changes
+
+    * Updates for Windows 10 are now stored based on the build they are
+      released for (Thanks to "aker" and "hbuhrmester")
+    * Simplified the creation of the selection dialogs
+    * Renamed function verify_embedded_checksums to verify_embedded_hashes
+
+---------------------------------------------------------------------------
+
+Linux download scripts, version 2.5
+
+   Release date: 2021-08-02
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.6 (b16)
+
+   Internal changes
+
+    * Implemented revised mechanism of calculating superseded updates
+      (Thanks to "hbuhrmester" and "aker")
+    * Cleaned up Microsoft Edge (Chromium) download code
+    * Cleaned up Windows 10 version-specific downloads
+
+---------------------------------------------------------------------------
+
+Linux download scripts, version 2.4 (beta-3)
+
+   Release date: 2021-05-29
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.5 (b78)
+
+   Internal changes
+
+    * Refactoring of Windows 10 downloads
+    * The script create-iso-image.bash can handle filter lists with DOS
+      line endings
+
+   Removed Features
+
+    * Support removed for Windows 10, version 1803
+
+---------------------------------------------------------------------------
+
+Linux download scripts, version 2.4 (beta-2)
+
+   Release date: 2021-05-18
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.5 (b69)
+
+   New features
+
+    * Download of Microsoft Edge (Chromium)
+
+   Internal changes
+
+    * Windows 8.1 April and November 2014 Updates will now be excluded
+      correctly from the calculation of superseded updates
+
+---------------------------------------------------------------------------
+
+Linux download scripts, version 2.4 (beta-1)
+
+   Release date: 2021-05-11
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.5 (b66)
+
+   Bugfixes
+
+    * The Security-only Safety Guard did not work with GitLab
+
+   New features
+
+    * Added two scripts for development
+
+   Changed features
+
+    * New method for the calculation of dynamic updates
+    * New method for the calculation of superseded updates
+    * Static download files for .NET Frameworks are simplified
+    * Hashdeep files are calculated with the bare mode option
+    * Improved support for service packs
+
+   Internal changes
+
+    * The file ../client/exclude/ExcludeList.txt can be updated from
+      GitLab
+    * The files StaticUpdateIds-w63-upd1.txt and
+      StaticUpdateIds-w63-upd2.txt are used for the calculation of the
+      ExcludeList-Linux-superseded-seconly.txt
+
+   Removed features
+
+    * Removed the "revised" method for calculating superseded updates,
+      if security-only updates are selected
+
+   TODO
+
+    * Download of Microsoft Edge (Chromium)
+
+---------------------------------------------------------------------------
+
+Linux download scripts, Community Edition 2.3
+
+   Release date: 2021-01-19
+   Development branch: master
+   Supported version: WSUS Offline Update, Community Edition 12.4
+
+   New Features
+
+    * Added support for Windows 10, version 20H2
+    * Optional "fast mode" for the calculation of the integrity database
+    * The option -includesp was added back
+
+   Changed Features
+
+    * Default languages are removed on the fly
+    * hashdeep messages are duplicated with tee
+    * Network timeouts are increased
+    * Sysinternals utilities are downloaded to the directory ../bin
+    * Five more obsolete configuration files are removed
+    * Renamed the functions filter_cr and todos_line_endings
+    * The download directories dotnet/x86-glb and dotnet/x64-glb are no
+      longer used
+
+   Removed features
+
+    * Removed support for Office 2010
+    * Removed support for Windows 10 version 1709
+
+
+Version 2.2 Community Edition (2.2-CE)
+
+   Release date: 2020-08-09
+   Development branch: master
+   Supported versions: WSUS Offline Update, Community Edition 12.2
+
+   Changed Features
+
+    * Revised wsusoffline self-update, matching the Community Editions
+      esr-11.9.4 and 12.2
+
+    * Six more obsolete files are deleted
+
+    * Windows 10 version-specific exclude lists are applied to both
+      static and dynamic updates
+
+    * Windows 10, versions 1903 and 1909 share a common
+      ExcludeList-w100-1903_1909.txt
+
+    * Dynamic Office updates use a new ExcludeList-ofc-lng.txt
+
+    * Support for .NET Framework 3.5 removed
+
+    * Small changes to comments, labels and menus
+
+    * Bash 4.2 is now required
+
+
+Version 2.1 Community Edition (2.1-CE)
+
+   Release date: 2020-07-21
+   Intended compatibility: WSUS Offline Update, Community Edition 12.0
+
+   Changed Features
+
+    * Querying the Etag instead of timestamping for GitLab (II)
+
+   Removed features
+
+    * Self-update of the Linux download scripts
+
+
+Version 2.0 Community Edition (2.0-CE)
+
+   Release date: 2020-07-12
+   Intended compatibility: WSUS Offline Update Community Edition 12.0
+
+   This is a port of the Linux download scripts, version 2.0, to WSUS
+   Offline Update, Community Edition 12.0.
+
+   New Features
+
+    * Support for the Community Edition of WSUS Offline Updates
+
+    * Querying the Etag instead of timestamping for GitLab
+
+    * Support for Windows 10, version 2004
+
+
+Version 2.0
+
+   Release date: 2020-03-25
+   Intended compatibility: WSUS Offline Update 12.0
+
+   New features
+
+    * Support for Windows 10 versions
+
+   Removed features
+
+    * Support for Windows Server 2008 and Windows 7 / Server 2008 R2
+
+    * Support for Windows 7 Defender and Microsoft Security Essentials
+
+    * Support for Service Packs
+
+    * Support for .NET Framework 4.6 installers
+
+   Internal changes
+
+    * Removed obsolete Windows and Office versions
+
+
+Version 1.19
+
+   Release date: 2020-03-11
+   Intended compatibility: WSUS Offline Update 11.9
+
+   Bug fixes
+
+    * Virus definition files, certificates and certificate revocation
+      lists were not downloaded
+
+   Internal changes
+
+    * The domain wsusoffline.net now uses https everywhere
+
+    * Cleaned up the calculation of dynamic Office updates
+
+    * Cleaned up the calculation of dynamic Windows 10 updates
+
+    * Renamed some temporary files
+
+    * Moved and reimplemented some code
+
+
+Version 1.18
+
+   Release date: 2020-02-02
+   Intended compatibility: WSUS Offline Update 11.8.3
+
+   Bug fixes
+
+    * Superseded cumulative updates for Windows 10 were not deleted
+
+
+Version 1.17
+
+   Release date: 2020-01-10
+   Intended compatibility: WSUS Offline Update 11.8.3
+
+   Bug fixes
+
+    * New method for the calculation of dynamic Office updates
+
+
+Version 1.16
+
+   Release date: 2020-01-08
+   Intended compatibility: WSUS Offline Update 11.8.3
+
+   Bug fixes
+
+    * The download of wsusscn2.cab indicated success, when the integrity
+      check failed
+
+    * Static download files in the ../static/custom directory were skipped
+
+    * Corrected the spelling of files and directories
+
+   User visible changes
+
+    * Revised messages for the update of configuration files
+
+   Internal changes
+
+    * Better compatibility with FreeBSD 12.1, thanks to TheFlipside
+
+   Documentation
+
+    * New file "Differences_between_GNU-Linux_and_FreeBSD.txt"
+
+    * Updated installations guides
+
+
+Version 1.15
+
+   Release date: 2019-07-30
+   Intended compatibility: WSUS Offline Update 11.8b (r1064)
+
+   New features
+
+    * Automatic update of Sysinternals Utilities
+
+    * The Linux scripts now use sigcheck64.exe on 64-bit hardware
+
+    * Support for Windows Server 2019
+
+    * Support for Internet Explorer 11 on Windows Server 2012
+
+
+Version 1.14
+
+   Release date: 2019-06-07
+   Intended compatibility: WSUS Offline Update 11.7.2+ (r1052)
+
+   New features
+
+    * Support for Trusted Root Certificates and Certificate revocation
+      lists
+
+   Internal changes
+
+    * Reordered the positional parameters for the function
+      cleanup_client_directory
+
+    * Modified the function log_debug_message to better handle multiple
+      positional parameters
+
+   Documentation
+
+    * Updated files Installation_Guide.txt and Installationsanleitung.txt
+
+
+Version 1.13
+
+   Release date: 2019-05-14
+   Intended compatibility: WSUS Offline Update 11.7
+
+   New features
+
+      New script create-iso-image.bash
+
+      New file catalog-creationdate.txt
+
+   Internal changes
+
+      Support for .NET Framework 4.8 added
+
+      Debug output for virus definition files disabled
+
+      Revised function remove_obsolete_files
+
+   Documentation
+
+      New file exclude/About_the_ExcludeListISO-files.txt
+
+
+Version 1.12
+
+   Release date: 2019-04-10
+   Intended compatibility: WSUS Offline Update 11.6.1+ (r1032)
+
+   Internal changes
+
+      Indirect addressing of virus definition files with "LinkIDs"
+
+
+Version 1.11
+
+   Release date: 2019-04-04
+   Intended compatibility: WSUS Offline Update 11.6.1 and later
+
+   New features
+
+      The script update-generator.bash remembers the last used settings.
+
+      Revised method for calculating superseded updates
+
+      New script open-support-pages.bash
+
+   Bug fixes
+
+      Workaround for broken cabextract in Debian 10 Buster/testing
+
+   User visible changes
+
+      Better support for terminal colors
+
+      Support for ExcludeListForce-all.txt
+
+      Support for ExcludeList-superseded-exclude-seconly.txt
+
+      Virus definition files are tested with cabextract.
+
+      The scripts compare-integrity-database.bash and
+      compare-update-tables.bash are configured with command-line
+      arguments.
+
+   Internal changes
+
+      Reordered the sections at the top of the scripts
+      update-generator.bash and download-updates.bash.
+
+      The directories cache, log and timestamps are stored with absolute
+      paths.
+
+      The function seconly_safety_guard calculates the patch days for
+      two months.
+
+      The function log_message duplicates messages to the terminal and
+      the log file unchanged.
+
+      The function apply_exclude_lists now skips empty lines in input
+      files.
+
+      New function name_to_description and changed function
+      language_name_to_locale.
+
+      The file sh/exclude/ExcludeListUSB-w60.txt was simplified.
+
+      Added Cygwin to known systems and unzip to needed packages, thanks
+      to "slycordinator"
+
+   Documentation
+
+      A new file compatibility.txt was added.
+
+      Some typos were corrected.
+
+      The E-Mail address was replaced.
+
+
+Version 1.10
+
+  Release date: 2018-08-09
+  Intended compatibility: WSUS Offline Update 11.4 and later
+
+  Changes in this version
+
+  - Bug fix: USB filters for w61 and newer erroneously excluded ndp46-*
+    patches.
+
+  - The script 10-show-selection-dialogs-with-dialog.bash was made
+    more configurable, by moving the variable parts of the dialogs to
+    a configuration section.
+
+  - Small corrections to the installation guide.
+
+
+Version 1.9
+
+  Release date: 2018-07-30
+  Intended compatibility: WSUS Offline Update 11.4 and later
+
+  Changes in this version
+
+  - The script update-generator.bash now uses the external utility
+    "dialog", to display nicely formatted dialogs in the terminal window.
+
+    The existing script, which uses the internal command "select" of
+    the bash, is kept as a fallback, if dialog is not installed.
+
+
+Version 1.8
+
+  Release date: 2018-07-27
+  Intended compatibility: WSUS Offline Update 11.4 and later
+
+  Changes in this version
+
+  - The documentation of the Linux download scripts is organized more
+    like the Linux documentation in the directory /usr/share/doc.
+
+  - The file 70-synchronize-with-target.bash was replaced with a more
+    elaborate script copy-to-target.bash.
+
+  Internal changes
+
+  - The definition of the environment variables LINES and COLUMNS, and of
+    the terminal colors was moved from the scripts update-generator.bash
+    and download-updates.bash to the library messages.bash.
+
+  - Hashdeep errors while checking the integrity of existing files are
+    now reported as errors, not as warnings.
+
+  - Corrected the copyright year of the files error-counter.bash and
+    rebuild-integrity-database.bash to "2018".
+
+
+Version 1.7
+
+  Release date: 2018-05-25
+  Intended compatibility: WSUS Offline Update Version 11.3 and later
+
+  Changes in this version
+
+  - Bug fix: The script download-updates.bash may crash, if running in
+    bash version 4.3, for example as of Debian 8 Jessie, and only Office
+    Updates are selected.
+
+  See the file release_notes_1.7.txt for details.
+
+
+Version 1.6
+
+  Release date: 2018-05-04
+  Intended compatibility: WSUS Offline Update Version 11.3 and later
+
+  Changes in this version
+
+  - Added support for .NET Framework 4.7.2
+
+  - Bug fix: The function create_integrity_database did not create a
+    hashes file, if the hashed directory was a symbolic link.
+
+  See the file release_notes_1.6.txt for details.
+
+
+Version 1.5
+
+  Release date: 2018-05-01
+  Intended compatibility: WSUS Offline Update Version 11.2.2 and later
+
+  Changes in this version
+
+  - Bug fix: The files ExcludeList-superseded.txt
+    and ExcludeList-superseded-seconly.txt are
+    renamed to ExcludeList-Linux-superseded.txt and
+    ExcludeList-Linux-superseded-seconly.txt in the Linux scripts.
+
+  - The installation guide has an example for Fedora 27 and a new chapter
+    for optional packages.
+
+  See the file release_notes_1.5.txt for details.
+
+
+Version 1.4
+
+  Release date: 2018-04-21
+  Intended compatibility: WSUS Offline Update Version 11.2.2 and later
+
+  Changes in this version
+
+  - The setting of the progress style in Wget was revised. The progress
+    bar is only used, if both standard output and error output are
+    attached to a terminal.
+
+  - Colors are used to highlight the keywords Info: Warning: Error:
+    Failure: and Debug: in the terminal window.
+
+  See the file release_notes_1.4.txt for details.
+
+
+Version 1.3
+
+  Release date: 2018-04-19
+  Intended compatibility: WSUS Offline Update Version 11.2.2 and later
+
+  Changes in this version
+
+  - Wget 1.18 and higher now display a progress bar in the terminal
+    window. Earlier versions still use the dot display, which is written
+    to the log file.
+
+  - The file get-all-updates.bash was revised. All examples now use
+    comma-separated lists for the updates.
+
+  - A small typo in the file rebuild-integrity-database.bash was
+    corrected.
+
+  See the file release_notes_1.3.txt for details.
+
+
+Version 1.2
+
+  Release date: 2018-04-17
+  Intended compatibility: WSUS Offline Update Version 11.2.2 and later
+
+  Changes in this version
+
+  - Added support for the configuration file
+    exclude/ExcludeList-superseded-exclude-seconly.txt
+
+  See the file release_notes_1.2.txt for details
+
+
+Version 1.1
+
+  Release date: 2018-02-06
+  Intended compatibility: WSUS Offline Update Version 11.1.1 and later
+
+  Changes in this version
+
+  - The scripts update-generator.bash and download-updates.bash create
+    temporary directories with random names on each run.
+
+  - Both scripts update-generator.bash and download-updates.bash check
+    the user-ID and refuse to run as root.
+
+  - Updates can be joined to a comma-separated list on the command-line,
+    just like the needed languages.
+
+  - The scripts support eight predefined, internal lists for Windows
+    and Office updates.
+
+  - Support of "backports" for old versions of WSUS Offline Update.
+
+  Internal Changes
+
+  - A separate library error-counter.bash was added.
+
+  See the file release_notes_1.1.txt for details
+
+
+Version 1.0
+
+  Release date: 2018-01-19
+  Intended compatibility: WSUS Offline Update Version 11.1 and later
+
+  Changes in this version
+
+  - After about one year in beta status, this version is now designated
+    version 1.0.
+
+  - Bugfix: The function download_single_file_failsafe was revised to
+    delete partial files between tries.
+
+  - Bugfix: The declaration of indexed arrays with "declare -ag"
+    was removed.
+
+  - The wget option --unlink was removed.
+
+  - A new standalone script rebuild-integrity-database.bash was added.
+
+  - Support for .NET Framework 4.7.1 was added.
+
+  - Support for Office 2007 was removed.
+
+  Internal Changes
+
+  - The functions remove_german_language_support and
+    remove_english_language_support now keep the file modification date.
+
+  - The new filter function todos_line_endings changes the output of
+    hashdeep to DOS line endings on the fly.
+
+  - The functions trash_file and unpack_wsus_catalog_file were revised
+    to produce more output.
+
+  - The copyright was updated to 2018.
+
+  See the file release_notes_1.0.txt for details.
+
+
+Version 1.0-beta-5
+
+  Release date: 2017-08-25
+  Intended compatibility: WSUS Offline Update Version 11.0.1 and newer
+
+  Changes in this version
+
+  - The documentation files Quick_installation_guide.txt and
+    Kurzinstallationsanleitung.txt were renamed in version 1.0-beta-4. If
+    the old files are still present, they are removed now.
+
+  - The environment variables LINES and COLUMNS are set to 24x80, if
+    the script runs as a cron job.
+
+  - The calculation of the file ExcludeList-superseded-seconly.txt
+    was simplified.
+
+  - A new function seconly_safety_guard tries to make sure, that the
+    configuration files for security only updates are updated after the
+    official patch day, to prevent unwanted side effect.
+
+  See the file release_notes_1.0-beta-5.txt for details.
+
+
+Version 1.0-beta-4
+
+  Release date: 2017-06-23
+  Intended compatibility: WSUS Offline Update version 10.9.2 and newer
+
+  Changes in this version
+
+  - The obsolete script DownloadUpdates.sh and related files will be
+    deleted, if they are found in the same directory as the new Linux
+    scripts.
+
+  - The Linux scripts can do an initial installation of the WSUS Offline
+    Update archive.
+
+  - The integrity of the WSUS catalog file wsusscn2.cab is tested with
+    cabextract.
+
+  - The download script caches the file package.xml.
+
+  - The same_day function uses three different time intervals for
+    different tasks.
+
+  - Languages can be joined to a comma-separated list on the command line.
+
+  - Windows Vista was removed from selection dialogs.
+
+  - unzip is copied to the client directory.
+
+  - Added support for .Net Framework 4.7.
+
+  See the file release_notes_1.0-beta-4.txt for details.
+
+
+Version 1.0-beta-3
+
+  Release date: 2017-03-30
+  Intended compatibility: WSUS Offline Update version 10.9.1 - 10.9.2
+
+  Changes in this version
+
+  - Some more Service Packs are excluded, if the option -includesp is
+    not used.
+
+  - Empty download directories are now deleted, along with the
+    corresponding hashes file.
+
+  - A bug in the handling of empty directories was found and fixed.
+
+  - The script 40-check-for-self-updates.bash was split into two smaller
+    scripts, to handle its tasks separately.
+
+  - An online check for new versions of the Linux scripts is introduced
+    with the new script 50-check-sh-version.bash.
+
+  - A new configuration variable "unattended_updates" is introduced to
+    install new versions of WSUS Offline Update or the Linux scripts
+    automatically.
+
+  - A new file fix-file-permissions.bash was added to make the Linux
+    scripts executable again, should they loose their file permissions.
+
+  See the file release_notes_1.0-beta-3.txt for more details.
+
+
+Version 1.0-beta-2
+
+  Release date: 2017-01-09
+  Intended compatibility: WSUS Offline Update version 10.9
+
+  New features
+
+  - The file client/autostart.ini will be rewritten to show an icon of
+    the UpdateInstaller.exe and the built date of the medium. This file
+    only works in Windows, and only, if it is in the root directory of
+    a mounted ISO image, a real CD/DVD or a disk partition.
+
+  - Introduced a configuration variable "prefer_seconly" to prefer
+    security-only updates over the full quality update rollups for
+    Windows 7 and Windows Server 2008 R2, Windows Server 2012, Windows
+    8.1 and Windows Server 2012 R2.
+
+    This variable is supposed to be a permanent setting, and it should
+    not be changed between different updates. Therefore, there is
+    no command-line option for it. The variable is defined and set to
+    "disabled" in the script download-updates.bash. It should be changed
+    in the file preferences.bash.
+
+  Changed features
+
+  - The files Documentation.odt and Documentation.pdf are renamed to
+    Manual.odt and Manual.pdf.
+
+  Removed features
+
+  - The files available-tasks/50-superseded-updates-revised.bash and
+    extract-all-bundle-revision-and-update-ids.xsl, which implemented
+    a more elaborate method for calculating superseded updates, have
+    been removed.
+
+
+Version 1.0-beta-1
+
+  Initial release
+  Release date: 2016-12-14
+  Intended compatibility: WSUS Offline Update version 10.8 - 10.8.1

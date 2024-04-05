@@ -1,0 +1,208 @@
+Differences between GNU/Linux and FreeBSD utilities
+
+There are some differences between the standard utilities in FreeBSD
+12.1 and GNU/Linux. In most cases, some common ground can be found,
+but a few utilities require workarounds.
+
+cp
+
+    The FreeBSD cp does not have the options -t and -u of GNU/Linux cp.
+
+    The option -t is meant to explicitly set the target directory. This
+    may be useful, if there are many command line arguments, which
+    might create ambiguities. But if there are only two arguments,
+    then there will be no ambiguities between source and destination.
+
+    With the option -u, GNU/Linux cp will update files: It only copies
+    files, if the source file is newer than the target file, or if the
+    target file does not exist. This avoids needlessly copying the same
+    file on each run.
+
+    Comparing the files in the shell should get the same results: The
+    comparison operator -nt is true, if the first file is newer than
+    the second, or if the second file does not exist.
+
+    if [[ "${source}" -nt "${target}" ]]
+    then
+        cp -a "${source}" "${target}"
+    fi
+
+
+    Trailing slashes after source directories should be avoided, because
+    they are treated differently in GNU/Linux and in FreeBSD cp.
+
+    - https://forums.freebsd.org/threads/cp.73008/
+
+
+    According to the manual page, the options -r -l -s -v -x -n are all
+    "deprecated" in FreeBSD cp.
+
+
+date
+
+    Simple options like "-r filename" work the same in GNU/Linux and in
+    FreeBSD date, but date format conversions and date calculations are
+    handled differently:
+
+    Date format conversions
+
+    In GNU/Linux date, an existing date string can be used as input
+    with the option -d. Well defined formats like ISO 8601 or RFC
+    3339 are recognized automatically. There is no option to define
+    custom input formats. If the date string does not set the hours,
+    minutes and seconds, then the time will be set to 00:00:00.
+
+    The output format is specified with sequences like '+%s' for the
+    seconds since 1970, or '+%u' for the day of week as a decimal number
+    (1..7).
+
+    To convert a date in ISO 8601 format (days only) and UTC to seconds,
+    we could use:
+
+    ~$ date_string="2019-12-11"
+    ~$ date -u -d "${date_string}" '+%s'
+    1576022400
+
+
+    In FreeBSD date, an existing date string can be directly used as
+    input. This will usually set the time. The option -j must be used
+    to NOT set the time. The default input format would be all fields
+    joined together, e.g. "201912110000.00". Custom input formats can be
+    specified with the option -f. If the date string does not specify
+    the hours, minutes and seconds, then the time will be set to the
+    current time.
+
+    To convert a date in UTC to seconds, we could use either:
+
+    ~$ date_string="201912110000.00"
+    ~$ date -j -u "${date_string}" '+%s'
+    1576022400
+
+    ~$ date_string="2019-12-11 00:00:00"
+    ~$ date -j -u -f "%Y-%m-%d %H:%M:%S" "${date_string}" '+%s'
+    1576022400
+
+
+    Date calculations
+
+    GNU/Linux date recognizes some expressions in plain English. To get
+    the previous month, we can construct a date string for the 15th of
+    the current month, and then add "last month" literally.
+
+    ~$ this_month="$(date -u '+%Y-%m')"
+    ~$ echo "${this_month}"
+    2019-12
+    ~$ last_month="$(date -u -d "${this_month}-15 last month" '+%Y-%m')"
+    ~$ echo "${last_month}"
+    2019-11
+
+
+    With FreeBSD date, the option -v can be used repeatedly to set
+    absolute or relative dates.
+
+    -v 15d   sets the date to the 15th of the current month
+    -v -1m   means "minus one month" and subtracts about 30 days
+
+    Together, this should reveal the previous month:
+
+    ~$ date -u -v 15d -v 0H -v 0M -v 0S -v -1m '+%Y-%m'
+    2019-11
+
+
+mktemp
+
+    In FreeBSD, the file or directory name must end with the pattern
+    .XXXXXX, while it could be used in different places in GNU/Linux.
+
+    The option -p does not exist in FreeBSD mktemp. Using only the option
+    -d for directories should work for both sides:
+
+    temp_dir="$(mktemp -d /tmp/download-updates.XXXXXX)"
+
+
+sed
+
+    There are slight differences, how sed "inline" works in FreeBSD 12.1
+    and GNU/Linux:
+
+    The FreeBSD sed always expects a file extension for backup files
+    after the option -i, even if it is only an empty string. Otherwise,
+    the next two parameters are interpreted as a file extension and the
+    sed script command. Then FreeBSD sed may print error messages like:
+
+    ~$ sed -i "s/w60=off/w60=on/" update-generator.ini
+    sed: 1: "update-generator.ini": invalid command code u
+
+
+    It is possible to specify an empty string as a file extension:
+
+    ~$ sed -i "" "s/w60=off/w60=on/" update-generator.ini
+
+
+    Then FreeBSD sed will not report an error, and the script command
+    is evaluated as expected.
+
+    With GNU/Linux sed, it is just the other way around: The first
+    version works, but the second version creates an error.
+
+    The only way, that works for both FreeBSD and GNU/Linux sed, is to
+    actually provide a file extension for backup files:
+
+    ~$ sed -i.bak "s/w60=off/w60=on/" update-generator.ini
+
+
+unzip
+
+    The unzip option -u is meant to update existing files and create
+    new files if needed. It works differently in GNU/Linux and in
+    FreeBSD unzip.
+
+    The GNU/Linux unzip will ask for confirmation before overwriting
+    files. This query will be skipped, if the additional option -o
+    is used.
+
+    For example, if both sigcheck.exe and sigcheck64.exe are new, then
+    we might get for GNU/Linux unzip:
+
+    ~$ unzip -u Sigcheck.zip
+    Archive:  Sigcheck.zip
+    replace sigcheck.exe? [y]es, [n]o, [A]ll, [N]one, [r]ename: n
+    replace sigcheck64.exe? [y]es, [n]o, [A]ll, [N]one, [r]ename: n
+      inflating: Eula.txt
+    ~$ unzip -u -o Sigcheck.zip
+    Archive:  Sigcheck.zip
+      inflating: sigcheck.exe
+      inflating: sigcheck64.exe
+
+
+    The FreeBSD unzip considers the options -u and -o "contradictory". The
+    option -u updates existing files without prompting for confirmation.
+
+    ~$ unzip -u -o Sigcheck.zip
+    unzip: -n, -o and -u are contradictory
+    ~$ unzip -u Sigcheck.zip
+    Archive:  Sigcheck.zip
+     extracting: sigcheck.exe
+     extracting: sigcheck64.exe
+     extracting: Eula.txt
+
+
+    Since the script download-updates.bash is meant to run without user
+    interaction, these options need to be stored in a variable:
+
+    unzip_upgrade=""
+    case "${kernel_name}" in
+        Linux | CYGWIN*)
+            unzip_upgrade="unzip -u -o"
+        ;;
+        Darwin | FreeBSD | NetBSD | OpenBSD)
+            unzip_upgrade="unzip -u"
+        ;;
+        *)
+            echo "Unknown operating system ${kernel_name}, ${OSTYPE}"
+            exit 1
+        ;;
+    esac
+
+    ${unzip_upgrade} without quotes is then used in places, where unzip
+    -u -o was used for GNU/Linux only.

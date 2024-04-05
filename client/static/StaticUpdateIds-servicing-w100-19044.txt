@@ -1,0 +1,2 @@
+10.0.19041.740,kb4598481,January 2021 Servicing stack update for Windows 10 Version 21H2
+10.0.19041.1161,ssu-19041.1161,August 2021 Servicing stack update for Windows 10 Version 21H2

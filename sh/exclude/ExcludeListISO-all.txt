@@ -1,0 +1,9 @@
+# File ExcludeListISO-all.txt
+#
+# Note: Empty lines and lines, which start with a '#', are removed by
+# the script create-iso-image.bash. The ISO image creation tools mkisofs
+# and genisoimage themselves don't support comments.
+
+# Exclude source files
+UpdateInstaller.au3
+IfAdmin.cpp
