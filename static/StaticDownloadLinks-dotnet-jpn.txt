@@ -1,0 +1,4 @@
+http://download.microsoft.com/download/f/a/2/fa24f36b-cdcb-415c-8acf-11e33a21a358/dotnetfx35langpack_x86ja.exe
+http://download.microsoft.com/download/f/a/2/fa24f36b-cdcb-415c-8acf-11e33a21a358/dotnetfx35langpack_x64ja.exe
+https://download.visualstudio.microsoft.com/download/pr/8e396c75-4d0d-41d3-aea8-848babc2736a/de393b31bf4873bdad6a801148eb2486/ndp462-kb3151800-x86-x64-allos-jpn.exe
+https://download.visualstudio.microsoft.com/download/pr/c2ad65ab-bab3-4d24-ada4-aaf2ff0c1266/88010bdd8255cf9bb46cec6ed09aed69/ndp48-x86-x64-allos-jpn.exe

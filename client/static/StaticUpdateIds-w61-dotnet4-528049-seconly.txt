@@ -1,0 +1,7 @@
+kb4495627,May 2019 Security only update for the .NET Framework 4.8 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4506956,July 2019 Security only update for the .NET Framework 4.8 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4532952,January 2020 Security only update for the .NET Framework 4.8 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4552953,May 2020 Security only update for the .NET Framework 4.8 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4565589,July 2020 Security only update for the .NET Framework 4.8 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4569733,August 2020 Security only update for the .NET Framework 4.8 for Windows 7 SP1 and Windows Server 2008 R2 SP1
+kb4578990,October 2020 Security only update for the .NET Framework 4.8 for Windows 7 SP1 and Windows Server 2008 R2 SP1

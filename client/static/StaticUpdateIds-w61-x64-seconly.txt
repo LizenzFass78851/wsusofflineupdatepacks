@@ -1,0 +1,2 @@
+kb2506014,Update for the Windows Operating System Loader
+kb3018238,Vulnerability in SChannel could allow remote code execution

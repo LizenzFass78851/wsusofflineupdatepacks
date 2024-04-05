@@ -1,0 +1,67 @@
+kb3038936,August 2015 anti-malware platform update for Windows Defender in Windows 8.1
+kb3042553,Vulnerability in HTTP.sys could allow remote code execution
+kb3123479,Deprecation of SHA-1 hashing algorithm for Microsoft root certificate program
+kb3149090,April 2016 Security Update for SAM and LSAD remote protocols
+kb3174644,Updated support for Diffie-Hellman Key Exchange
+kb3192392,October 2016 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb3197873,November 2016 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb3205400,December 2016 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4012213,March 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4015547,April 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4019213,May 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4022717,June 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4025333,July 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4034672,August 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4038793,September 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4041687,October 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4048961,November 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4054522,December 2017 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4056898,January 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4074597,February 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4088879,March 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4093115,April 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4103715,May 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4284878,June 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4338824,July 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4343888,August 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4457143,September 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4462941,October 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4467703,November 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4471322,December 2018 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4480964,January 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4487028,February 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4489883,March 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4493467,April 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4499165,May 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4503290,June 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4507457,July 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4512489,August 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4516064,September 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4519990,October 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4525250,November 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4530730,December 2019 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4534309,January 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4537803,February 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4541505,March 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4550970,April 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4556853,May 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4561673,June 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4565540,July 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4571723,August 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4577071,September 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4580358,October 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4586823,November 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4592495,December 2020 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4598275,January 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb4601349,February 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5000853,March 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5001393,April 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5003220,May 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5003681,June 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5004958,7th July 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5004285,July 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5005106,August 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5005627,September 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5006729,October 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5007255,November 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2
+kb5008285,December 2021 Security Only Quality Update for Windows 8.1 and Windows Server 2012 R2

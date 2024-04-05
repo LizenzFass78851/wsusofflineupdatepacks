@@ -1,0 +1,12 @@
+kb951847,.NET Framework 3.5 Service Pack 1
+kb890830,Malicious Software Removal Tool
+kb982861,Internet Explorer 9
+kb2841134,Internet Explorer 11
+kb976002,Browser Choice
+kb2817430,Office 2013 Service Pack 1
+kb936330,Windows Server 2008 Service Pack 1
+kb948465,Windows Server 2008 Service Pack 2
+kb976932,Windows 7 / Server 2008 R2 Service Pack 1
+kb3081444,August 2015 cumulative update for Windows 10
+kb3081448,August 2015 cumulative update for Windows 10
+kb4580325,October 2020 Security Update for Adobe Flash Player

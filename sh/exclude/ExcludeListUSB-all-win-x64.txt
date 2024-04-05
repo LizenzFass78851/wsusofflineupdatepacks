@@ -1,0 +1,16 @@
+/*/x86-glb
+/ofc
+/o2k3
+/o2k7
+/o2k10
+/o2k13
+/o2k16
+/wxp
+/w2k3
+/w60
+/w61
+/w62
+/w63
+/w100
+/*.au3
+/bin/IfAdmin.cpp

@@ -1,0 +1,20 @@
+kb3204802,December 2016 Security only Update for the .NET Framework 4.6.2 for Windows 8.1 and Windows Server 2012 R2
+kb4014550,April 2017 Security update for the .NET Framework 4.6.2 for Windows 8.1 and Windows Server 2012 R2
+kb4014587,May 2017 Security only update for the .NET Framework 4.6.2 for Windows 8.1 and Windows Server 2012 R2
+kb4040956,September 2017 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2 and 4.7 for Windows 8.1 and Windows Server 2012 R2
+kb4054182,January 2018 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7 and 4.7.1 for Windows 8.1 and Windows Server 2012 R2
+kb4096236,May 2018 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7 and 4.7.1 for Windows 8.1 and Windows Server 2012 R2
+kb4338605,July 2018 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4344166,August 2018 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4457026,September 2018 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4470499,December 2018 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4480071,January 2019 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4483469,February 2019 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4495586,May 2019 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4506962,July 2019 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4514338,September 2019 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4532970,January 2020 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4552959,May 2020 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4565585,July 2020 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4569739,August 2020 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2
+kb4578986,October 2020 Security Only update for the .NET Framework 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1 and 4.7.2 for Windows 8.1 and Windows Server 2012 R2

@@ -1,0 +1,16 @@
+http://download.windowsupdate.com/msdownload/update/software/svpk/2011/02/windows6.1-kb976932-x86_c3516bc5c9e69fee6d9ac4f981f5b95977a8a2fa.exe
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/08/windows6.1-kb2834140-v2-x86_b57c05e9da2c66e1bb27868c92db177a1d62b2fb.msu
+http://download.windowsupdate.com/msdownload/update/software/ftpk/2013/02/windows6.1-kb2670838-x86_984b8d122a688d917f81c04155225b3ef31f012e.msu
+http://download.windowsupdate.com/msdownload/update/software/updt/2012/09/windows6.1-kb2729094-v2-x86_565e7f2a6562ace748c5b6165aa342a11c96aa98.msu
+http://download.windowsupdate.com/msdownload/update/software/crup/2013/01/windows6.1-kb2786081-x86_70122aca48659bfb8a06bed08cb7047c0c45c5f4.msu
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/09/windows6.1-kb2888049-x86_65b4c7a5773fab177d20c8e49d773492e55e8d76.msu
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2013/10/windows6.1-kb2882822-x86_7fab5b9ca9b5c2395b505d1234ee889941bfb151.msu
+http://download.microsoft.com/download/9/2/F/92FC119C-3BCD-476C-B425-038A39625558/IE11-Windows6.1-x86-en-us.exe
+http://download.microsoft.com/download/3/7/1/3712057D-154F-4F00-A183-0BD7285DF503/IE11-Windows6.1-x86-de-de.exe
+http://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win7-KB3191566-x86.zip
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2013/06/windows6.1-kb2574819-v2-x86_219ef0b5d7e89489e3f0f01e264ec576cc3d66ad.msu
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/11/windows6.1-kb2830477-x86_1319bd953bf956b82e30f7dee5994f3558ec7fdd.msu
+http://download.windowsupdate.com/d/msdownload/update/software/updt/2013/11/windows6.1-kb2857650-x86_89364d061ba54833a8af181e5739a25029b00a38.msu
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2014/02/windows6.1-kb2923545-x86_fff0876feea186260e48879a68791bcdaacd74f7.msu
+http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/pciclearstalecache_7f0c5cff499688bc34fdf52d5a6af3d97881d801.exe
+http://download.windowsupdate.com/c/msdownload/update/software/updt/2013/10/windows6.1-kb2852386-x86_f94486e3eb81ec987c923c76553611ea356de6ce.msu

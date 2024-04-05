@@ -1,0 +1,53 @@
+kb3078601,August 2015 security update for Windows
+kb4019478,Update for the d3dcompiler_47.dll component on Windows Server 2008 SP2
+kb4457984,September 2018 Security Only Quality Update for Windows Server 2008 SP2
+kb4457054,September 2018 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4463104,October 2018 Security Only Quality Update for Windows Server 2008 SP2
+kb4467700,November 2018 Security Only Quality Update for Windows Server 2008 SP2
+kb4471319,December 2018 Security Only Quality Update for Windows Server 2008 SP2
+kb4480957,January 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4480084,Januar 2019 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4487019,February 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4483482,February 2019 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4489876,March 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4493458,April 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4499180,May 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4495609,May 2019 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4503287,June 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4507461,July 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4506975,July 2019 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4512491,August 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4516051,September 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4520009,October 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4525239,November 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4530719,December 2019 Security Only Quality Update for Windows Server 2008 SP2
+kb4534312,January 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4532959,January 2020 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4537822,February 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4541504,March 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4550957,April 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4556854,May 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4552964,May 2020 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4561645,June 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4565529,July 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4565578,July 2020 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4571746,August 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4569735,August 2020 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4577070,September 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4580385,October 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4578979,October 2020 Security Update for the .NET Framework 2.0 SP2 and 3.0 SP2 on Windows Server 2008 SP2
+kb4586817,November 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4592504,December 2020 Security Only Quality Update for Windows Server 2008 SP2
+kb4598287,January 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb4601366,February 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5000856,March 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5001332,April 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5003225,May 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5003695,June 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5004959,7th July 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5004299,July 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5005095,August 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5005618,September 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5006715,October 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5007246,November 2021 Security Only Quality Update for Windows Server 2008 SP2
+kb5008271,December 2021 Security Only Quality Update for Windows Server 2008 SP2

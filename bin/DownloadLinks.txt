@@ -1,0 +1,5 @@
+http://www.autoitscript.com/autoit3/
+https://eternallybored.org/misc/wget/
+http://www.info-zip.org/UnZip.html
+https://sourceforge.net/projects/tumagcc/files/
+https://sourceforge.net/projects/unxutils/

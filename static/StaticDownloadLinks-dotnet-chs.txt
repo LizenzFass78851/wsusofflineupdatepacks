@@ -1,0 +1,4 @@
+http://download.microsoft.com/download/7/7/b/77b96978-c805-4674-a9b0-43351e86b41f/dotnetfx35langpack_x86zh-CHS.exe
+http://download.microsoft.com/download/7/7/b/77b96978-c805-4674-a9b0-43351e86b41f/dotnetfx35langpack_x64zh-CHS.exe
+https://download.visualstudio.microsoft.com/download/pr/8e396c75-4d0d-41d3-aea8-848babc2736a/f171b23a0f7f58f2adb0e722cec3ca04/ndp462-kb3151800-x86-x64-allos-chs.exe
+https://download.visualstudio.microsoft.com/download/pr/c2ad65ab-bab3-4d24-ada4-aaf2ff0c1266/da0b04eeb40d81b63dcb74711ebbe8d9/ndp48-x86-x64-allos-chs.exe

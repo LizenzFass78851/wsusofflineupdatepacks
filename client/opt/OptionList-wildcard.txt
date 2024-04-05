@@ -1,0 +1,9 @@
+ndp462-kb3151800-x86-x64-allos,/q /norestart
+ndp48-x86-x64-allos,/q /norestart
+ndp35sp1-,/q /norestart
+ndp45-,/q /norestart
+ndp46-,/q /norestart
+ndp47-,/q /norestart
+ndp48-,/q /norestart
+proplussp2013,/passive /norestart
+proofloc2013,/quiet /norestart
