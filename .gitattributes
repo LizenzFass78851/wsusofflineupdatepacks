@@ -1,4 +1,4 @@
-# Setze CRLF für Windows-spezifische Skriptdateien
+# Set CRLF for Windows specific script files
 *.bat text eol=crlf
 *.cmd text eol=crlf
 *.cmdt text eol=crlf
@@ -13,9 +13,9 @@
 *.cpp text eol=crlf
 *.xsl text eol=crlf
 
-# Setze LF für Linux-spezifische Skriptdateien
+# Set LF for Linux specific script files
 *.sh text eol=lf
 *.bash text eol=lf
 
-# Alle anderen Dateien auf Auto
+# All other files on Auto
 * text=auto
