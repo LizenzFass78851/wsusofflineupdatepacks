@@ -8,7 +8,10 @@ on:
   schedule:
     - cron: '34 14 */3 * 2'
   workflow_dispatch:
-
+env:
+  COMPARE_FILE0: /tmp/.wsusoffline-iso-sha256-0.txt
+  COMPARE_FILE1: /tmp/.wsusoffline-iso-sha256-1.txt
+    
 jobs:
   build_latest:
     container:
@@ -31,6 +34,16 @@ jobs:
           export KEY="${GITHUB_WORKFLOW%-*}"
           echo "key=$KEY" >> $GITHUB_OUTPUT
           echo "################################################################" && bash -c "echo KEY=$KEY"
+
+          export MATRIX="${{ matrix.target }}"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "################################################################" && bash -c "echo MATRIX=$MATRIX"
+
+          export BRANCH="${{ env.GIT_BRANCH }}"
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "################################################################" && bash -c "echo BRANCH=$BRANCH"
+
+          echo "keymatrix=$KEY-$BRANCH-$MATRIX" >> $GITHUB_OUTPUT
 
       - name: update
         run: apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
@@ -55,13 +68,44 @@ jobs:
           adduser --shell /bin/bash --uid 1000 --disabled-password --home /home/builder builder
           chmod -R 777 ./
 
+      - name: cache_load
+        uses: actions/cache/restore@v4
+        if: always()
+        with:
+          path: |
+            ${{ env.COMPARE_FILE0 }}
+          key: ${{ steps.key.outputs.keymatrix }}
+
       - name: generate
         run: |
           export LANG=en_US.utf8
           [ "${{ github.workflow }}" != "${{ steps.key.outputs.key }}" ] && c=5 || c=1
           seq $c | while read x; do cd ./sh && bash fix-file-permissions.bash && su builder -c '$SHELL $PWD/download-updates.bash ${{ matrix.target }} deu,enu -includesp' && su builder -c '$SHELL $PWD/create-iso-image.bash ${{ matrix.target }} -includesp'; done
+
+      - name: compare
+        id: compare
+        run: |
+          cd ./iso
+          
+          echo "generating SHA File from iso"
+          sha256deep *.iso | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
       
+          if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
+            echo "copy SHA File from iso for cache"
+            cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
+          else
+            diff ${{ env.COMPARE_FILE0 }} ${{ env.COMPARE_FILE1 }} || true
+            if [ $? -eq 0 ]; then
+              echo "Still at latest version"
+              echo "latest_version=true" >> $GITHUB_OUTPUT
+            else
+              echo "Not at latest version"
+              cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
+            fi
+          fi
+
       - name: after prepare
+        if: steps.compare.outputs.latest_version != 'true'
         run: |
           rm -r ./client
           cd ./iso
@@ -70,6 +114,7 @@ jobs:
           rm $isofile
    
       - name: Publish release ISO
+        if: steps.compare.outputs.latest_version != 'true'
         uses: "crowbarmaster/GH-Automatic-Releases@v1.6.0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -77,6 +122,22 @@ jobs:
           prerelease: false
           title: "wsusoffline package for ${{ env.GIT_BRANCH }}-${{ matrix.target }}"
           files: ./iso/*.iso*
+
+      - name: cache_clear
+        env:
+          ACTIONS_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+        run: |
+          ASSETS="$(curl -s  -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches")"
+          ASSID="$(echo "$ASSETS" | grep -B7 "\"key\": *\"${{ steps.key.outputs.keymatrix }}\"" | sed -rn 's/ *"id": *([^,]*),*/\1/p')"
+          curl -sL -X DELETE -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches/$ASSID" && echo "Deleted ASSID=$ASSID ..." || true
+      - name: cache_save
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: |
+            ${{ env.COMPARE_FILE0 }}
+          key: ${{ steps.key.outputs.keymatrix }}
+
 
   build_esr:
     container:
@@ -101,6 +162,16 @@ jobs:
           echo "key=$KEY" >> $GITHUB_OUTPUT
           echo "################################################################" && bash -c "echo KEY=$KEY"
 
+          export MATRIX="${{ matrix.target }}"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "################################################################" && bash -c "echo MATRIX=$MATRIX"
+
+          export BRANCH="${{ env.GIT_BRANCH }}"
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "################################################################" && bash -c "echo BRANCH=$BRANCH"
+
+          echo "keymatrix=$KEY-$BRANCH-$MATRIX" >> $GITHUB_OUTPUT
+
       - name: update
         run: apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
 
@@ -124,13 +195,44 @@ jobs:
           adduser --shell /bin/bash --uid 1000 --disabled-password --home /home/builder builder
           chmod -R 777 ./
 
+      - name: cache_load
+        uses: actions/cache/restore@v4
+        if: always()
+        with:
+          path: |
+            ${{ env.COMPARE_FILE0 }}
+          key: ${{ steps.key.outputs.keymatrix }}
+
       - name: generate
         run: |
           export LANG=en_US.utf8
           [ "${{ github.workflow }}" != "${{ steps.key.outputs.key }}" ] && c=5 || c=1
           seq $c | while read x; do cd ./sh && bash fix-file-permissions.bash && su builder -c '$SHELL $PWD/download-updates.bash ${{ matrix.target }} deu,enu -includesp' && su builder -c '$SHELL $PWD/create-iso-image.bash ${{ matrix.target }} -includesp'; done
+
+      - name: compare
+        id: compare
+        run: |
+          cd ./iso
+          
+          echo "generating SHA File from iso"
+          sha256deep *.iso | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
       
+          if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
+            echo "copy SHA File from iso for cache"
+            cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
+          else
+            diff ${{ env.COMPARE_FILE0 }} ${{ env.COMPARE_FILE1 }} || true
+            if [ $? -eq 0 ]; then
+              echo "Still at latest version"
+              echo "latest_version=true" >> $GITHUB_OUTPUT
+            else
+              echo "Not at latest version"
+              cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
+            fi
+          fi
+
       - name: after prepare
+        if: steps.compare.outputs.latest_version != 'true'
         run: |
           rm -r ./client
           cd ./iso
@@ -139,6 +241,7 @@ jobs:
           rm $isofile
    
       - name: Publish release ISO
+        if: steps.compare.outputs.latest_version != 'true'
         uses: "crowbarmaster/GH-Automatic-Releases@v1.6.0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -147,3 +250,17 @@ jobs:
           title: "wsusoffline package for ${{ env.GIT_BRANCH }}-${{ matrix.target }}"
           files: ./iso/*.iso*
 
+      - name: cache_clear
+        env:
+          ACTIONS_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+        run: |
+          ASSETS="$(curl -s  -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches")"
+          ASSID="$(echo "$ASSETS" | grep -B7 "\"key\": *\"${{ steps.key.outputs.keymatrix }}\"" | sed -rn 's/ *"id": *([^,]*),*/\1/p')"
+          curl -sL -X DELETE -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches/$ASSID" && echo "Deleted ASSID=$ASSID ..." || true
+      - name: cache_save
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: |
+            ${{ env.COMPARE_FILE0 }}
+          key: ${{ steps.key.outputs.keymatrix }}
