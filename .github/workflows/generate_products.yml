@@ -90,8 +90,7 @@ jobs:
     env:           
       GIT_BRANCH: esr
     needs: build_latest
-    if: always() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks'
-
+    if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' }}
 
     steps:
 
