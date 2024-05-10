@@ -85,13 +85,14 @@ jobs:
       - name: compare
         id: compare
         run: |
-          cd ./iso
+          cd ./client/UpdateTable
           
-          echo "generating SHA File from iso"
-          sha256deep *.iso | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
+          echo "generating SHA File from UpdateTable"
+          sha256sum *.csv | sed 's# .*$##g' | \ 
+            sha256sum -   | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
       
           if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
-            echo "copy SHA File from iso for cache"
+            echo "copy SHA File for cache"
             cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
           else
             diff ${{ env.COMPARE_FILE0 }} ${{ env.COMPARE_FILE1 }} || true
@@ -212,13 +213,14 @@ jobs:
       - name: compare
         id: compare
         run: |
-          cd ./iso
+          cd ./client/UpdateTable
           
-          echo "generating SHA File from iso"
-          sha256deep *.iso | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
+          echo "generating SHA File from UpdateTable"
+          sha256sum *.csv | sed 's# .*$##g' | \ 
+            sha256sum -   | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
       
           if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
-            echo "copy SHA File from iso for cache"
+            echo "copy SHA File for cache"
             cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
           else
             diff ${{ env.COMPARE_FILE0 }} ${{ env.COMPARE_FILE1 }} || true
