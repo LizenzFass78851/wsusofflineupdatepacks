@@ -86,17 +86,18 @@ jobs:
         id: compare
         run: |
           cd ./client/UpdateTable
-          
+    
           echo "generating SHA File from UpdateTable"
-          sha256sum *.csv | sed 's# .*$##g' | \ 
+          sha256sum *.csv | sed 's# .*$##g' | \
             sha256sum -   | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
-      
+
           if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
             echo "copy SHA File for cache"
             cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
           else
-            diff ${{ env.COMPARE_FILE0 }} ${{ env.COMPARE_FILE1 }} || true
-            if [ $? -eq 0 ]; then
+            CONTENT_FILE0=$(cat ${{ env.COMPARE_FILE0 }})
+            CONTENT_FILE1=$(cat ${{ env.COMPARE_FILE1 }})
+            if [ "$CONTENT_FILE0" = "$CONTENT_FILE1" ]; then
               echo "Still at latest version"
               echo "latest_version=true" >> $GITHUB_OUTPUT
             else
@@ -214,17 +215,18 @@ jobs:
         id: compare
         run: |
           cd ./client/UpdateTable
-          
+    
           echo "generating SHA File from UpdateTable"
-          sha256sum *.csv | sed 's# .*$##g' | \ 
+          sha256sum *.csv | sed 's# .*$##g' | \
             sha256sum -   | sed 's# .*$##g' > ${{ env.COMPARE_FILE1 }}
-      
+
           if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
             echo "copy SHA File for cache"
             cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
           else
-            diff ${{ env.COMPARE_FILE0 }} ${{ env.COMPARE_FILE1 }} || true
-            if [ $? -eq 0 ]; then
+            CONTENT_FILE0=$(cat ${{ env.COMPARE_FILE0 }})
+            CONTENT_FILE1=$(cat ${{ env.COMPARE_FILE1 }})
+            if [ "$CONTENT_FILE0" = "$CONTENT_FILE1" ]; then
               echo "Still at latest version"
               echo "latest_version=true" >> $GITHUB_OUTPUT
             else
