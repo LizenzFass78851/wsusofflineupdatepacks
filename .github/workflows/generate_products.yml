@@ -15,7 +15,7 @@ env:
 jobs:
   build_latest:
     container:
-      image: ubuntu:22.04
+      image: ubuntu:24.04
     strategy:
       fail-fast: false
       matrix:
@@ -65,7 +65,7 @@ jobs:
 
       - name: prepare
         run: |
-          adduser --shell /bin/bash --uid 1000 --disabled-password --home /home/builder builder
+          adduser --shell /bin/bash --uid 1500 --disabled-password --home /home/builder --comment "" builder
           chmod -R 777 ./
 
       - name: cache_load
@@ -143,7 +143,7 @@ jobs:
 
   build_esr:
     container:
-      image: ubuntu:22.04
+      image: ubuntu:24.04
     strategy:
       fail-fast: false
       matrix:
@@ -194,7 +194,7 @@ jobs:
 
       - name: prepare
         run: |
-          adduser --shell /bin/bash --uid 1000 --disabled-password --home /home/builder builder
+          adduser --shell /bin/bash --uid 1500 --disabled-password --home /home/builder --comment "" builder
           chmod -R 777 ./
 
       - name: cache_load
