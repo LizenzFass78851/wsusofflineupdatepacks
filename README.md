@@ -33,9 +33,9 @@ https://www.catalog.update.microsoft.com (example search term: `2023-11 Update f
 ### Build state: 
 [![generate_products](https://github.com/LizenzFass78851/wsusofflineupdatepacks/actions/workflows/generate_products.yml/badge.svg?branch=main)](https://github.com/LizenzFass78851/wsusofflineupdatepacks/actions/workflows/generate_products.yml)
 
-### Notes:
-- The ISOs published there are split into 1.9 GB files each.
-  - Put these back together under Linux using the cut command.
-  - On Windows this is possible with 7zip, but the files that follow with .aa .ab and so on can be renamed to .001 .002 and so on.
-- To install Windows updates via the wsusoffline package, the antivirus program must be deactivated. **it is false positive**
-- This automation uses the source code from akar@wsusoffline on [gitlab](https://gitlab.com/wsusoffline/wsusoffline) and this repository contains the already compiled program files for wsusoffline so that the automation can provide these packages for the above-mentioned systems
+> [!NOTE]
+> - The ISOs published there are split into 1.9 GB files each.
+>   - Put these back together under Linux using the cut command.
+>   - On Windows this is possible with 7zip, but the files that follow with .aa .ab and so on can be renamed to .001 .002 and so on.
+> - To install Windows updates via the wsusoffline package, the antivirus program must be deactivated. **it is false positive**
+> - This automation uses the source code from akar@wsusoffline on [gitlab](https://gitlab.com/wsusoffline/wsusoffline) and this repository contains the already compiled program files for wsusoffline so that the automation can provide these packages for the above-mentioned systems
