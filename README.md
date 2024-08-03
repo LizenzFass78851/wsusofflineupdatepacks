@@ -3,15 +3,6 @@ This repository contains wsusoffline package (Windows Update Pack) for supported
 
 See the [releases](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases) to download the releases
 
-## Latest Update Packs
-| Product | Link |
-|:------------------:|:--------------:|
-| Windows Server 2012 (x64) | [w62-x64](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w62-x64) |
-| Windows 8.1 (x86) | [w63](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w63) |
-| Windows 8.1 / Windows Server 2012 R2 (x64) | [w63-x64](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w63-x64) |
-| Office 2013 (x86/x64) | [o2k13](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-o2k13) |
-| Office 2016 (x86/x64) | [o2k16](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-o2k16) |
-
 ## ESR Update Packs
 | Product | Link |
 |:------------------:|:--------------:|
@@ -29,6 +20,9 @@ See the [releases](https://github.com/LizenzFass78851/wsusofflineupdatepacks/rel
 Because from Windows 10 and its server variants it may be easier to get this appropriate cromulative update, which contains all the changes for the corresponding Windows 10 version or newer.
 These cromulative updates for Windows 10 and newer can be found under the Microsoft update catalog:
 https://www.catalog.update.microsoft.com (example search term: `2023-11 Update for Windows 10 22h2`)
+
+### Why are there no latest releases?
+the runners simply have too little storage space
 
 ### Build state: 
 [![generate_products](https://github.com/LizenzFass78851/wsusofflineupdatepacks/actions/workflows/generate_products.yml/badge.svg?branch=main)](https://github.com/LizenzFass78851/wsusofflineupdatepacks/actions/workflows/generate_products.yml)
