@@ -8,6 +8,20 @@ on:
   schedule:
     - cron: '34 14 */3 * 2'
   workflow_dispatch:
+    inputs:
+      build_latest:
+        description: 'Build Latest-Packages?'
+        required: true
+        options: [ 'yes', 'no' ]
+        type: choice
+        default: 'no'
+      build_esr:
+        description: 'Build ESR-Packages?'
+        required: true
+        options: [ 'yes', 'no' ]
+        type: choice
+        default: 'yes'
+
 env:
   COMPARE_FILE0: /tmp/.wsusoffline-iso-sha256-0.txt
   COMPARE_FILE1: /tmp/.wsusoffline-iso-sha256-1.txt
@@ -24,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     env:           
       GIT_BRANCH: latest
-    if: github.repository == 'lizenzfass78851/wsusofflineupdatepacks'
+    if: ${{ github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && github.event.inputs.build_latest != 'no' }}
 
     steps:
 
@@ -153,7 +167,7 @@ jobs:
     env:           
       GIT_BRANCH: esr
     needs: build_latest
-    if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' }}
+    if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && github.event.inputs.build_esr != 'no' }}
 
     steps:
 
