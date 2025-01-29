@@ -14,7 +14,7 @@ on:
         required: true
         options: [ 'yes', 'no' ]
         type: choice
-        default: 'no'
+        default: 'yes'
       build_esr:
         description: 'Build ESR-Packages?'
         required: true
