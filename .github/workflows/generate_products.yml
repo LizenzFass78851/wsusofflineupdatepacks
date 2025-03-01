@@ -55,6 +55,12 @@ jobs:
 
     steps:
 
+      - name: sleep
+        run: |
+          SLEEP="$((1 + $(od -A n -t d -N 2 /dev/urandom | tr -d ' ') % 9))"
+          echo "Sleeping $SLEEP seconds ..."
+          sleep $SLEEP
+
       - name: key
         id: key
         run: |
@@ -209,6 +215,12 @@ jobs:
     if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && github.event.inputs.build_esr != 'no' }}
 
     steps:
+
+      - name: sleep
+        run: |
+          SLEEP="$((1 + $(od -A n -t d -N 2 /dev/urandom | tr -d ' ') % 9))"
+          echo "Sleeping $SLEEP seconds ..."
+          sleep $SLEEP
 
       - name: key
         id: key
