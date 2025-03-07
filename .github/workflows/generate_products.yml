@@ -35,19 +35,19 @@ jobs:
       matrix:
         include:
           - target:   w62-x64
-            cachekey: w62x64
+            cachekey: w62-64
           - target:   w63
-            cachekey: w63x86
+            cachekey: w63-86
           - target:   w63-x64
-            cachekey: w63x64
+            cachekey: w63-64
           - target:   w100
-            cachekey: w100x86
+            cachekey: w10-86
           - target:   w100-x64
-            cachekey: w100x64
+            cachekey: w10-64
           - target:   o2k13
-            cachekey: o2k13
+            cachekey: o13
           - target:   o2k16
-            cachekey: o2k16
+            cachekey: o16
     runs-on: ubuntu-latest
     env:           
       GIT_BRANCH: latest
@@ -187,27 +187,27 @@ jobs:
       matrix:
         include:
           - target:   w60
-            cachekey: w60x86
+            cachekey: w60-86
           - target:   w60-x64
-            cachekey: w60x64
+            cachekey: w60-64
           - target:   w61
-            cachekey: w61x86
+            cachekey: w61-86
           - target:   w61-x64
-            cachekey: w61x64
+            cachekey: w61-64
           - target:   w62-x64
-            cachekey: w62x64
+            cachekey: w62-64
           - target:   w63
-            cachekey: w63x86
+            cachekey: w63-86
           - target:   w63-x64
-            cachekey: w63x64
+            cachekey: w63-64
           - target:   w100
-            cachekey: w100x86
+            cachekey: w10-86
           - target:   w100-x64
-            cachekey: w100x64
+            cachekey: w10-64
           - target:   o2k13
-            cachekey: o2k13
+            cachekey: o13
           - target:   o2k16
-            cachekey: o2k16
+            cachekey: o16
     runs-on: ubuntu-latest
     env:           
       GIT_BRANCH: esr
