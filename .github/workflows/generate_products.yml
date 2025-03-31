@@ -22,6 +22,10 @@ on:
         type: choice
         default: 'yes'
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 env:
   COMPARE_FILE0: /tmp/.wsusoffline-iso-sha256-0.txt
   COMPARE_FILE1: /tmp/.wsusoffline-iso-sha256-1.txt
