@@ -33,7 +33,7 @@ env:
 jobs:
   build_latest:
     container:
-      image: ubuntu:24.04
+      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
@@ -185,7 +185,7 @@ jobs:
 
   build_esr:
     container:
-      image: ubuntu:24.04
+      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
