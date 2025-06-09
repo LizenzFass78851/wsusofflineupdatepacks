@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - '.github/workflows/generate_products.yml'
+      - '.github/actions/wsusoffline/**'
   schedule:
     - cron: '34 14 */3 * 2'
   workflow_dispatch:
@@ -59,129 +60,16 @@ jobs:
 
     steps:
 
-      - name: sleep
-        run: |
-          SLEEP="$((1 + $(od -A n -t d -N 2 /dev/urandom | tr -d ' ') % 9))"
-          echo "Sleeping $SLEEP seconds ..."
-          sleep $SLEEP
-
-      - name: key
-        id: key
-        run: |
-          export KEY="${GITHUB_WORKFLOW%-*}"
-          echo "key=$KEY" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo KEY=$KEY"
-
-          export MATRIX="${{ matrix.target }}"
-          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo MATRIX=$MATRIX"
-
-          export CACHEKEY="${{ matrix.cachekey }}"
-          echo "cachekey=$CACHEKEY" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo CACHEKEY=$CACHEKEY"
-
-          export BRANCH="${{ env.GIT_BRANCH }}"
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo BRANCH=$BRANCH"
-
-          echo "keymatrix=$KEY-$BRANCH-$CACHEKEY" >> $GITHUB_OUTPUT
-
-      - name: update
-        run: apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
-
-      - name: install
-        run: |
-          DEBIAN_FRONTEND=noninteractive apt-get -y install \
-            git locales curl jq file cabextract hashdeep unzip wget xmlstarlet dialog genisoimage rsync trash-cli iputils-ping
-
-      - name: locale
-        run: locale-gen en_US.utf8 && locale-gen de_DE.UTF-8 && update-locale
-   
-      - name: clone
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global --add safe.directory $GITHUB_WORKSPACE
-          git clone https://github-actions:$GITHUB_TOKEN@${GITHUB_SERVER_URL##*/}/$GITHUB_REPOSITORY.git $GITHUB_WORKSPACE --branch ${{ env.GIT_BRANCH }} --depth=1 --single-branch
-
-      - name: prepare
-        run: |
-          adduser --shell /bin/bash --uid 1500 --disabled-password --home /home/builder --comment "" builder
-          chmod -R 777 ./
-
-      - name: cache_load
-        uses: actions/cache/restore@v4
-        if: always()
+      - name: Generate wsusofflineupdatepacks
+        uses: LizenzFass78851/wsusofflineupdatepacks/.github/actions/wsusoffline@main
         with:
-          path: |
-            ${{ env.COMPARE_FILE0 }}
-          key: ${{ steps.key.outputs.keymatrix }}
-
-      - name: generate
-        run: |
-          export LANG=en_US.utf8
-          [ "${{ github.workflow }}" != "${{ steps.key.outputs.key }}" ] && c=5 || c=1
-          seq $c | while read x; do cd ./sh && bash fix-file-permissions.bash && su builder -c '$SHELL $PWD/download-updates.bash ${{ matrix.target }} deu,enu -includesp' && su builder -c '$SHELL $PWD/create-iso-image.bash ${{ matrix.target }} -includesp'; done
-
-      - name: compare
-        id: compare
-        run: |
-          cd ./client/md
-    
-          echo "generating SHA File"
-          cat $(ls *.txt | grep "glb" | grep -v "win") | sed 's/[#/%].*$//g' | sort | \
-            sha256sum -                                | sed 's# .*$##g'     > ${{ env.COMPARE_FILE1 }}
-
-          if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
-            echo "copy SHA File for cache"
-            cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
-          else
-            CONTENT_FILE0=$(cat ${{ env.COMPARE_FILE0 }})
-            CONTENT_FILE1=$(cat ${{ env.COMPARE_FILE1 }})
-            if [ "$CONTENT_FILE0" = "$CONTENT_FILE1" ]; then
-              echo "Still at latest version"
-              echo "latest_version=true" >> $GITHUB_OUTPUT
-            else
-              echo "Not at latest version"
-              cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
-            fi
-          fi
-
-      - name: after prepare
-        if: steps.compare.outputs.latest_version != 'true'
-        run: |
-          rm -r ./client
-          cd ./iso
-          export isofile=$(ls *.iso)
-          split -b 1920M  $isofile $isofile.
-          rm $isofile
-   
-      - name: Publish release ISO
-        if: steps.compare.outputs.latest_version != 'true'
-        uses: "crowbarmaster/GH-Automatic-Releases@v1.6.0"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.GIT_BRANCH }}-${{ matrix.target }}"
-          prerelease: false
-          title: "wsusoffline package for ${{ env.GIT_BRANCH }}-${{ matrix.target }}"
-          files: ./iso/*.iso*
-
-      - name: cache_clear
-        env:
-          ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CACHE_KEY: ${{ steps.key.outputs.keymatrix }}
-        run: |
-          ASSETS="$(curl -s  -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches")"
-          ASSID="$(echo "$ASSETS" | grep -B7 "\"key\": *\"${CACHE_KEY}\"" | sed -rn 's/ *"id": *([^,]*),*/\1/p')"
-          curl -sL -X DELETE -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches/$ASSID" && echo "Deleted ASSID=${ASSID:-null} ..." || true
-      - name: cache_save
-        uses: actions/cache/save@v4
-        if: always()
-        with:
-          path: |
-            ${{ env.COMPARE_FILE0 }}
-          key: ${{ steps.key.outputs.keymatrix }}
-
+          target: ${{ matrix.target }}
+          cachekey: ${{ matrix.cachekey }}
+          git_branch: ${{ env.GIT_BRANCH }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          compare_file0: ${{ env.COMPARE_FILE0 }}
+          compare_file1: ${{ env.COMPARE_FILE1 }}
+          repository: ${{ github.repository }}
 
   build_esr:
     container:
@@ -220,125 +108,13 @@ jobs:
 
     steps:
 
-      - name: sleep
-        run: |
-          SLEEP="$((1 + $(od -A n -t d -N 2 /dev/urandom | tr -d ' ') % 9))"
-          echo "Sleeping $SLEEP seconds ..."
-          sleep $SLEEP
-
-      - name: key
-        id: key
-        run: |
-          export KEY="${GITHUB_WORKFLOW%-*}"
-          echo "key=$KEY" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo KEY=$KEY"
-
-          export MATRIX="${{ matrix.target }}"
-          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo MATRIX=$MATRIX"
-
-          export CACHEKEY="${{ matrix.cachekey }}"
-          echo "cachekey=$CACHEKEY" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo CACHEKEY=$CACHEKEY"
-
-          export BRANCH="${{ env.GIT_BRANCH }}"
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          echo "################################################################" && bash -c "echo BRANCH=$BRANCH"
-
-          echo "keymatrix=$KEY-$BRANCH-$CACHEKEY" >> $GITHUB_OUTPUT
-
-      - name: update
-        run: apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
-
-      - name: install
-        run: |
-          DEBIAN_FRONTEND=noninteractive apt-get -y install \
-            git locales curl jq file cabextract hashdeep unzip wget xmlstarlet dialog genisoimage rsync trash-cli iputils-ping
-
-      - name: locale
-        run: locale-gen en_US.utf8 && locale-gen de_DE.UTF-8 && update-locale
-   
-      - name: clone
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global --add safe.directory $GITHUB_WORKSPACE
-          git clone https://github-actions:$GITHUB_TOKEN@${GITHUB_SERVER_URL##*/}/$GITHUB_REPOSITORY.git $GITHUB_WORKSPACE --branch ${{ env.GIT_BRANCH }} --depth=1 --single-branch
-
-      - name: prepare
-        run: |
-          adduser --shell /bin/bash --uid 1500 --disabled-password --home /home/builder --comment "" builder
-          chmod -R 777 ./
-
-      - name: cache_load
-        uses: actions/cache/restore@v4
-        if: always()
+      - name: Generate wsusofflineupdatepacks
+        uses: LizenzFass78851/wsusofflineupdatepacks/.github/actions/wsusoffline@main
         with:
-          path: |
-            ${{ env.COMPARE_FILE0 }}
-          key: ${{ steps.key.outputs.keymatrix }}
-
-      - name: generate
-        run: |
-          export LANG=en_US.utf8
-          [ "${{ github.workflow }}" != "${{ steps.key.outputs.key }}" ] && c=5 || c=1
-          seq $c | while read x; do cd ./sh && bash fix-file-permissions.bash && su builder -c '$SHELL $PWD/download-updates.bash ${{ matrix.target }} deu,enu -includesp' && su builder -c '$SHELL $PWD/create-iso-image.bash ${{ matrix.target }} -includesp'; done
-
-      - name: compare
-        id: compare
-        run: |
-          cd ./client/md
-    
-          echo "generating SHA File"
-          cat $(ls *.txt | grep "glb" | grep -v "win") | sed 's/[#/%].*$//g' | sort | \
-            sha256sum -                                | sed 's# .*$##g'     > ${{ env.COMPARE_FILE1 }}
-
-          if [ ! -e "${{ env.COMPARE_FILE0 }}" ]; then
-            echo "copy SHA File for cache"
-            cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
-          else
-            CONTENT_FILE0=$(cat ${{ env.COMPARE_FILE0 }})
-            CONTENT_FILE1=$(cat ${{ env.COMPARE_FILE1 }})
-            if [ "$CONTENT_FILE0" = "$CONTENT_FILE1" ]; then
-              echo "Still at latest version"
-              echo "latest_version=true" >> $GITHUB_OUTPUT
-            else
-              echo "Not at latest version"
-              cp ${{ env.COMPARE_FILE1 }} ${{ env.COMPARE_FILE0 }}
-            fi
-          fi
-
-      - name: after prepare
-        if: steps.compare.outputs.latest_version != 'true'
-        run: |
-          rm -r ./client
-          cd ./iso
-          export isofile=$(ls *.iso)
-          split -b 1920M  $isofile $isofile.
-          rm $isofile
-   
-      - name: Publish release ISO
-        if: steps.compare.outputs.latest_version != 'true'
-        uses: "crowbarmaster/GH-Automatic-Releases@v1.6.0"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.GIT_BRANCH }}-${{ matrix.target }}"
-          prerelease: false
-          title: "wsusoffline package for ${{ env.GIT_BRANCH }}-${{ matrix.target }}"
-          files: ./iso/*.iso*
-
-      - name: cache_clear
-        env:
-          ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CACHE_KEY: ${{ steps.key.outputs.keymatrix }}
-        run: |
-          ASSETS="$(curl -s  -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches")"
-          ASSID="$(echo "$ASSETS" | grep -B7 "\"key\": *\"${CACHE_KEY}\"" | sed -rn 's/ *"id": *([^,]*),*/\1/p')"
-          curl -sL -X DELETE -H "Accept: application/vnd.github+json"  -H "Authorization: Bearer $ACTIONS_TOKEN"  -H "X-GitHub-Api-Version: 2022-11-28"  "https://api.github.com/repos/${{ github.repository }}/actions/caches/$ASSID" && echo "Deleted ASSID=${ASSID:-null} ..." || true
-      - name: cache_save
-        uses: actions/cache/save@v4
-        if: always()
-        with:
-          path: |
-            ${{ env.COMPARE_FILE0 }}
-          key: ${{ steps.key.outputs.keymatrix }}
+          target: ${{ matrix.target }}
+          cachekey: ${{ matrix.cachekey }}
+          git_branch: ${{ env.GIT_BRANCH }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          compare_file0: ${{ env.COMPARE_FILE0 }}
+          compare_file1: ${{ env.COMPARE_FILE1 }}
+          repository: ${{ github.repository }}
