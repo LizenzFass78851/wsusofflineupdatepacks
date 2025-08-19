@@ -155,13 +155,13 @@ runs:
 
     - name: Publish release ISO
       if: steps.compare.outputs.latest_version != 'true'
-      uses: "crowbarmaster/GH-Automatic-Releases@v1.6.0"
+      uses: softprops/action-gh-release@v2
       with:
-        repo_token: "${{ inputs.github_token }}"
-        automatic_release_tag: "${{ inputs.git_branch }}-${{ inputs.target }}"
-        generate_notes: false
+        token: "${{ inputs.github_token }}"
+        tag_name: "${{ inputs.git_branch }}-${{ inputs.target }}"
+        generate_release_notes: false
         prerelease: false
-        title: "wsusoffline package for ${{ inputs.git_branch }}-${{ inputs.target }}"
+        name: "wsusoffline package for ${{ inputs.git_branch }}-${{ inputs.target }}"
         files: |
           ./iso/*.iso*
         body: |
