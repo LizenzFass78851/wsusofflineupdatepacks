@@ -153,6 +153,15 @@ runs:
         split -b 1920M  $isofile $isofile.
         rm $isofile
 
+    - name: Delete existing tag
+      if: steps.compare.outputs.latest_version != 'true'
+      uses: dev-drprasad/delete-tag-and-release@v1.1
+      with:
+        tag_name: "${{ inputs.git_branch }}-${{ inputs.target }}"
+        github_token: ${{ inputs.github_token }}
+        delete_release: true
+        repo: ${{ inputs.repository }}
+
     - name: Publish release ISO
       if: steps.compare.outputs.latest_version != 'true'
       uses: softprops/action-gh-release@v2
