@@ -180,6 +180,7 @@ runs:
           - For more information, see the [README.md in the repository](https://github.com/${{ inputs.repository }}/blob/${{ github.ref }}/README.md).
 
     - name: cache_save
+      if: steps.compare.outputs.latest_version != 'true'
       uses: actions/cache/save@v4
       with:
         path: |
