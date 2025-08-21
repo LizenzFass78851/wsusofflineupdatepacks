@@ -155,6 +155,7 @@ runs:
 
     - name: Delete existing tag
       if: steps.compare.outputs.latest_version != 'true'
+      continue-on-error: true
       uses: dev-drprasad/delete-tag-and-release@v1.1
       with:
         tag_name: "${{ inputs.git_branch }}-${{ inputs.target }}"
