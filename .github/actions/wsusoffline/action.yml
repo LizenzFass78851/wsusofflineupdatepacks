@@ -81,7 +81,8 @@ runs:
       shell: bash
       run: |
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
-          git locales curl jq file cabextract hashdeep unzip wget xmlstarlet dialog genisoimage rsync trash-cli iputils-ping
+          git locales curl jq file cabextract hashdeep unzip wget xmlstarlet dialog genisoimage rsync trash-cli iputils-ping \
+        && rm -rf /var/lib/apt/lists/*
 
     - name: locale
       shell: bash
