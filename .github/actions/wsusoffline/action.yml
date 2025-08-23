@@ -103,7 +103,6 @@ runs:
 
     - name: cache_load
       uses: actions/cache/restore@v4
-      if: always()
       with:
         path: |
           ${{ inputs.compare_file0 }}
@@ -147,11 +146,22 @@ runs:
       shell: bash
       if: steps.compare.outputs.latest_version != 'true'
       run: |
+        # remove unused build files
         rm -r ./client
+        # split bigger files
         cd ./iso
-        export isofile=$(ls *.iso)
-        split -b 1920M  $isofile $isofile.
-        rm $isofile
+        for file in *.iso; do
+          if [[ -f "$file" ]]; then
+            size=$(stat -c %s "$file")
+            if (( size > 1920*1024*1024 )); then
+              echo "Processing $file (size: $size bytes > 1920MB)"
+              split -b 1920M --numeric-suffixes=1 --suffix-length=3 "$file" "$file."
+              rm "$file"
+            else
+              echo "$file is smaller than 1920 MB, splitting is skipped."
+            fi
+          fi
+        done
 
     - name: Delete existing tag
       if: steps.compare.outputs.latest_version != 'true'
