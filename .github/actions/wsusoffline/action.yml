@@ -100,7 +100,7 @@ runs:
       shell: bash
       run: |
         adduser --shell /bin/bash --uid 1500 --disabled-password --home /home/builder --comment "" builder
-        chmod -R 777 ./
+        chown builder ./ -R && chmod +x $PWD/sh/fix-file-permissions.bash
 
     - name: cache_load
       uses: actions/cache/restore@v4
@@ -116,7 +116,7 @@ runs:
       run: |
         export LANG=en_US.utf8
         [ "${{ github.workflow }}" != "${{ steps.key.outputs.key }}" ] && c=5 || c=1
-        seq $c | while read x; do cd ./sh && bash fix-file-permissions.bash && su builder -c '$SHELL $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp' && su builder -c '$SHELL $PWD/create-iso-image.bash ${{ inputs.target }} -includesp'; done
+        seq $c | while read x; do cd ./sh && su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'; done
 
     - name: compare
       shell: bash
