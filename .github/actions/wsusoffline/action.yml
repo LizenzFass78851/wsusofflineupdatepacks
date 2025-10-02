@@ -89,17 +89,15 @@ runs:
       run: locale-gen en_US.utf8 && locale-gen de_DE.UTF-8 && update-locale
 
     - name: clone
-      shell: bash
-      env:
-        GITHUB_TOKEN: ${{ inputs.github_token }}
-      run: |
-        git config --global --add safe.directory $GITHUB_WORKSPACE
-        git clone https://github-actions:$GITHUB_TOKEN@${GITHUB_SERVER_URL##*/}/$GITHUB_REPOSITORY.git $GITHUB_WORKSPACE --branch ${{ inputs.git_branch }} --depth=1 --single-branch
+      uses: actions/checkout@v5
+      with:
+        token: ${{ inputs.github_token }}
+        ref: ${{ inputs.git_branch }}
 
     - name: prepare
       shell: bash
       run: |
-        adduser --shell /bin/bash --uid 1500 --disabled-password --home /home/builder --comment "" builder
+        adduser --shell $(which bash) --uid 1500 --disabled-password --home /home/builder --comment "" builder
         chown builder ./ -R && chmod +x $PWD/sh/fix-file-permissions.bash
 
     - name: cache_load
