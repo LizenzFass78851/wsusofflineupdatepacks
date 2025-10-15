@@ -22,6 +22,12 @@ on:
         options: [ 'yes', 'no' ]
         type: choice
         default: 'yes'
+      recache:
+        description: 'Delete Cache before Build?'
+        required: false
+        options: [ 'yes', 'no' ]
+        type: choice
+        default: 'no'
 
 permissions:
   contents: write
@@ -35,6 +41,20 @@ env:
   COMPARE_FILE1: /tmp/.wsusoffline-iso-sha256-1.txt
     
 jobs:
+
+  clear_cache:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'lizenzfass78851/wsusofflineupdatepacks' }}
+    steps:
+
+      - name: clear_cache
+        uses: LizenzFass78851/wsusofflineupdatepacks/.github/actions/clear_cache@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository_onwer: ${{ github.repository_owner }}
+          repository_name: ${{ github.event.repository.name }}
+          recache: ${{ github.event.inputs.recache }}
+
   build_latest:
     container:
       image: debian:trixie-slim
@@ -59,7 +79,8 @@ jobs:
     runs-on: ubuntu-latest
     env:           
       GIT_BRANCH: latest
-    if: ${{ github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && github.event.inputs.build_latest != 'no' }}
+    needs: [ clear_cache ]
+    if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && needs.clear_cache.result != 'failure' && github.event.inputs.build_latest != 'no' }}
 
     steps:
 
@@ -106,8 +127,8 @@ jobs:
     runs-on: ubuntu-latest
     env:           
       GIT_BRANCH: esr
-    needs: build_latest
-    if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && github.event.inputs.build_esr != 'no' }}
+    needs: [ clear_cache, build_latest ]
+    if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && needs.clear_cache.result != 'failure' && github.event.inputs.build_esr != 'no' }}
 
     steps:
 

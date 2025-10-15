@@ -1,0 +1,64 @@
+name: clear_cache_action
+description: Action to clear all cache of the current repo
+
+inputs:
+  # Actions cannot access secrets so pass them in as inputs
+  github_token:
+    required: true
+    description: The GitHub token to use for accessing the repository
+  repository_onwer:
+    required: false
+    description: The repository onwer to clear the cache
+    default: ${{ github.repository_owner }}
+  repository_name:
+    required: false
+    description: The repository name to clear the cache
+    default: ${{ github.event.repository.name }}
+  recache:
+    required: false
+    default: no
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check inputs
+      shell: bash
+      run: |
+        [[ "${{ inputs.github_token }}"  ]]    || { echo "github_token input is empty"     ; exit 1; }
+        [[ "${{ inputs.repository_onwer }}" ]] || { echo "repository_onwer input is empty" ; exit 1; }
+        [[ "${{ inputs.repository_name }}" ]]  || { echo "repository_name input is empty"  ; exit 1; }
+        [[ "${{ inputs.recache }}" ]]          || { echo "recache input is empty"          ; true; }
+
+    - name: clear_cache
+      env:
+        GH_TOKEN: ${{ inputs.github_token }}
+        GH_ONWER: ${{ inputs.repository_onwer }}
+        GH_REPO: ${{ inputs.repository_name }}
+      shell: bash
+      run: |
+        set -e +o pipefail
+        if [ "${{ inputs.recache }}" == "yes" ]; then
+          echo "Recache selected - Deleting all caches for this workflow ..."
+          while :; do
+              JSON_OUTPUT=$(curl \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  -H "Authorization: token $GH_TOKEN" \
+                  https://api.github.com/repos/$GH_ONWER/$GH_REPO/actions/caches)
+              GH_CACHE_IDS=$(echo "$JSON_OUTPUT" | jq '.actions_caches[] | {id: .id}' | grep "id" | cut -d ':' -f 2 | cut -c 2-)
+              if [ -z "$GH_CACHE_IDS" ]; then
+                  echo "No cache IDs left, end the loop."
+                  break
+              fi
+              for GH_CACHE_ID in $GH_CACHE_IDS; do
+                  echo "Delete Cache-ID: $GH_CACHE_ID"
+                  curl \
+                      -X DELETE \
+                      -H "Accept: application/vnd.github.v3+json" \
+                      -H "Authorization: token $GH_TOKEN" \
+                      https://api.github.com/repos/$GH_ONWER/$GH_REPO/actions/caches/$GH_CACHE_ID
+              done
+              sleep 5
+          done
+        else
+          echo "::warning::No recache selected - Skipping cache deletion ..."
+        fi
