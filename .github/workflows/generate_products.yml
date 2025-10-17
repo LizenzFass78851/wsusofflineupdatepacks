@@ -56,8 +56,6 @@ jobs:
           recache: ${{ github.event.inputs.recache }}
 
   build_latest:
-    container:
-      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
@@ -76,13 +74,19 @@ jobs:
             cachekey: o13
           - target:   o2k16
             cachekey: o16
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:           
       GIT_BRANCH: latest
     needs: [ clear_cache ]
     if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && needs.clear_cache.result != 'failure' && github.event.inputs.build_latest != 'no' }}
 
     steps:
+
+      - uses: mathio/gha-cleanup@v1
+        if: ${{ matrix.target == 'w100-x64' }}
+        with:
+          remove-browsers: true
+          verbose: true
 
       - name: Generate wsusofflineupdatepacks
         uses: LizenzFass78851/wsusofflineupdatepacks/.github/actions/wsusoffline@main
@@ -96,8 +100,6 @@ jobs:
           repository: ${{ github.repository }}
 
   build_esr:
-    container:
-      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
@@ -124,13 +126,19 @@ jobs:
             cachekey: o13
           - target:   o2k16
             cachekey: o16
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:           
       GIT_BRANCH: esr
     needs: [ clear_cache, build_latest ]
     if: ${{ !cancelled() && github.repository == 'lizenzfass78851/wsusofflineupdatepacks' && needs.clear_cache.result != 'failure' && github.event.inputs.build_esr != 'no' }}
 
     steps:
+
+      - uses: mathio/gha-cleanup@v1
+        if: ${{ matrix.target == 'w100-x64' }}
+        with:
+          remove-browsers: true
+          verbose: true
 
       - name: Generate wsusofflineupdatepacks
         uses: LizenzFass78851/wsusofflineupdatepacks/.github/actions/wsusoffline@main
