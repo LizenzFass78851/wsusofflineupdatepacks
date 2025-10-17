@@ -101,9 +101,10 @@ runs:
     - name: prepare
       shell: bash
       run: |
+        chmod +x $PWD/sh/fix-file-permissions.bash
 #        sudo adduser --shell $(which bash) --uid 1500 --disabled-password --home /home/builder --comment "" builder
 #        sudo chown builder ./ -R && 
-        chmod +x $PWD/sh/fix-file-permissions.bash
+
 
     - name: cache_load
       uses: actions/cache/restore@v4
