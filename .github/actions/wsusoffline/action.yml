@@ -1,5 +1,7 @@
 name: generate_products_action
-description: Action to generate wsusoffline products for a specific target OS.
+description: |
+  Action to generate wsusoffline products for a specific target OS.
+  Recommended for the ubuntu-24.04 runner.
 
 inputs:
   # Actions cannot access secrets so pass them in as inputs
@@ -84,7 +86,7 @@ runs:
       run: |
         sudo apt-get -y install \
           git locales curl jq file cabextract hashdeep unzip wget xmlstarlet dialog genisoimage rsync trash-cli iputils-ping \
-        && rm -rf /var/lib/apt/lists/*
+        && sudo rm -rf /var/lib/apt/lists/*
 
     - name: locale
       shell: bash
