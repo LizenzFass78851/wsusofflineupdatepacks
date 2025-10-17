@@ -1,5 +1,7 @@
 name: generate_products_action
-description: Action to generate wsusoffline products for a specific target OS. (only run this with a container image)
+description: |
+  Action to generate wsusoffline products for a specific target OS.
+  Recommended for the ubuntu-24.04 runner.
 
 inputs:
   # Actions cannot access secrets so pass them in as inputs
@@ -75,18 +77,20 @@ runs:
 
     - name: update
       shell: bash
-      run: apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
+      run: sudo apt-get -y update # && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade
 
     - name: install
+      env: 
+        DEBIAN_FRONTEND: noninteractive
       shell: bash
       run: |
-        DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        sudo apt-get -y install \
           git locales curl jq file cabextract hashdeep unzip wget xmlstarlet dialog genisoimage rsync trash-cli iputils-ping \
-        && rm -rf /var/lib/apt/lists/*
+        && sudo rm -rf /var/lib/apt/lists/*
 
     - name: locale
       shell: bash
-      run: locale-gen en_US.utf8 && locale-gen de_DE.UTF-8 && update-locale
+      run: sudo locale-gen en_US.utf8 && sudo locale-gen de_DE.UTF-8 && sudo update-locale
 
     - name: clone
       uses: actions/checkout@v5
@@ -97,8 +101,10 @@ runs:
     - name: prepare
       shell: bash
       run: |
-        adduser --shell $(which bash) --uid 1500 --disabled-password --home /home/builder --comment "" builder
-        chown builder ./ -R && chmod +x $PWD/sh/fix-file-permissions.bash
+        chmod +x $PWD/sh/fix-file-permissions.bash
+#        sudo adduser --shell $(which bash) --uid 1500 --disabled-password --home /home/builder --comment "" builder
+#        sudo chown builder ./ -R && 
+
 
     - name: cache_load
       uses: actions/cache/restore@v4
@@ -114,7 +120,8 @@ runs:
       run: |
         export LANG=en_US.utf8
         [ "${{ github.workflow }}" != "${{ steps.key.outputs.key }}" ] && c=5 || c=1
-        seq $c | while read x; do cd ./sh && su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'; done
+        seq $c | while read x; do cd ./sh && $SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"; done        
+#        seq $c | while read x; do cd ./sh && sudo su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'; done
 
     - name: compare
       shell: bash
