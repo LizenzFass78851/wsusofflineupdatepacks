@@ -89,15 +89,20 @@ jobs:
           verbose: true
 
       - name: Generate wsusofflineupdatepacks
-        uses: LizenzFass78851/wsusofflineupdatepacks/.github/actions/wsusoffline@main
+        uses: addnab/docker-run-action@v3
         with:
-          target: ${{ matrix.target }}
-          cachekey: ${{ matrix.cachekey }}
-          git_branch: ${{ env.GIT_BRANCH }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          compare_file0: ${{ env.COMPARE_FILE0 }}
-          compare_file1: ${{ env.COMPARE_FILE1 }}
-          repository: ${{ github.repository }}
+          image: debian:trixie-slim
+          options: -v ${{ github.workspace }}:/workspace
+          run: |
+            cd /workspace
+            /workspace/.github/actions/wsusoffline/action.yml \
+              --target "${{ matrix.target }}" \
+              --cachekey "${{ matrix.cachekey }}" \
+              --git_branch "${{ env.GIT_BRANCH }}" \
+              --github_token "${{ secrets.GITHUB_TOKEN }}" \
+              --compare_file0 "${{ env.COMPARE_FILE0 }}" \
+              --compare_file1 "${{ env.COMPARE_FILE1 }}" \
+              --repository "${{ github.repository }}"
 
   build_esr:
     strategy:
@@ -141,12 +146,17 @@ jobs:
           verbose: true
 
       - name: Generate wsusofflineupdatepacks
-        uses: LizenzFass78851/wsusofflineupdatepacks/.github/actions/wsusoffline@main
+        uses: addnab/docker-run-action@v3
         with:
-          target: ${{ matrix.target }}
-          cachekey: ${{ matrix.cachekey }}
-          git_branch: ${{ env.GIT_BRANCH }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          compare_file0: ${{ env.COMPARE_FILE0 }}
-          compare_file1: ${{ env.COMPARE_FILE1 }}
-          repository: ${{ github.repository }}
+          image: debian:trixie-slim
+          options: -v ${{ github.workspace }}:/workspace
+          run: |
+            cd /workspace
+            /workspace/.github/actions/wsusoffline/action.yml \
+              --target "${{ matrix.target }}" \
+              --cachekey "${{ matrix.cachekey }}" \
+              --git_branch "${{ env.GIT_BRANCH }}" \
+              --github_token "${{ secrets.GITHUB_TOKEN }}" \
+              --compare_file0 "${{ env.COMPARE_FILE0 }}" \
+              --compare_file1 "${{ env.COMPARE_FILE1 }}" \
+              --repository "${{ github.repository }}"
