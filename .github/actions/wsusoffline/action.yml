@@ -98,11 +98,12 @@ runs:
         token: ${{ inputs.github_token }}
         ref: ${{ inputs.git_branch }}
 
-#    - name: prepare
-#      shell: bash
-#      run: |
+    - name: prepare
+      shell: bash
+      run: |
 #        sudo adduser --shell $(which bash) --uid 1500 --disabled-password --home /home/builder --comment "" builder
-#        sudo chown builder ./ -R && sudo chmod +x $PWD/sh/fix-file-permissions.bash
+#        sudo chown builder ./ -R && 
+        chmod +x $PWD/sh/fix-file-permissions.bash
 
     - name: cache_load
       uses: actions/cache/restore@v4
