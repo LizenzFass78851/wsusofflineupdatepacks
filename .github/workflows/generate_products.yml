@@ -56,8 +56,6 @@ jobs:
           recache: ${{ github.event.inputs.recache }}
 
   build_latest:
-    container:
-      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
@@ -76,7 +74,7 @@ jobs:
             cachekey: o13
           - target:   o2k16
             cachekey: o16
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:           
       GIT_BRANCH: latest
     needs: [ clear_cache ]
@@ -102,8 +100,6 @@ jobs:
           repository: ${{ github.repository }}
 
   build_esr:
-    container:
-      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
@@ -130,7 +126,7 @@ jobs:
             cachekey: o13
           - target:   o2k16
             cachekey: o16
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:           
       GIT_BRANCH: esr
     needs: [ clear_cache, build_latest ]
