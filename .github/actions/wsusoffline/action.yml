@@ -27,7 +27,8 @@ inputs:
     default: ${{ github.repository }}
 
 runs:
-  using: "composite"
+  using: 'docker'
+  image: 'debian:trixie-slim'
   steps:
     - name: Check inputs
       shell: bash
