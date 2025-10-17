@@ -26,6 +26,9 @@ inputs:
     description: The repository to save the cache
     default: ${{ github.repository }}
 
+container:
+  image: debian:trixie-slim
+
 runs:
   using: "composite"
   steps:
