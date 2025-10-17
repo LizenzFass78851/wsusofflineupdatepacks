@@ -1,5 +1,5 @@
 name: generate_products_action
-description: Action to generate wsusoffline products for a specific target OS.
+description: Action to generate wsusoffline products for a specific target OS. (only run this with a container image)
 
 inputs:
   # Actions cannot access secrets so pass them in as inputs
@@ -25,9 +25,6 @@ inputs:
     required: false
     description: The repository to save the cache
     default: ${{ github.repository }}
-
-container:
-  image: debian:trixie-slim
 
 runs:
   using: "composite"
