@@ -56,8 +56,6 @@ jobs:
           recache: ${{ github.event.inputs.recache }}
 
   build_latest:
-    container:
-      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
@@ -102,8 +100,6 @@ jobs:
           repository: ${{ github.repository }}
 
   build_esr:
-    container:
-      image: debian:trixie-slim
     strategy:
       fail-fast: false
       matrix:
