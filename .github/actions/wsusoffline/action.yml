@@ -49,8 +49,8 @@ runs:
         echo "Sleeping $SLEEP seconds ..."
         sleep $SLEEP
 
-    - name: key
-      id: key
+    - name: env
+      id: env
       shell: bash
       run: |
         export KEY="${GITHUB_WORKFLOW%-*}"
@@ -111,17 +111,17 @@ runs:
       with:
         path: |
           ${{ inputs.compare_file0 }}
-        key: ${{ steps.key.outputs.keymatrix }}-${{ steps.key.outputs.timestamp }}
+        key: ${{ steps.env.outputs.keymatrix }}-${{ steps.env.outputs.timestamp }}
         restore-keys: |
-          ${{ steps.key.outputs.keymatrix }}-
+          ${{ steps.env.outputs.keymatrix }}-
 
     - name: generate
+      env:
+        LANG: en_US.utf8
       shell: bash
       run: |
-        export LANG=en_US.utf8
-        [ "${{ github.workflow }}" != "${{ steps.key.outputs.key }}" ] && c=5 || c=1
-        seq $c | while read x; do cd ./sh && $SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"; done        
-#        seq $c | while read x; do cd ./sh && sudo su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'; done
+        cd ./sh && $SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"       
+#        cd ./sh && sudo su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'
 
     - name: compare
       shell: bash
@@ -202,4 +202,4 @@ runs:
       with:
         path: |
           ${{ inputs.compare_file0 }}
-        key: ${{ steps.key.outputs.keymatrix }}-${{ steps.key.outputs.timestamp }}
+        key: ${{ steps.env.outputs.keymatrix }}-${{ steps.env.outputs.timestamp }}
