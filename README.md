@@ -14,7 +14,7 @@ See the [releases](https://github.com/LizenzFass78851/wsusofflineupdatepacks/rel
 | Windows 8.1 (x86) | [w63](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w63) |
 | Windows 8.1 / Windows Server 2012 R2 (x64) | [w63-x64](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w63-x64) |
 | Windows 10 (x86) | [w100](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w100) |
-| Windows 10 / Windows Server 2016/2019 (x64) | [w100-x64](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w100-x64) |
+| Windows 10 / Windows Server 2016/2019/2022 (x64) | [w100-x64](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-w100-x64) |
 | Office 2013 (x86/x64) | [o2k13](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-o2k13) |
 | Office 2016 (x86/x64) | [o2k16](https://github.com/LizenzFass78851/wsusofflineupdatepacks/releases/tag/latest-o2k16) |
 
