@@ -101,6 +101,7 @@ runs:
     - name: prepare
       shell: bash
       run: |
+        sudo sh -c 'echo "0.0.0.0 www.wsusoffline.net" >> /etc/hosts'
         chmod +x $PWD/sh/fix-file-permissions.bash
 #        sudo adduser --shell $(which bash) --uid 1500 --disabled-password --home /home/builder --comment "" builder
 #        sudo chown builder ./ -R && 
