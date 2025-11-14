@@ -135,7 +135,7 @@ jobs:
     steps:
 
       - uses: mathio/gha-cleanup@v1
-        if: ${{ matrix.target == 'w100-x64' }}
+        if: ${{ matrix.target == 'w100-x64' || matrix.target == 'w61-x64' }}
         with:
           remove-browsers: true
           verbose: true
