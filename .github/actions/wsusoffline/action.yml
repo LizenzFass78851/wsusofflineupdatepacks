@@ -93,7 +93,7 @@ runs:
       run: sudo locale-gen en_US.utf8 && sudo locale-gen de_DE.UTF-8 && sudo update-locale
 
     - name: clone
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         token: ${{ inputs.github_token }}
         ref: ${{ inputs.git_branch }}
