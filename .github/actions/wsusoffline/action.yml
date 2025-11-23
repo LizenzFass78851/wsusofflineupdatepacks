@@ -188,6 +188,7 @@ runs:
         tag_name: "${{ inputs.git_branch }}-${{ inputs.target }}"
         generate_release_notes: false
         prerelease: false
+        draft: false
         name: "wsusoffline package for ${{ inputs.git_branch }}-${{ inputs.target }}"
         files: |
           ./iso/*.iso*
