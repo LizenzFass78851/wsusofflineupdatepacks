@@ -45,6 +45,9 @@ jobs:
   clear_cache:
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'lizenzfass78851/wsusofflineupdatepacks' }}
+    permissions:
+      actions: write
+      contents: read
     steps:
 
       - name: clear_cache
