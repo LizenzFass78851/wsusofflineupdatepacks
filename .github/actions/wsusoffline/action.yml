@@ -108,7 +108,7 @@ runs:
 
 
     - name: cache_load
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         path: |
           ${{ inputs.compare_file0 }}
@@ -200,7 +200,7 @@ runs:
 
     - name: cache_save
       if: steps.compare.outputs.latest_version != 'true'
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         path: |
           ${{ inputs.compare_file0 }}
