@@ -43,7 +43,7 @@ runs:
         [[ "${{ inputs.repository }}"    ]] || { echo "repository input is empty"    ; exit 1; }
 
     - name: sleep
-      shell: bash
+      shell: sh
       run: |
         SLEEP="$((1 + $(od -A n -t d -N 2 /dev/urandom | tr -d ' ') % 9))"
         echo "Sleeping $SLEEP seconds ..."
