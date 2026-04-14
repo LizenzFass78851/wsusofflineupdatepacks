@@ -211,3 +211,10 @@ runs:
         path: |
           ${{ inputs.compare_file0 }}
         key: ${{ steps.env.outputs.keymatrix }}-${{ steps.env.outputs.timestamp }}
+
+    - name: upload_logs
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: wsusoffline-logs-${{ inputs.git_branch }}-${{ inputs.cachekey }}
+        path: log/*
