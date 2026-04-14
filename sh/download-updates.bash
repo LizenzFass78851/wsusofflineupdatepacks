@@ -249,7 +249,7 @@ fi
 # Boolean options are set to either "enabled" or "disabled":
 
 prefer_seconly="disabled"
-check_for_self_updates="enabled"
+check_for_self_updates="disabled"
 unattended_updates="disabled"
 use_file_signature_verification="disabled"
 use_integrity_database="enabled"
