@@ -1,0 +1,1 @@
+10.0.19041.1704,ssu-19041.1704,May 2022 Servicing stack update for Windows 10 Version 22H2

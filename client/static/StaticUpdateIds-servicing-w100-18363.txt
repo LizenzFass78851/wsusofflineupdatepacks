@@ -1,1 +1,0 @@
-10.0.18362.1732,kb5005412,August 2021 Servicing stack update for Windows 10 Version 1909

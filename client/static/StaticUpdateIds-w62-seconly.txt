@@ -61,3 +61,15 @@ kb5005607,September 2021 Security Only Quality Update for Windows Server 2012
 kb5006732,October 2021 Security Only Quality Update for Windows Server 2012
 kb5007245,November 2021 Security Only Quality Update for Windows Server 2012
 kb5008255,December 2021 Security Only Quality Update for Windows Server 2012
+kb5009619,January 2022 Security Only Quality Update for Windows Server 2012
+kb5010412,February 2022 Security Only Quality Update for Windows Server 2012
+kb5011527,March 2022 Security Only Quality Update for Windows Server 2012
+kb5012666,April 2022 Security Only Quality Update for Windows Server 2012
+kb5014018,May 2022 Security Only Quality Update for Windows Server 2012
+kb5014741,June 2022 Security Only Quality Update for Windows Server 2012
+kb5016263,July 2022 Security Only Quality Update for Windows Server 2012
+kb5016684,August 2022 Security Only Quality Update for Windows Server 2012
+kb5017377,September 2022 Security Only Quality Update for Windows Server 2012
+kb5018478,October 2022 Security Only Quality Update for Windows Server 2012
+kb5020003,November 2022 Security Only Quality Update for Windows Server 2012
+kb5021303,December 2022 Security Only Quality Update for Windows Server 2012

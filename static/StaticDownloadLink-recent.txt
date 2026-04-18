@@ -1,0 +1,2 @@
+https://gitlab.com/wsusoffline/wsusoffline/uploads/5c773a4380ef9fc1499325e30186e872/wsusofflineCE1261hf6.zip
+https://gitlab.com/wsusoffline/wsusoffline/uploads/1a91e8dd415adc7c889d222fa1f1a40f/wsusofflineCE1261hf6_hashes.txt

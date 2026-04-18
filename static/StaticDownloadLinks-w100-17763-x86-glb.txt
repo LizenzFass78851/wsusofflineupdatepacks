@@ -1,2 +1,1 @@
-http://download.windowsupdate.com/c/msdownload/update/software/secu/2021/07/windows10.0-kb5004424-x86_7f2f5823ea292461eebd37460c88781422b1d5e1.msu
 http://download.windowsupdate.com/d/msdownload/update/software/updt/2020/11/windows10.0-kb4589208-x86_bcecb619f05a87cd2c4abc13ee168ae840ed3756.msu

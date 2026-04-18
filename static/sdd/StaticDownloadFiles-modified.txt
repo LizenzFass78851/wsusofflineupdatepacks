@@ -1,0 +1,12 @@
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-aria2.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-cpp-x64-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-cpp-x86-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-dotnet.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-14393-x64-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-14393-x86-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-17763-x64-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-17763-x86-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-18362-x64-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-18362-x86-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-19041-x64-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadFiles-modified/StaticDownloadLinks-w100-19041-x86-glb.txt
