@@ -216,7 +216,7 @@ aria2c_inputfile_prefix="--input-file="
 # The test could use examples from all needed servers, to detect possible
 # problems early.
 connection_test_urls=(
-    "https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadLink-recent.txt"
+#    "https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/master/StaticDownloadLink-recent.txt"
     "http://download.windowsupdate.com/microsoftupdate/v6/wsusscan/wsusscn2.cab"
 )
 
