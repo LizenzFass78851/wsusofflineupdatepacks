@@ -1,0 +1,5 @@
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/esr-11.9/StaticDownloadFiles-modified/StaticDownloadLinks-aria2.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/esr-11.9/StaticDownloadFiles-modified/StaticDownloadLinks-cpp-x64-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/esr-11.9/StaticDownloadFiles-modified/StaticDownloadLinks-cpp-x86-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/esr-11.9/StaticDownloadFiles-modified/StaticDownloadLinks-w100-x64-glb.txt
+https://gitlab.com/wsusoffline/wsusoffline-sdd/-/raw/esr-11.9/StaticDownloadFiles-modified/StaticDownloadLinks-w100-x86-glb.txt

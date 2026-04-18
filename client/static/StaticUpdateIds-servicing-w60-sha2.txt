@@ -1,1 +1,1 @@
-6.0.6003.21246,kb5006750,October 2021 Servicing Stack Update for Windows Server 2008 SP2
+6.0.6003.21569,kb5016129,July 2022 Servicing Stack Update for Windows Server 2008 SP2
