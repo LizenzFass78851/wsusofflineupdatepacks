@@ -38,7 +38,7 @@ runs:
       run: |
         set -e +o pipefail
         if [ "${{ inputs.recache }}" == "yes" ]; then
-          echo "Recache selected - Deleting all caches for this workflow ..."
+          echo "::notice::Recache selected - Deleting all caches for this workflow ..."
           gh cache delete --all --succeed-on-no-caches \
             --repo $GH_ONWER/$GH_REPO
         else
