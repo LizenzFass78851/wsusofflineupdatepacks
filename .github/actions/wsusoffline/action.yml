@@ -120,16 +120,16 @@ runs:
       env:
         LANG: en_US.utf8
       shell: bash
+      working-directory: sh
       run: |
-        cd ./sh && $SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"       
-#        cd ./sh && sudo su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'
+        $SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"       
+#        sudo su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'
 
     - name: compare
       shell: bash
       id: compare
+      working-directory: client/md
       run: |
-        cd ./client/md
-    
         echo "generating SHA File"
         cat $(ls *.txt | grep "glb" | grep -v "win") | sed 's/[#/%].*$//g' | sort | \
           sha256sum -                                | sed 's# .*$##g'     > ${{ inputs.compare_file1 }}
