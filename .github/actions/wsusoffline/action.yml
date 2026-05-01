@@ -131,8 +131,16 @@ runs:
       working-directory: client/md
       run: |
         echo "generating SHA File"
-        cat $(ls *.txt | grep "glb" | grep -v "win") | sed 's/[#/%].*$//g' | sort | \
-          sha256sum -                                | sed 's# .*$##g'     > ${{ inputs.compare_file1 }}
+        hash=$(cat $(find -type f | grep "glb" | grep -v "win") \
+          | sed 's/[#/%].*$//g' \
+          | sort -u \
+          | sha256sum - --tag \
+          | awk '{print $4}')
+        if [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; then
+          echo "$hash" > ${{ inputs.compare_file1 }}
+        else
+          echo "Error: no valid SHA256" >&2 && exit 1
+        fi
 
         if [ ! -e "${{ inputs.compare_file0 }}" ]; then
           echo "copy SHA File for cache"
