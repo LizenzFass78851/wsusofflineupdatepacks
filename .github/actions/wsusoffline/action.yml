@@ -139,7 +139,7 @@ runs:
         if [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; then
           echo "$hash" > ${{ inputs.compare_file1 }}
         else
-          echo "Error: no valid SHA256" >&2 && exit 1
+          echo "::error:: Error: no valid SHA256" >&2 && exit 1
         fi
 
         if [ ! -e "${{ inputs.compare_file0 }}" ]; then
@@ -161,6 +161,11 @@ runs:
       shell: bash
       if: steps.compare.outputs.latest_version != 'true'
       run: |
+        # check if download was successful
+        if grep -q "Giving up." ./log/download.log; then
+          echo "::error:: Error: Downloading updates failed, check the logs for details." >&2
+          exit 1
+        fi
         # remove unused build files
         rm -r ./client
         # split bigger files
