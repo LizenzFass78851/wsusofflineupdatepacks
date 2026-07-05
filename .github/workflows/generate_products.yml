@@ -77,7 +77,7 @@ jobs:
             cachekey: o13
           - target:   o2k16
             cachekey: o16
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:           
       GIT_BRANCH: latest
     needs: [ clear_cache ]
@@ -129,7 +129,7 @@ jobs:
             cachekey: o13
           - target:   o2k16
             cachekey: o16
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:           
       GIT_BRANCH: esr
     needs: [ clear_cache, build_latest ]

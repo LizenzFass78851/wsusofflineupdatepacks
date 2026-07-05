@@ -1,7 +1,7 @@
 name: generate_products_action
 description: |
   Action to generate wsusoffline products for a specific target OS.
-  Recommended for the ubuntu-24.04 runner.
+  Recommended for the ubuntu-26.04 runner.
 
 inputs:
   # Actions cannot access secrets so pass them in as inputs
@@ -73,7 +73,9 @@ runs:
 
     - name: update
       shell: bash
-      run: sudo apt-get -y update # && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade
+      run: |
+        sudo apt-get -y update # && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade
+        ls --version | grep -q uutils && sudo apt-get remove -y --allow-remove-essential coreutils-from-uutils
 
     - name: install
       env: 
