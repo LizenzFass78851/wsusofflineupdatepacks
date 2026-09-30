@@ -49,27 +49,14 @@ runs:
         echo "Sleeping $SLEEP seconds ..."
         sleep $SLEEP
 
-    - name: env
-      id: env
+    - name: prepare workflow
+      id: prepare_workflow
       shell: bash
+      env:
+        CACHEKEY: ${{ inputs.cachekey }}
+        BRANCH: ${{ inputs.git_branch }}
       run: |
-        export KEY="${GITHUB_WORKFLOW%-*}"
-        echo "key=$KEY" >> $GITHUB_OUTPUT
-        echo "################################################################" && bash -c "echo KEY=$KEY"
-
-        export MATRIX="${{ inputs.target }}"
-        echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
-        echo "################################################################" && bash -c "echo MATRIX=$MATRIX"
-
-        export CACHEKEY="${{ inputs.cachekey }}"
-        echo "cachekey=$CACHEKEY" >> $GITHUB_OUTPUT
-        echo "################################################################" && bash -c "echo CACHEKEY=$CACHEKEY"
-
-        export BRANCH="${{ inputs.git_branch }}"
-        echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-        echo "################################################################" && bash -c "echo BRANCH=$BRANCH"
-
-        echo "keymatrix=$KEY-$BRANCH-$CACHEKEY" >> $GITHUB_OUTPUT
+        printf 'keymatrix=%s-%s-%s\n' "${GITHUB_WORKFLOW%-*}" "$BRANCH" "$CACHEKEY" >> "$GITHUB_OUTPUT"
 
     - name: update
       shell: bash
@@ -110,9 +97,9 @@ runs:
       with:
         path: |
           ${{ inputs.compare_file0 }}
-        key: ${{ steps.env.outputs.keymatrix }}-${{ github.run_id }}
+        key: ${{ steps.prepare_workflow.outputs.keymatrix }}-${{ github.run_id }}
         restore-keys: |
-          ${{ steps.env.outputs.keymatrix }}-
+          ${{ steps.prepare_workflow.outputs.keymatrix }}-
 
     - name: generate
       env:
@@ -221,7 +208,7 @@ runs:
       with:
         path: |
           ${{ inputs.compare_file0 }}
-        key: ${{ steps.env.outputs.keymatrix }}-${{ github.run_id }}
+        key: ${{ steps.prepare_workflow.outputs.keymatrix }}-${{ github.run_id }}
 
     - name: upload_logs
       if: always()
