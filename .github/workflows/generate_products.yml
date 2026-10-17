@@ -8,6 +8,7 @@ on:
       - '.github/actions/wsusoffline/**'
   schedule:
     - cron: '34 14 */3 * 2'
+      timezone: "UTC"
   workflow_dispatch:
     inputs:
       build_latest:
