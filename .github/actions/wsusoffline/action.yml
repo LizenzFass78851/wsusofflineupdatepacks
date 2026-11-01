@@ -55,8 +55,10 @@ runs:
       env:
         CACHEKEY: ${{ inputs.cachekey }}
         BRANCH: ${{ inputs.git_branch }}
+        SOURCE_DIR: wsusoffline
       run: |
         printf 'keymatrix=%s-%s-%s\n' "${GITHUB_WORKFLOW%-*}" "$BRANCH" "$CACHEKEY" >> "$GITHUB_OUTPUT"
+        printf 'source_dir=%s\n' "$SOURCE_DIR" >> "$GITHUB_OUTPUT"
 
     - name: update
       shell: bash
@@ -82,9 +84,11 @@ runs:
       with:
         token: ${{ inputs.github_token }}
         ref: ${{ inputs.git_branch }}
+        path: ${{ steps.prepare_workflow.outputs.source_dir }}
 
     - name: prepare
       shell: bash
+      working-directory: ${{ steps.prepare_workflow.outputs.source_dir }}
       run: |
         sudo sh -c 'echo "0.0.0.0 www.wsusoffline.net" >> /etc/hosts'
         chmod +x $PWD/sh/fix-file-permissions.bash
@@ -105,7 +109,7 @@ runs:
       env:
         LANG: en_US.utf8
       shell: bash
-      working-directory: sh
+      working-directory: ${{ steps.prepare_workflow.outputs.source_dir }}/sh
       run: |
         $SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"       
 #        sudo su builder -c '$SHELL -c "$PWD/fix-file-permissions.bash && $PWD/download-updates.bash ${{ inputs.target }} deu,enu -includesp && $PWD/create-iso-image.bash ${{ inputs.target }} -includesp"'
@@ -113,7 +117,7 @@ runs:
     - name: compare
       shell: bash
       id: compare
-      working-directory: client/md
+      working-directory: ${{ steps.prepare_workflow.outputs.source_dir }}/client/md
       run: |
         echo "generating SHA File"
         hash=$(cat $(find -type f | grep "glb" | grep -v "win") \
@@ -145,6 +149,7 @@ runs:
     - name: after prepare
       shell: bash
       if: steps.compare.outputs.latest_version != 'true'
+      working-directory: ${{ steps.prepare_workflow.outputs.source_dir }}
       run: |
         # check if download was successful
         if grep -q "Giving up." ./log/download.log; then
@@ -183,6 +188,7 @@ runs:
         GH_TOKEN: ${{ inputs.github_token }}
         GH_OWNER_REPO: ${{ inputs.repository }}
       if: steps.compare.outputs.latest_version != 'true'
+      working-directory: ${{ steps.prepare_workflow.outputs.source_dir }}
       run: |
         # create release-notes
         cat > /tmp/release-notes.txt <<EOF
@@ -215,4 +221,4 @@ runs:
       uses: actions/upload-artifact@v7
       with:
         name: wsusoffline-logs-${{ inputs.git_branch }}-${{ inputs.cachekey }}
-        path: log/*
+        path: ${{ steps.prepare_workflow.outputs.source_dir }}/log/*
